@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
 import Login from "./components/Login"
+import { BrowserRouter as Router, Route,redirect } from 'react-router-dom';
+import Redirect from "./Utils/Redirect";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,7 +11,21 @@ function App() {
 
   return (
     <div className="App">
-      helo world
+        <Router>
+            <Route path="/"  element={(
+                isAuthenticated ? (
+                    userRole === 'admin' ? (
+                        <Redirect linc={"/admin"}/>
+                    ) : (
+                        <Redirect linc={"/user"}/>
+                    )
+                ) : (
+                    <Redirect linc={"/login"}/>
+                )
+            )} />
+
+        </Router>
+
     </div>
   );
 }
