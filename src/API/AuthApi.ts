@@ -4,7 +4,7 @@ export const authAPI = {
     authMe() {
         return instance.get<any>("auth/me");
     },
-    login(email: string, password: string, rolle: boolean){
+    login(email: string, password: string, rolle: string){
         return instance.post<any>("auth/login", {
             email,
             password,

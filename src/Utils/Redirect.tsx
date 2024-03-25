@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink, redirect} from "react-router-dom";
+import {redirect} from "react-router-dom";
 type RedirectPropsType ={
     linc:string
 }
