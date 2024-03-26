@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import Login from "./components/Login"
+import Login from "./components/Login/Login"
 import {Navigate, Route, Routes} from 'react-router-dom';
-import Redirect from "./Utils/Redirect";
-import switchBaseClasses from "@mui/material/internal/switchBaseClasses";
+import GeneralAgronomist from "./components/General_agronomist/General_agronomist";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,7 +11,7 @@ function App() {
 
     const swithRole = ():React.ReactNode=>{
         switch (userRole) {
-            case null:return <Navigate to={"login"}/>
+            case null:return <Navigate to={"/login"}/>
             case "GENERAL_AGRONOMIST":return <Navigate to={"/general-agronomist"}/>
             default:return <Navigate to={"/login"}/>
        }
@@ -21,7 +20,9 @@ function App() {
     <div className="App">
         <Routes>
             <Route path="/"  element={(swithRole())} />
+            <Route path = {"/general-agronomist"} element={<GeneralAgronomist/>}/>
             <Route path={"/login"} element={<Login/>}/>
+
         </Routes>
 
     </div>
