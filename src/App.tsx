@@ -3,11 +3,12 @@ import './App.css';
 import Registration from "./components/Registration/Registration"
 import {Navigate, Route, Routes} from 'react-router-dom';
 import GeneralAgronomist from "./components/General_agronomist/General_agronomist";
+import Login from "./components/Login/Login";
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    //const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+   // const [isLoading, setIsLoading] = useState(true);
 
     const swithRole = ():React.ReactNode=>{
         switch (userRole) {
@@ -22,8 +23,8 @@ function App() {
             <Route path="/"  element={(swithRole())} />
             <Route path = {"/general-agronomist"} element={<GeneralAgronomist/>}/>
             <Route path={"/registration"} element={<Registration/>}/>
+            <Route path="/login" element={<Login/>} />
         </Routes>
-
     </div>
   );
 }

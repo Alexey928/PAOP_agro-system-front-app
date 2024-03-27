@@ -1,11 +1,21 @@
 import React from 'react';
 import {Button, FormControl, Input, InputLabel, MenuItem, Paper, Select, SelectChangeEvent} from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
+import style from "./LoginStyle.module.css"
+import {NavLink} from "react-router-dom";
+
+export enum ROOLS{
+    "ADMIN",
+    "GENERAL_AGRONOMIST",
+    "SIMPLE_AGRONOMIST",
+   "ACCOUNTANT",
+}
 
 interface IFormInputs {
  Name: string;
- Password: string
- Rolls:{label:string,value:string}
+ Password: string;
+ Email:string
+ Rolls:number|string
 }
 const Registration = () => {
     const [age, setAge] = React.useState('');
@@ -13,7 +23,8 @@ const Registration = () => {
         defaultValues: {
             Name: "",
             Password: "",
-            Rolls:{label:"",value:""}
+            Email:"",
+            Rolls:""
         },
     })
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
@@ -22,62 +33,56 @@ const Registration = () => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value as string);
     };
-
+    console.log("Registration")
     return (
-        <div style={{display:"flex",alignItems:"center",flexDirection:"column"}}>
-            <div>Login PAge</div>
+        <div className={style.container}>
+            <div>Login Page</div><label><NavLink to={"/login"}>Login</NavLink></label>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Paper  elevation={0} variant={"outlined"} style={{width:350}}>
-                    <ul >
-                        <Controller name={"Name"} control={control} render={(field)=>(
-                            <li>
+                <Paper   variant={"outlined"} style={{width:350}}>
+                    <ul className={style.formlist}>
+                        <Controller rules={{ required: true }} name={"Name"} control={control} render={(field)=>{
+                            return(
+                              <li>
                                 <label>Name *</label>
-                                <Input type={"text"} color={"secondary"} />
-                            </li>)}
+                                <Input {...field.field} type={"text"} placeholder={"уведть"} color={"secondary"}/>
+                            </li>)}}
                         />
-
-                        <Controller name={"Name"} control={control} render={(field)=>(
+                        <Controller rules={{ required: true,min:6}} name={"Password"} control={control} render={(field)=>(
                             <li>
-                                <label>Password *</label>
-                                <Input type={"text"} color={"secondary"} />
+                                <label >Password *</label>
+                                <Input {...field.field} type={"text"} color={"secondary"}/>
                             </li>)}
                         />
-                        <li>
-                            <label>Email *</label>
-                            <Input type={"text"} />
-                        </li>
-                        <li>
-                            <label>Password *</label>
-                            <Input type={"text"} />
-                        </li>
-                        <li>
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Роль</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={age}
-                                    label="Роль"
-                                    onChange={handleChange}
-                                >
-                                    <MenuItem value={10}>Головний огроном</MenuItem>
-                                    <MenuItem value={30}>Рядовий огроном</MenuItem>
-                                    <MenuItem value={20}>Бугалтер</MenuItem>
-
-                                </Select>
-                            </FormControl>
-                        </li>
+                        <Controller rules={{ required: true }} name={"Email"} control={control} render={(field)=>(
+                            <li>
+                                <label>Email *</label>
+                                <Input {...field.field} type={"text"} color={"secondary"}/>
+                            </li>)}
+                        />
                     </ul>
+                    <Controller rules={{ required: true }} control={control} name={"Rolls"} render={(field)=>(
+                        <FormControl style={{width:190}}>
+                            <InputLabel id="demo-simple-select-label">Роль</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={field.field.value}
+                                label="Роль"
+                                onChange={field.field.onChange}
+                            >
+                                <MenuItem value={""}></MenuItem>
+                                <MenuItem value={1}>Головний огроном</MenuItem>
+                                <MenuItem value={2}>Рядовий огроном</MenuItem>
+                                <MenuItem value={3}>Бугалтер</MenuItem>
+                            </Select>
+                        </FormControl>
+                    )}/>
+                    <div style={{marginTop:50}}>
+                        <Button type={"submit"} variant={"contained"}>зарегеструвати</Button>
+                    </div>
 
-
-                    <Input type = {"submit"}/>
-
-                    <Input type={"text"} style={{margin:20}}/>
-                    <Input type={"text"} style={{margin:20}}/>
                 </Paper>
             </form>
-
-
         </div>
     );
 };
