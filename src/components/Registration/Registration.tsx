@@ -18,8 +18,8 @@ interface IFormInputs {
  Rolls:number|string
 }
 const Registration = () => {
-    const [age, setAge] = React.useState('');
-    const { control, handleSubmit } = useForm({
+
+    const { control, handleSubmit,formState } = useForm({
         defaultValues: {
             Name: "",
             Password: "",
@@ -30,44 +30,55 @@ const Registration = () => {
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data)
     }
-    // const handleChange = (event: SelectChangeEvent) => {
-    //     setAge(event.target.value as string);
-    // };
+
     console.log("Registration")
+    let massege =""
     return (
         <div className={style.container}>
-            <div>Login Page</div><label><NavLink to={"/login"}>Login</NavLink></label>
-            <Alert style={{position:"absolute"}} variant="filled" severity="error">This is an error Alert.</Alert>
+            <div>Login Page</div><label>
+            <NavLink to={"/login"}>Login</NavLink></label>
+            {formState.isValid ? null:
+                <Alert style={{position:"absolute"}} variant="filled" severity="success">
+                    Заповніть коректно!
+                </Alert>
+            }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
-                        <Controller rules={{ required: "уведіть імья" }} name={"Name"} control={control} render={(field)=>{
-                            console.log(field.fieldState.error)
+                        <Controller rules={{required: "уведіть імья"}} name={"Name"} control={control} render={(field)=>{
+                            console.log(field.fieldState.error,formState)
+                            //field.fieldState.error && setError("Name",field.fieldState.error)
                             return(
-                              <li>
+                            <li>
                                 <label style={{color:field.fieldState.error?"red":"black"}}>Name *</label>
-                                <Input {...field.field} type={"text"} placeholder={"уведіть імья"} />
+                                <Input {...field.field}  type={"text"} placeholder={"уведіть імья"} />
                             </li>)}}
                         />
-                        <Controller rules={{ required:"",minLength:6}} name={"Password"} control={control} render={(field)=>(
-                            <li>
-                                <label >Password *</label>
-                                <Input {...field.field} placeholder={"уведіть пороль"} type={"password"} />
-                            </li>)}
+                        <Controller
+                            rules={{required:"Уведіть пароль",minLength:{value:6,message:"Не меньше 6 символів"}}}
+                            name={"Password"} control={control}
+                            render={(field)=>{
+                            console.log(field.fieldState.error)
+                                return(
+                                <li>
+                                    <label style={{color:field.fieldState.error?"red":"black"}}>Password *</label>
+                                    <Input  {...field.field} placeholder={"уведіть пороль"} type={"password"} />
+                                </li>)
+                            }}
                         />
-                        <Controller rules={{ required: true }} name={"Email"} control={control} render={(field)=>(
+                        <Controller rules={{ required:"ведіть майл" }} name={"Email"} control={control} render={(field)=>(
                             <li>
-                                <label>Email *</label>
+                                <label style={{color:field.fieldState.error?"red":"black"}}>Email *</label>
                                 <Input {...field.field} placeholder={"уведіть імайл"} type={"text"} />
                             </li>)}
                         />
                     </ul>
                     <Controller rules={{ required: true }} control={control} name={"Rolls"} render={(field)=>(
-                        <FormControl style={{width:190}}>
-                            <InputLabel id="demo-simple-select-label">Роль</InputLabel>
+                        <FormControl style={{width:190}} error>
+                            <InputLabel id="demo-simple-select-error-label">Роль</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="demo-simple-select-error-label"
+                                id="demo-simple-select-error"
                                 value={field.field.value}
                                 label="Роль"
                                 onChange={field.field.onChange}

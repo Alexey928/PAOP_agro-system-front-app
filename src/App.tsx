@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import './App.css';
 import Registration from "./components/Registration/Registration"
 import {Navigate, Route, Routes} from 'react-router-dom';
@@ -10,17 +10,19 @@ function App() {
     const [userRole, setUserRole] = useState<string | null>(null);
    // const [isLoading, setIsLoading] = useState(true);
 
-    const swithRole = ():React.ReactNode=>{
+    const swithRole:React.ReactNode = useMemo(()=> {
         switch (userRole) {
             case null:return <Navigate to={"/registration"}/>
             case "GENERAL_AGRONOMIST":return <Navigate to={"/general-agronomist"}/>
             default:return <Navigate to={"/registration"}/>
-       }
-    }
+        }
+    },[])
+
+
  return (
     <div className="App">
         <Routes>
-            <Route path="/"  element={(swithRole())} />
+            <Route path="/"  element={(swithRole)} />
             <Route path = {"/general-agronomist"} element={<GeneralAgronomist/>}/>
             <Route path={"/registration"} element={<Registration/>}/>
             <Route path="/login" element={<Login/>} />
