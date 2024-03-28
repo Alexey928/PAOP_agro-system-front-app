@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, FormControl, Input, InputLabel, MenuItem, Paper, Select, SelectChangeEvent} from "@mui/material";
+import {Alert, Button, FormControl, Input, InputLabel, MenuItem, Paper, Select, SelectChangeEvent} from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "./LoginStyle.module.css"
 import {NavLink} from "react-router-dom";
@@ -37,17 +37,19 @@ const Registration = () => {
     return (
         <div className={style.container}>
             <div>Login Page</div><label><NavLink to={"/login"}>Login</NavLink></label>
+            <Alert style={{position:"absolute"}} variant="filled" severity="error">This is an error Alert.</Alert>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
-                        <Controller rules={{ required: true }} name={"Name"} control={control} render={(field)=>{
+                        <Controller rules={{ required: "уведіть імья" }} name={"Name"} control={control} render={(field)=>{
+                            console.log(field.fieldState.error)
                             return(
                               <li>
-                                <label>Name *</label>
+                                <label style={{color:field.fieldState.error?"red":"black"}}>Name *</label>
                                 <Input {...field.field} type={"text"} placeholder={"уведіть імья"} />
                             </li>)}}
                         />
-                        <Controller rules={{ required: true,minLength:6}} name={"Password"} control={control} render={(field)=>(
+                        <Controller rules={{ required:"",minLength:6}} name={"Password"} control={control} render={(field)=>(
                             <li>
                                 <label >Password *</label>
                                 <Input {...field.field} placeholder={"уведіть пороль"} type={"password"} />
