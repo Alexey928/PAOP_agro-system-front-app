@@ -30,33 +30,33 @@ const Registration = () => {
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data)
     }
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
-    };
+    // const handleChange = (event: SelectChangeEvent) => {
+    //     setAge(event.target.value as string);
+    // };
     console.log("Registration")
     return (
         <div className={style.container}>
             <div>Login Page</div><label><NavLink to={"/login"}>Login</NavLink></label>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Paper   variant={"outlined"} style={{width:350}}>
+                <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
                         <Controller rules={{ required: true }} name={"Name"} control={control} render={(field)=>{
                             return(
                               <li>
                                 <label>Name *</label>
-                                <Input {...field.field} type={"text"} placeholder={"уведть"} color={"secondary"}/>
+                                <Input {...field.field} type={"text"} placeholder={"уведіть імья"} />
                             </li>)}}
                         />
-                        <Controller rules={{ required: true,min:6}} name={"Password"} control={control} render={(field)=>(
+                        <Controller rules={{ required: true,minLength:6}} name={"Password"} control={control} render={(field)=>(
                             <li>
                                 <label >Password *</label>
-                                <Input {...field.field} type={"text"} color={"secondary"}/>
+                                <Input {...field.field} placeholder={"уведіть пороль"} type={"password"} />
                             </li>)}
                         />
                         <Controller rules={{ required: true }} name={"Email"} control={control} render={(field)=>(
                             <li>
                                 <label>Email *</label>
-                                <Input {...field.field} type={"text"} color={"secondary"}/>
+                                <Input {...field.field} placeholder={"уведіть імайл"} type={"text"} />
                             </li>)}
                         />
                     </ul>
