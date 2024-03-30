@@ -1,10 +1,18 @@
-
+.alert{
+    z-index: 10000;
+    position: absolute;
+    font-size: 25px ;
+}
 .container{
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 .container > div{
+    color: white;
+}
+.container a {
+    text-decoration: none;
     color: white;
 }
 .formlist{

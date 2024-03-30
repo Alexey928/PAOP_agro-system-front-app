@@ -1,10 +1,14 @@
 import React from 'react';
-import {Alert, Button, FormControl, Input, InputLabel, MenuItem, Paper, Select, SelectChangeEvent} from "@mui/material";
+    import {Alert, Button,
+            FormControl, Input, InputLabel, MenuItem,
+            Paper, Select
+        } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "./LoginStyle.module.css"
 import {NavLink} from "react-router-dom";
+import AuthNav from "../Common/AuthNav";
 
-export enum ROOLS{
+export enum ROLS{
     "ADMIN",
     "GENERAL_AGRONOMIST",
     "SIMPLE_AGRONOMIST",
@@ -18,8 +22,7 @@ interface IFormInputs {
  Rolls:number|string
 }
 const Registration = () => {
-
-    const { control, handleSubmit,formState } = useForm({
+    const { control, handleSubmit, formState} = useForm({
         defaultValues: {
             Name: "",
             Password: "",
@@ -30,16 +33,20 @@ const Registration = () => {
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data)
     }
-
+    let massege:string|undefined = "";
+    if(formState.errors["Rolls"]) massege = formState.errors["Rolls"]?.message;
+    if(formState.errors["Name"]) massege = formState.errors["Name"]?.message;
+    if(formState.errors["Password"]) massege = formState.errors["Password"]?.message;
+    if(formState.errors["Email"]) massege = formState.errors["Email"]?.message;
     console.log("Registration")
-    let massege =""
     return (
         <div className={style.container}>
-            <div>Login Page</div><label>
-            <NavLink to={"/login"}>Login</NavLink></label>
-            {formState.isValid ? null:
-                <Alert style={{position:"absolute"}} variant="filled" severity="success">
-                    Заповніть коректно!
+            <AuthNav derection={"/login"} linkText={"Login"} headerText={"Registration page"}></AuthNav>
+            {!massege ? null:
+                <Alert className={style.alert}
+                       variant="filled"
+                       severity="error">
+                                    {massege}
                 </Alert>
             }
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,7 +54,6 @@ const Registration = () => {
                     <ul className={style.formlist}>
                         <Controller rules={{required: "уведіть імья"}} name={"Name"} control={control} render={(field)=>{
                             console.log(field.fieldState.error,formState)
-                            //field.fieldState.error && setError("Name",field.fieldState.error)
                             return(
                             <li>
                                 <label style={{color:field.fieldState.error?"red":"black"}}>Name *</label>
@@ -66,14 +72,16 @@ const Registration = () => {
                                 </li>)
                             }}
                         />
-                        <Controller rules={{ required:"ведіть майл" }} name={"Email"} control={control} render={(field)=>(
+                        <Controller rules={{ required:"ведіть майл" }} name={"Email"} control={control}
+                                    render={(field)=>(
                             <li>
                                 <label style={{color:field.fieldState.error?"red":"black"}}>Email *</label>
-                                <Input {...field.field} placeholder={"уведіть імайл"} type={"text"} />
+                                <Input {...field.field} placeholder={"уведіть імайл"} type={"email"} />
                             </li>)}
                         />
                     </ul>
-                    <Controller rules={{ required: true }} control={control} name={"Rolls"} render={(field)=>(
+                    <Controller rules={{ required:"Оберіть вашу роль !" }} control={control} name={"Rolls"}
+                                render={(field)=>(
                         <FormControl style={{width:190}} error>
                             <InputLabel id="demo-simple-select-error-label">Роль</InputLabel>
                             <Select
@@ -93,7 +101,6 @@ const Registration = () => {
                     <div style={{marginTop:50}}>
                         <Button type={"submit"} variant={"contained"}>зарегеструвати</Button>
                     </div>
-
                 </Paper>
             </form>
         </div>

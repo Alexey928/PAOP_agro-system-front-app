@@ -1,17 +1,14 @@
 import React from 'react';
-import {Alert, Button, Input,  Paper} from "@mui/material";
+import {Alert, Button, Input, Paper, } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "../Registration/LoginStyle.module.css"
-import {NavLink} from "react-router-dom";
+import AuthNav from "../Common/AuthNav";
 
 
 interface IFormInputs {
     Name: string;
     Password: string;
-
 }
-
-
 
 const Login = () => {
     const { control, handleSubmit } = useForm({
@@ -26,8 +23,8 @@ const Login = () => {
     }
     return (
         <div className={style.container}>
-            <div>Login Page</div><label><NavLink to={"/login"}>Login</NavLink></label>
-            <Alert style={{position:"absolute"}} variant="filled" severity="error">This is an error Alert.</Alert>
+            <AuthNav derection={"/registration"} linkText={"registration"} headerText={"Login page"}></AuthNav>
+            <Alert className={style.alert} variant="filled" severity="error">This is an error Alert.</Alert>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
@@ -47,9 +44,7 @@ const Login = () => {
                                     <Input {...field.field} placeholder={"уведіть пороль"} type={"password"} />
                                 </li>)}}
                         />
-
                     </ul>
-
                     <div style={{marginTop:50}}>
                         <Button type={"submit"} variant={"contained"}>увійти</Button>
                     </div>
