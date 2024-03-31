@@ -1,12 +1,16 @@
 .alert{
     z-index: 10000;
     position: absolute;
+    margin-top: 70px;
     font-size: 25px ;
 }
 .container{
     display: flex;
+   height: 100vh;
+   flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    flex-direction: column;
+
 }
 .container > div{
     color: white;
@@ -27,8 +31,10 @@
     padding-top:25px ;
 }
 .paper{
+    width: 320px;
     background-color: #311515;
-    width:320px;
-    height:80vh;
     padding:25px;
+}
+.form {
+    margin-top: 120px;
 }

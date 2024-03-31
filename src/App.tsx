@@ -6,9 +6,8 @@ import GeneralAgronomist from "./components/General_agronomist/General_agronomis
 import Login from "./components/Login/Login";
 
 function App() {
-    //const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState<string | null>(null);
-   // const [isLoading, setIsLoading] = useState(true);
+
 
     const swithRole:React.ReactNode = useMemo(()=> {
         switch (userRole) {

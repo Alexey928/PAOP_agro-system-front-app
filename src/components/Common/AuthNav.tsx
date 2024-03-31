@@ -10,7 +10,7 @@ type AuthNawPropsType = {
 const AuthNav:React.FC<AuthNawPropsType> = ({derection,linkText,headerText}) => {
     const navigate = useNavigate();
     return (
-        <>
+        <div>
             <Box sx={{ flexGrow: 2 }}>
                 <AppBar position="absolute">
                     <Toolbar>
@@ -30,7 +30,7 @@ const AuthNav:React.FC<AuthNawPropsType> = ({derection,linkText,headerText}) => 
                     </Toolbar>
                 </AppBar>
             </Box>
-        </>
+        </div>
     );
 };
 export default AuthNav;

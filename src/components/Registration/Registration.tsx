@@ -5,7 +5,6 @@ import React from 'react';
         } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "./LoginStyle.module.css"
-import {NavLink} from "react-router-dom";
 import AuthNav from "../Common/AuthNav";
 
 export enum ROLS{
@@ -49,7 +48,7 @@ const Registration = () => {
                                     {massege}
                 </Alert>
             }
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
                         <Controller rules={{required: "уведіть імья"}} name={"Name"} control={control} render={(field)=>{
@@ -81,12 +80,16 @@ const Registration = () => {
                         />
                     </ul>
                     <Controller rules={{ required:"Оберіть вашу роль !" }} control={control} name={"Rolls"}
-                                render={(field)=>(
-                        <FormControl style={{width:190}} error>
-                            <InputLabel id="demo-simple-select-error-label">Роль</InputLabel>
+                                render={(field)=>{
+                                    console.log(field.fieldState.error)
+                                    return(
+                        <FormControl  style={{width:190}} error={!!field.fieldState.error}>
+                            <InputLabel id="demo-simple-select-label">Роль</InputLabel>
                             <Select
-                                labelId="demo-simple-select-error-label"
-                                id="demo-simple-select-error"
+                                color={"secondary"}
+                                variant={"standard"}
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
                                 value={field.field.value}
                                 label="Роль"
                                 onChange={field.field.onChange}
@@ -97,7 +100,7 @@ const Registration = () => {
                                 <MenuItem value={3}>Бугалтер</MenuItem>
                             </Select>
                         </FormControl>
-                    )}/>
+                    )}}/>
                     <div style={{marginTop:50}}>
                         <Button type={"submit"} variant={"contained"}>зарегеструвати</Button>
                     </div>
