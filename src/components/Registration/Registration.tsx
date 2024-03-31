@@ -45,7 +45,7 @@ const Registration = () => {
                 <Alert className={style.alert}
                        variant="filled"
                        severity="error">
-                                    {massege}
+                       {massege}
                 </Alert>
             }
             <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
