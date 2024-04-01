@@ -3,6 +3,7 @@ import {Alert, Button, Input, Paper, } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "../Registration/LoginStyle.module.css"
 import AuthNav from "../Common/AuthNav";
+import {useNavigate} from "react-router-dom";
 
 
 interface IFormInputs {
@@ -18,8 +19,10 @@ const Login = () => {
 
         },
     })
+    const navigate = useNavigate();
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data)
+        navigate("/general-agronomist")
     }
     let massege:string|undefined = "";
     if(formState.errors["Password"]) massege = formState.errors["Password"]?.message;
