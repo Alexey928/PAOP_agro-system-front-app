@@ -1,5 +1,6 @@
 import {instance} from "./commonApiInstanse";
 
+
 export const authAPI = {
     authMe() {
         return instance.get<any>("auth/me");
