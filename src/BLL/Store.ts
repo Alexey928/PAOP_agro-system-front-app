@@ -3,16 +3,16 @@ import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {AuthActionsType, authReducer} from "./auth-reduser";
 
+
 const rootReducer = combineReducers({
    auth: authReducer
 })
 
-//@ts-ignore
 export const store = createStore(rootReducer,applyMiddleware(thunkMiddleware));
+
 export type AppRootStateType = ReturnType<typeof rootReducer>;
-
-
 type AppRootActionsType = AuthActionsType
+
 export type AppThunkType<ReturnType = void> = ThunkAction<
     ReturnType,
     AppRootStateType,

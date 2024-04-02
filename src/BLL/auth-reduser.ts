@@ -50,13 +50,11 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
             return state;
     }
 };
-
-
 export const authMeTC = (): AppThunkType => async (dispatch) => {
     //dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const response = await authAPI.authMe();
-        if (response.data.resultCode === 0) {
+        if (response) {
             const { id, login, email } = response.data.data;
             dispatch(setAuthUserDataAC(id, login, email, true));
 
