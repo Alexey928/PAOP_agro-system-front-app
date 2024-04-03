@@ -1,14 +1,16 @@
-import {AppThunkType} from "./Store";
+import {AppThunkType, DispatchType} from "./Store";
 import {authAPI} from "../API/AuthApi";
+import {setIsRequestProcessingStatusAC} from "./app-reduser";
 
 const initialState = {
     id: null as number | null,
     email: null as string | null,
-    login: null as string | null,
+    name: null as string | null,
     isAuth: false as boolean,
     loginError: null as string | null,
-    captchaUrl: null as string | null,
+
 };
+
 export type InitialStateType = typeof initialState;
 
 export type AuthActionsType =
@@ -44,15 +46,13 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
             return { ...state, ...action.payload };
         case "AUTH/SET-LOGIN-ERROR":
             return { ...state, loginError: action.loginError };
-        case "AUTH/SET-CAPTCHA":
-            return { ...state, captchaUrl: action.captchaUrl };
         default:
             return state;
     }
 };
 
- export const authMeTC = (): AppThunkType => async (dispatch) => {
-    //dispatch(setIsRequestProcessingStatusAC(true));
+ export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
+    dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const response = await authAPI.authMe();
         if (response) {
@@ -63,25 +63,29 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
     } catch (e) {
 
     } finally {
-        //dispatch(setIsRequestProcessingStatusAC(false));
+        dispatch(setIsRequestProcessingStatusAC(false));
     }
 };
 export const loginTC =
-    (email: string, password: string, rememberMe: boolean, captcha: string): AppThunkType =>
+    (email: string, password:string): AppThunkType =>
         async (dispatch) => {
-            //dispatch(setIsRequestProcessingStatusAC(true));
+            dispatch(setIsRequestProcessingStatusAC(true));
             try {
+                const response = await authAPI.login(email,password)
                 // const response = await authAPI.login(email, password, );
                 // if (response.data.resultCode === 0) {
                 //     dispatch(authMeTC());
                 //     dispatch(setLoginErrorAC(null));
                 //     dispatch(setCaptchaUrlAC(null));
                 // }
-
             } catch (e) {
                 //handleError(e, dispatch);
             } finally {
-                //dispatch(setIsRequestProcessingStatusAC(false));
+                dispatch(setIsRequestProcessingStatusAC(false));
             }
         };
 
+export const registrationTC =(name:string,email:string,password:string,role:string):AppThunkType=>
+    async (dispatch)=>{
+
+    }

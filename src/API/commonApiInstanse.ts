@@ -1,5 +1,5 @@
 import axios from "axios";
-const tempjwtToken = ""
+const tempjwtToken = "token"
 
 
 export const instance = axios.create({

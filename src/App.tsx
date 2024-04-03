@@ -4,10 +4,12 @@ import Registration from "./components/Registration/Registration"
 import {Navigate, Route, Routes} from 'react-router-dom';
 import GeneralAgronomist from "./components/General_agronomist/General_agronomist";
 import Login from "./components/Login/Login";
+import {useSelector} from "react-redux";
+import {selectAppInitStatus} from "./Utils/selectors";
 
 function App() {
     const [userRole, setUserRole] = useState<string | null>(null);
-
+    const isAppInitialized = useSelector(selectAppInitStatus)
 
     const swithRole:React.ReactNode = useMemo(()=> {
         switch (userRole) {
@@ -16,6 +18,14 @@ function App() {
             default:return <Navigate to={"/registration"}/>
         }
     },[])
+
+    if (!isAppInitialized) {
+        return (
+            <div >
+                Preloader
+            </div>
+        );
+    }
 
 
  return (

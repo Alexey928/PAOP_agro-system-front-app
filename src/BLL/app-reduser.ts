@@ -3,7 +3,7 @@ import { authMeTC } from "./auth-reduser";
 //import { handleError } from "../utils/error-util";
 
 const initialState = {
-    isInitialized: false,
+    isInitialized: true,
     isRequestProcessing: false,
     appError: null as string | null,
 };

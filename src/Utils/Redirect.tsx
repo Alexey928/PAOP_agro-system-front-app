@@ -4,6 +4,7 @@ type RedirectPropsType ={
     linc:string
 }
 
+// пока не юзаеется нигде
 const Redirect:React.FC<RedirectPropsType> = ({linc}) => {
     redirect(linc)
     return (
