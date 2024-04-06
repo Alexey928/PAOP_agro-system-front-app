@@ -50,34 +50,28 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
             return state;
     }
 };
-
- export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
+export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const response = await authAPI.authMe();
-        if (response) {
+        if (response.data.id) {
             const { id, login, email } = response.data.data;
             dispatch(setAuthUserDataAC(id, login, email, true));
-
         }
     } catch (e) {
-
+        console.log(e)
     } finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 };
+
+
 export const loginTC =
     (email: string, password:string): AppThunkType =>
         async (dispatch) => {
             dispatch(setIsRequestProcessingStatusAC(true));
             try {
                 const response = await authAPI.login(email,password)
-                // const response = await authAPI.login(email, password, );
-                // if (response.data.resultCode === 0) {
-                //     dispatch(authMeTC());
-                //     dispatch(setLoginErrorAC(null));
-                //     dispatch(setCaptchaUrlAC(null));
-                // }
             } catch (e) {
                 //handleError(e, dispatch);
             } finally {

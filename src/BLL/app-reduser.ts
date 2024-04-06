@@ -42,9 +42,9 @@ export const initializeAppTC = (): AppThunkType => async (dispatch) => {
     try {
         await dispatch(authMeTC());
     } catch (e) {
-       // handleError(e, dispatch);
+       console.log(e)
     } finally {
-       // dispatch(setIsInitializedAC(true));
+       dispatch(setIsInitializedAC(true));
     }
 };
 type InitialStateType = typeof initialState;
