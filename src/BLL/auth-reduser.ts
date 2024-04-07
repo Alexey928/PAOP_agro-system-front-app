@@ -1,7 +1,7 @@
 import {AppThunkType, DispatchType} from "./Store";
-import {authAPI} from "../API/AuthApi";
+import {authAPI, ROOLS} from "../API/AuthApi";
 import {setIsRequestProcessingStatusAC} from "./app-reduser";
-import {useNavigate} from "react-router-dom";
+import axios, {AxiosError} from "axios";
 
 const initialState = {
     id: null as number | null,
@@ -10,7 +10,7 @@ const initialState = {
     role:null as string|null,
     isAuth: false as boolean,
     currentPas: null as string|null,
-    loginError: null as string | null,
+    authError: null as string | null,
 
 };
 
@@ -21,15 +21,15 @@ export type AuthActionsType =
     | ReturnType<typeof setCaptchaUrlAC>
     | ReturnType<typeof setLoginErrorAC>;
 
-export const setLoginErrorAC = (loginError: string | null) =>
-    ({ type: "AUTH/SET-LOGIN-ERROR", loginError } as const);
+export const setLoginErrorAC = (authError: string | null) =>
+    ({ type: "AUTH/SET-LOGIN-ERROR", authError } as const);
 
 export const setCaptchaUrlAC = (captchaUrl: string | null) =>
     ({ type: "AUTH/SET-CAPTCHA", captchaUrl } as const);
 
 export const setAuthUserDataAC = (
     id: number | null,
-    role: string | null,
+    role: ROOLS| null,
     email: string | null,
     isAuth: boolean
 ) =>
@@ -49,7 +49,7 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
         case "AUTH/SET-AUTH-USER-DATA":
             return { ...state, ...action.payload };
         case "AUTH/SET-LOGIN-ERROR":
-            return { ...state, loginError: action.loginError };
+            return { ...state, authError: action.authError };
         default:
             return state;
     }
@@ -59,14 +59,16 @@ export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
     try {
         console.log("Me in Auth thunk");
         const response = await authAPI.authMe();
-
-        if (response.data.id) {
-            const { id, role, email } = response.data;
+        if (response.data) {
+            const { id, role, email, name } = response.data;
             dispatch(setAuthUserDataAC(id, role, email, true));
         }
-    } catch (e) {
-        console.log(e)
-
+    } catch (e:any) {
+        const err = e as Error | AxiosError<{ error: string }>;
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data.error || err.message;
+            console.log(error)
+        }
     } finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }

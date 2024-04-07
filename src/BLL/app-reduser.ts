@@ -6,6 +6,7 @@ const initialState = {
     isInitialized: false,
     isRequestProcessing: false,
     appError: null as string | null,
+    currentPass:null as string|null
 };
 
 export const appReducer = (state = initialState, action: AppActionsType): InitialStateType => {
@@ -23,6 +24,8 @@ export const appReducer = (state = initialState, action: AppActionsType): Initia
             return state;
     }
 };
+export const setCurrentPassAC = (currentPass:string|null) =>
+    ({type:"AUTH/SET-CURR-PATH", currentPass} as const)
 
 export const setIsInitializedAC = (isInitialized: boolean) =>
     ({

@@ -1,15 +1,16 @@
 import {instance} from "./commonApiInstanse";
 
-
-type User = {
+export type User = {
     id: number,
     name:string
     email: string,
-    role: string
+    role: ROOLS
 }
-const unAuthError = {
-    "message": "Unauthorized",
-    "statusCode": 401
+export enum ROOLS{
+    Admin="ADMIN",
+    GeneralAgronomist="GENERAL_AGRONOMIST",
+    SimpleAgronomist="SIMPLE_AGRONOMIST",
+    Accountant="ACCOUNTANT",
 }
 
 
