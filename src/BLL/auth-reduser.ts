@@ -9,9 +9,7 @@ const initialState = {
     name: null as string | null,
     role:null as string|null,
     isAuth: false as boolean,
-    currentPas: null as string|null,
     authError: null as string | null,
-
 };
 
 export type InitialStateType = typeof initialState;
@@ -54,6 +52,7 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
             return state;
     }
 };
+
 export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {

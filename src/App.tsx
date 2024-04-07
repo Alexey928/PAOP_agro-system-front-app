@@ -5,13 +5,14 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 import GeneralAgronomist from "./components/General_agronomist/General_agronomist";
 import Login from "./components/Login/Login";
 import {useSelector} from "react-redux";
-import {selectAppInitStatus} from "./Utils/selectors";
+import {selectAppCurrentPas, selectAppInitStatus} from "./Utils/selectors";
 import {useAppDispatch} from "./BLL/Store";
 import {initializeAppTC} from "./BLL/app-reduser";
 
 function App() {
     const [userRole, setUserRole] = useState<string | null>(null);
-    const isAppInitialized = useSelector(selectAppInitStatus)
+    const isAppInitialized = useSelector(selectAppInitStatus);
+    const currentAppPas = useSelector(selectAppCurrentPas);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -33,9 +34,7 @@ function App() {
             </div>
         );
     }
-
-
- return (
+return (
     <div className="App">
         <Routes>
             <Route path="/"  element={(swithRole)} />

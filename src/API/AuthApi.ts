@@ -13,7 +13,6 @@ export enum ROOLS{
     Accountant="ACCOUNTANT",
 }
 
-
 export const authAPI = {
     authMe() {
         return instance.get<User>("auth/me");
@@ -24,11 +23,13 @@ export const authAPI = {
             password,
         });
     },
-    logout() {
-        return instance.delete<any>("auth/login");
-    },
     registration(email: string, password: string,name:string,role:string){
-
+        return instance.post<User>("user",{
+            email,
+            password,
+            name,
+            role,
+        });
     }
 
 };
