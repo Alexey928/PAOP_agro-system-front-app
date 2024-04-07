@@ -1,12 +1,15 @@
 import {AppThunkType, DispatchType} from "./Store";
 import {authAPI} from "../API/AuthApi";
 import {setIsRequestProcessingStatusAC} from "./app-reduser";
+import {useNavigate} from "react-router-dom";
 
 const initialState = {
     id: null as number | null,
     email: null as string | null,
     name: null as string | null,
+    role:null as string|null,
     isAuth: false as boolean,
+    currentPas: null as string|null,
     loginError: null as string | null,
 
 };
@@ -26,7 +29,7 @@ export const setCaptchaUrlAC = (captchaUrl: string | null) =>
 
 export const setAuthUserDataAC = (
     id: number | null,
-    login: string | null,
+    role: string | null,
     email: string | null,
     isAuth: boolean
 ) =>
@@ -34,11 +37,12 @@ export const setAuthUserDataAC = (
         type: "AUTH/SET-AUTH-USER-DATA",
         payload: {
             id,
-            login,
+            role,
             email,
             isAuth,
         },
     } as const);
+
 
 export const authReducer = (state = initialState, action: AuthActionsType): InitialStateType => {
     switch (action.type) {
@@ -53,13 +57,16 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
 export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
+        console.log("Me in Auth thunk");
         const response = await authAPI.authMe();
+
         if (response.data.id) {
-            const { id, login, email } = response.data.data;
-            dispatch(setAuthUserDataAC(id, login, email, true));
+            const { id, role, email } = response.data;
+            dispatch(setAuthUserDataAC(id, role, email, true));
         }
     } catch (e) {
         console.log(e)
+
     } finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }

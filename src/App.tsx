@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import './App.css';
 import Registration from "./components/Registration/Registration"
 import {Navigate, Route, Routes} from 'react-router-dom';
@@ -6,10 +6,17 @@ import GeneralAgronomist from "./components/General_agronomist/General_agronomis
 import Login from "./components/Login/Login";
 import {useSelector} from "react-redux";
 import {selectAppInitStatus} from "./Utils/selectors";
+import {useAppDispatch} from "./BLL/Store";
+import {initializeAppTC} from "./BLL/app-reduser";
 
 function App() {
     const [userRole, setUserRole] = useState<string | null>(null);
     const isAppInitialized = useSelector(selectAppInitStatus)
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(initializeAppTC());
+    }, [dispatch]);
 
     const swithRole:React.ReactNode = useMemo(()=> {
         switch (userRole) {

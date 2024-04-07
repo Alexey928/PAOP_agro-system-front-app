@@ -1,8 +1,21 @@
 import {instance} from "./commonApiInstanse";
 
+
+type User = {
+    id: number,
+    name:string
+    email: string,
+    role: string
+}
+const unAuthError = {
+    "message": "Unauthorized",
+    "statusCode": 401
+}
+
+
 export const authAPI = {
     authMe() {
-        return instance.get<any>("auth/me");
+        return instance.get<User>("auth/me");
     },
     login(email: string, password: string, ){
         return instance.post<any>("auth/login", {
