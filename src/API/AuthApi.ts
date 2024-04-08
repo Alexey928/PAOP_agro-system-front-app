@@ -2,7 +2,7 @@ import {instance} from "./commonApiInstanse";
 
 export type User = {
     id: number,
-    name:string
+    name:string,
     email: string,
     role: ROOLS
 }
@@ -15,16 +15,16 @@ export enum ROOLS{
 
 export const authAPI = {
     authMe() {
-        return instance.get<User>("auth/me");
+        return instance.get<User>("/auth/me");
     },
     login(email: string, password: string, ){
-        return instance.post<any>("auth/login", {
+        return instance.post<User>("/auth/login", {
             email,
             password,
         });
     },
-    registration(email: string, password: string,name:string,role:string){
-        return instance.post<User>("user",{
+    registration(email: string, password: string,name:string, role:string){
+        return instance.post<{user:User,token:string}>("user",{
             email,
             password,
             name,

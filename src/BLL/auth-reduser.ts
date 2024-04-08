@@ -1,15 +1,15 @@
 import {AppThunkType, DispatchType} from "./Store";
 import {authAPI, ROOLS} from "../API/AuthApi";
-import {setIsRequestProcessingStatusAC} from "./app-reduser";
-import axios, {AxiosError} from "axios";
+import { setIsRequestProcessingStatusAC} from "./app-reduser";
+import {handleError} from "../Utils/errorHandler";
 
 const initialState = {
     id: null as number | null,
     email: null as string | null,
     name: null as string | null,
-    role:null as string|null,
+    role:null as ROOLS|null,
     isAuth: false as boolean,
-    authError: null as string | null,
+
 };
 
 export type InitialStateType = typeof initialState;
@@ -17,10 +17,6 @@ export type InitialStateType = typeof initialState;
 export type AuthActionsType =
     | ReturnType<typeof setAuthUserDataAC>
     | ReturnType<typeof setCaptchaUrlAC>
-    | ReturnType<typeof setLoginErrorAC>;
-
-export const setLoginErrorAC = (authError: string | null) =>
-    ({ type: "AUTH/SET-LOGIN-ERROR", authError } as const);
 
 export const setCaptchaUrlAC = (captchaUrl: string | null) =>
     ({ type: "AUTH/SET-CAPTCHA", captchaUrl } as const);
@@ -28,6 +24,7 @@ export const setCaptchaUrlAC = (captchaUrl: string | null) =>
 export const setAuthUserDataAC = (
     id: number | null,
     role: ROOLS| null,
+    name: string|null,
     email: string | null,
     isAuth: boolean
 ) =>
@@ -36,6 +33,7 @@ export const setAuthUserDataAC = (
         payload: {
             id,
             role,
+            name,
             email,
             isAuth,
         },
@@ -46,8 +44,6 @@ export const authReducer = (state = initialState, action: AuthActionsType): Init
     switch (action.type) {
         case "AUTH/SET-AUTH-USER-DATA":
             return { ...state, ...action.payload };
-        case "AUTH/SET-LOGIN-ERROR":
-            return { ...state, authError: action.authError };
         default:
             return state;
     }
@@ -60,28 +56,26 @@ export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
         const response = await authAPI.authMe();
         if (response.data) {
             const { id, role, email, name } = response.data;
-            dispatch(setAuthUserDataAC(id, role, email, true));
+            dispatch(setAuthUserDataAC(id, role, email, name,true));
         }
-    } catch (e:any) {
-        const err = e as Error | AxiosError<{ error: string }>;
-        if (axios.isAxiosError(err)) {
-            const error = err.response?.data.error || err.message;
-            console.log(error)
-        }
+    } catch (e) {
+        handleError(e,dispatch,5000)
     } finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 };
-
-
 export const loginTC =
     (email: string, password:string): AppThunkType =>
         async (dispatch) => {
             dispatch(setIsRequestProcessingStatusAC(true));
             try {
-                const response = await authAPI.login(email,password)
+                const response = await authAPI.login(email,password);
+                if (response.data) {
+                    const { id, role, email, name } = response.data;
+                    dispatch(setAuthUserDataAC(id, role, email, name,true));
+                }
             } catch (e) {
-                //handleError(e, dispatch);
+                handleError(e,dispatch,300)
             } finally {
                 dispatch(setIsRequestProcessingStatusAC(false));
             }
@@ -89,5 +83,17 @@ export const loginTC =
 
 export const registrationTC =(name:string,email:string,password:string,role:string):AppThunkType=>
     async (dispatch)=>{
+        dispatch(setIsRequestProcessingStatusAC(true));
+        try {
+            const response = await authAPI.registration(email,password,name,role);
+            if (response.data) {
+                const { id, role, email, name } = response.data.user;
+                dispatch(setAuthUserDataAC(id, role, email, name,true));
+            }
+        }catch (e){
+
+        }finally {
+
+        }
 
     }
