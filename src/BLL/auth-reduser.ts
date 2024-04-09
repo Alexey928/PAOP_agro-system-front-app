@@ -88,6 +88,9 @@ export const registrationTC =(name:string,email:string,password:string,role:stri
             const response = await authAPI.registration(email,password,name,role);
             if (response.data) {
                 const { id, role, email, name } = response.data.user;
+                const token = response.data.token;
+
+
                 dispatch(setAuthUserDataAC(id, role, email, name,true));
             }
         }catch (e){
