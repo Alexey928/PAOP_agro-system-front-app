@@ -1,5 +1,7 @@
 import React from 'react';
 import {redirect} from "react-router-dom";
+
+
 type RedirectPropsType ={
     linc:string
 }

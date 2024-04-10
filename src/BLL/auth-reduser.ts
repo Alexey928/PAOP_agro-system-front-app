@@ -2,6 +2,7 @@ import {AppThunkType, DispatchType} from "./Store";
 import {authAPI, ROOLS} from "../API/AuthApi";
 import { setIsRequestProcessingStatusAC} from "./app-reduser";
 import {handleError} from "../Utils/errorHandler";
+import {setTokenInInstanse} from "../API/commonApiInstanse";
 
 const initialState = {
     id: null as number | null,
@@ -39,7 +40,6 @@ export const setAuthUserDataAC = (
         },
     } as const);
 
-
 export const authReducer = (state = initialState, action: AuthActionsType): InitialStateType => {
     switch (action.type) {
         case "AUTH/SET-AUTH-USER-DATA":
@@ -55,6 +55,7 @@ export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
         console.log("Me in Auth thunk");
         const response = await authAPI.authMe();
         if (response.data) {
+            console.log(response)
             const { id, role, email, name } = response.data;
             dispatch(setAuthUserDataAC(id, role, email, name,true));
         }
@@ -70,12 +71,14 @@ export const loginTC =
             dispatch(setIsRequestProcessingStatusAC(true));
             try {
                 const response = await authAPI.login(email,password);
-                if (response.data) {
-                    const { id, role, email, name } = response.data;
+                console.log(response)
+                if (response.data && response.data.token) {
+                    const { id, role, email, name, token } = response.data;
+                    await setTokenInInstanse(token);
                     dispatch(setAuthUserDataAC(id, role, email, name,true));
                 }
             } catch (e) {
-                handleError(e,dispatch,300)
+                handleError(e,dispatch,3000);
             } finally {
                 dispatch(setIsRequestProcessingStatusAC(false));
             }
@@ -89,8 +92,7 @@ export const registrationTC =(name:string,email:string,password:string,role:stri
             if (response.data) {
                 const { id, role, email, name } = response.data.user;
                 const token = response.data.token;
-
-
+                await setTokenInInstanse(token);
                 dispatch(setAuthUserDataAC(id, role, email, name,true));
             }
         }catch (e){

@@ -5,6 +5,7 @@ export type User = {
     name:string,
     email: string,
     role: ROOLS
+    token:string
 }
 export enum ROOLS{
     Admin="ADMIN",

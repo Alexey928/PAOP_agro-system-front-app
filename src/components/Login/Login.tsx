@@ -3,6 +3,8 @@ import {Alert, Button, Input, Paper, } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "../Registration/LoginStyle.module.css"
 import AuthNav from "../Common/AuthNav";
+import {loginTC} from "../../BLL/auth-reduser";
+import {useAppDispatch} from "../../BLL/Store";
 
 
 
@@ -16,15 +18,15 @@ const Login = () => {
         defaultValues: {
             Email: "",
             Password: "",
-
         },
     })
-    //const navigate = useNavigate();
+    const dispatch = useAppDispatch()
+
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data);
-
-        //navigate("/general-agronomist")
+        dispatch(loginTC(data.Email,data.Password))
     }
+
     let massege:string|undefined = "";
     if(formState.errors["Password"]) massege = formState.errors["Password"]?.message;
     if(formState.errors["Email"]) massege = formState.errors["Email"]?.message;
@@ -61,6 +63,4 @@ const Login = () => {
             </form>
         </div>
     );}
-
-
 export default Login;
