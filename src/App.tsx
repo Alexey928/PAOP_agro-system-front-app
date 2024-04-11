@@ -2,7 +2,6 @@ import React, {useEffect, useMemo } from 'react';
 import './App.css';
 import Registration from "./components/Registration/Registration"
 import {Navigate, NavigateFunction, Route, Routes, useNavigate} from 'react-router-dom';
-import GeneralAgronomist from "./components/General_agronomist/General_agronomist";
 import Login from "./components/Login/Login";
 import {useSelector} from "react-redux";
 import {selectAppError, selectAppInitStatus, selectUserRole} from "./Utils/selectors";
@@ -10,6 +9,7 @@ import {useAppDispatch} from "./BLL/Store";
 import {initializeAppTC} from "./BLL/app-reduser";
 import Preloader from "./components/Common/generalPreloader/Preloader";
 import RedirectFromRole from "./Utils/Redirect";
+import General_agronomist from "./components/General_agronomist/temp";
 
 function App() {
     const isAppInitialized = useSelector(selectAppInitStatus);
@@ -50,7 +50,7 @@ return (
     <div className="App">
         <Routes>
             <Route path="/"  element={switchRole()} />
-            <Route path = {"/general-agronomist"} element={<GeneralAgronomist/>}/>
+            <Route path = {"/general-agronomist"} element={<General_agronomist/>}/>
             <Route path={"/registration"} element={<Registration/>}/>
             <Route path="/login" element={<Login/>} />
         </Routes>

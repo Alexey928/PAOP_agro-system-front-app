@@ -78,7 +78,7 @@ const fillBlueOptions = {fillColor: 'blue'}
 const limeOptions = {color: '#e305f1', fillColor: "rgb(241,5,40)"}
 const tempBasePosition = {lat: 48.9935, lng: 36.230383};
 
-const PointOfPoligons = (props: { calback: (posiyion: PositionType | null) => void }) => {
+const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
     const map = useMapEvents({
         click(e) {
             props.calback(e.latlng)
@@ -100,7 +100,7 @@ const PointOfPoligons = (props: { calback: (posiyion: PositionType | null) => vo
 
 
 
-const General = () => {
+const General_agronomist = () => {
     const {agroFields,fieldCultures,thoisedFieldID,
         setNewField,setCulture,deleteField,setFieldParams,setThoisedFieldID} = useFields()
     //const [fields, setFields] = useState<Array<number[][]>>([]);
@@ -223,4 +223,4 @@ const General = () => {
         </div>
     );
 };
-export default General;
+export default General_agronomist;

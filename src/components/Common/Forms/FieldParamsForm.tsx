@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
-import {RegularEditableSpan} from "../../uiComponents/RgularEditinebalSpan/RegularEditableSpan";
+import {RegularEditableSpan} from "../RgularEditinebalSpan/RegularEditableSpan";
 import style from "./formsStyle.module.css"
 
 interface FieldParamsFormType {

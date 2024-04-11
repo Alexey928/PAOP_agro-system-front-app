@@ -1,11 +1,14 @@
 import {useState} from "react";
 import {CultureTaskType, CultureType, FieldType, SoilTasksTypes} from "../temp";
-import {v4 as uuidv4} from 'uuid';
+//import {v4 as uuidv4} from 'uuid';
 
 type CultureColorsType =  {
     id:string
     colorName:string
     hex:string
+}
+export const tempRandomiser = ():string=>{
+ return  Math.random().toString();
 }
 export const useFields = () => {
     const [agroFields, setAgroFields] = useState<Array<FieldType>>([]);
@@ -26,7 +29,7 @@ export const useFields = () => {
     const [thoisedFieldID, setThoisedFieldID] = useState<string>();
 
     const setNewField = (trajectory: number[][]) => {
-        const tempID = uuidv4();
+        const tempID = tempRandomiser();
         setAgroFields([...agroFields, {id: tempID, name: null, sqere: null, trajectory}]);
         setFieldCulture({...fieldCultures,[tempID]:[]});
         setThoisedFieldID(tempID);
@@ -39,7 +42,7 @@ export const useFields = () => {
         setAgroFields(agroFields.map((el) => el.id === id ? {...el, name,sqere} : el));
     }
     const setCulture = (FieldID:string,name:string,sqere:number,variantyName:string,collor:string)=>{
-        setFieldCulture({...fieldCultures,[FieldID]:[{id:uuidv4(),name,sqere,collor,variantyName},...fieldCultures[FieldID]]});
+        setFieldCulture({...fieldCultures,[FieldID]:[{id:tempRandomiser(),name,sqere,collor,variantyName},...fieldCultures[FieldID]]});
     }
     const removeCulture =(FieldID:string,cultureID:string)=>{
         setFieldCulture({...fieldCultures,
@@ -88,11 +91,10 @@ const initialColors: CultureColorsType[]= [
         hex:"#cc00ff"
     },
 ]
-
 export const useColors = () => {
     const[cultureColors, setCultureCollors] = useState<CultureColorsType[]>(initialColors)
     const setColor = (colorName:string,hex:string)=>{
-        setCultureCollors([...cultureColors,{id:uuidv4(),colorName,hex}])
+        setCultureCollors([...cultureColors,{id:tempRandomiser(),colorName,hex}])
     }
     const remoweColor = (id:string)=>{
         setCultureCollors(cultureColors.filter((el)=>el.id!==id))
@@ -103,3 +105,4 @@ export const useColors = () => {
         remoweColor
     }
 }
+
