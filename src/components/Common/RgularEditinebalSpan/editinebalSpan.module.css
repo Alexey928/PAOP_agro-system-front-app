@@ -1,0 +1,109 @@
+.input{
+    overflow: hidden;
+    width:190px;
+    height: 35px;
+    color: white;
+    font-size: medium;
+    line-height: 16px;
+    background-color: rgb(0, 20, 47);
+    border-bottom-color: hsl(118, 100%, 49%);
+    border-bottom-width: 4px;
+    border-radius: 5px;
+    transition: all 0.3s linear;
+    box-shadow: 0 0 10px rgba(3, 248, 248, 0.91);
+}
+.numberInput{
+    width: 50px;
+}
+
+.input::placeholder{
+    color: rgba(11, 252, 3, 0.87);
+}
+.spanContainer{
+    max-width: 210px;
+    position: relative;
+    background-color: #002041;
+    color: azure;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgb(2, 248, 43);
+    border-radius: 5px;
+    transition: all 0.3s linear;
+}
+.spanContainer:hover{
+    box-shadow: 0 0 10px rgb(253, 240, 1);
+    color: #3bfc07;
+}
+.span{
+    display: block;
+    max-width: 210px;
+    overflow: scroll;
+}
+.span::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+.spanContainer:hover{
+    cursor:pointer;
+}
+
+.fieldName{
+    color: #d9f8ec;
+    position: absolute;
+    top: 0;
+    left: -60px;
+}
+.clue{
+    z-index: 10;
+    color: #f0faf6;
+    box-shadow: 0 0 10px rgb(2, 248, 43);
+    border-radius: 8px;
+    border: 2px solid #01fa94;
+    font-style: italic;
+    font-weight: normal;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    background-color: #010c41;
+    width:110%;
+    height:200px;
+    left: -10px;
+    top: 40px;
+    transition: all 0.3s linear;
+}
+.clue::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+.clueItem{
+    border: 1px solid white;
+    margin-top: 4px;
+    text-align: center;
+}
+.clueItem:hover{
+    color: #00072a;
+    cursor: pointer;
+    background-color: #559bc5;
+    border-radius: 3px;
+    transform: scale(110%);
+}
+.triger{
+    border: 1px solid #3bfc07;
+    padding:5px ;
+    background-color: #d70101;
+    border-radius: 4px;
+    color: #11ff00;
+    position: absolute;
+    top: -10px;
+    right: 5px;
+}
+
+@media (max-width: 500px) {
+    .spanContainer{
+        max-width: 190px;
+    }
+}
+

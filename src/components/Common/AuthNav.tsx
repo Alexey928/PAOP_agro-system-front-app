@@ -26,7 +26,9 @@ const AuthNav:React.FC<AuthNawPropsType> = ({derection,linkText,headerText}) => 
                             {headerText}
                         </Typography>
                         <Button onClick={()=> {
-                            console.log("kk");navigate(derection)}} color="inherit">{linkText}</Button>
+                                console.log("kk");navigate(derection)
+                            }} color="inherit">{linkText}
+                        </Button>
                     </Toolbar>
                 </AppBar>
             </Box>

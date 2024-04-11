@@ -1,0 +1,51 @@
+.cultureParamsFieldContainer {
+    padding: 2px;
+    margin: 8px 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 300ms linear;
+}
+.containerOpen{
+    opacity: 1;
+    height: 155px;
+    overflow: inherit;
+}
+.cultureParamsFieldItem {
+    position: relative;
+    display: flex;
+    width: 300px;
+    justify-content: space-between;
+    align-items: center;
+}
+.cultureParamsFieldItem input[type = "number"]{
+    width: 100px;
+}
+.sgere{
+    width: 100px;
+    position: relative;
+}
+
+.sgere:after {
+    transform: translateX(5px);
+    content: "Га";
+    position: absolute;
+    z-index: 10;
+    color: #d5f6ec;
+    width: 25px;
+    height: 25px;
+    top: 9px;
+    right: -24px;
+}
+
+
+.formButton{
+    background-color:#00041f;
+    color:#3aff02;
+}
+
+

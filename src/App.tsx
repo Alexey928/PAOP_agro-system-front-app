@@ -9,6 +9,7 @@ import {selectAppError, selectAppInitStatus, selectUserRole} from "./Utils/selec
 import {useAppDispatch} from "./BLL/Store";
 import {initializeAppTC} from "./BLL/app-reduser";
 import Preloader from "./components/Common/generalPreloader/Preloader";
+import RedirectFromRole from "./Utils/Redirect";
 
 function App() {
     const isAppInitialized = useSelector(selectAppInitStatus);
@@ -17,23 +18,28 @@ function App() {
     const dispatch = useAppDispatch();
     const navigate: NavigateFunction = useNavigate();
     console.log("app")
-
     useEffect(() => {
         dispatch(initializeAppTC());
     }, [dispatch]);
 
+    const redirect = useMemo(()=>{
+      return  RedirectFromRole()
+    },[role])
+
+     useEffect(()=>{
+         role && redirect(navigate,role)
+    },[role])
+
 
     const switchRole = ()=> {
         switch (role) {
-            case null:return <Navigate to={"/login"}/>
-            case "GENERAL_AGRONOMIST":return <Navigate to={"/general-agronomist"}/>
-            default:return <Navigate to={"/login"}/>
+            case null:return <Navigate to = {"/login"}/>
+            case "GENERAL_AGRONOMIST":return <Navigate to = {"/general-agronomist"}/>
+            default:return <Navigate to = {"/login"}/>
         }
     }
 
-
-
-    if (!isAppInitialized||appError) {
+    if (!isAppInitialized || appError) {
         return (
             <div >
                 <Preloader/>
