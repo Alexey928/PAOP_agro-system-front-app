@@ -1,5 +1,5 @@
 import React from 'react';
-import {CultureType} from "../General_agronomist/temp";
+import {CultureType} from "../General_agronomist/General_agronomist";
 import FieldParamsForm from "./Forms/FieldParamsForm";
 import CulturesParamsForm from "./Forms/CulturesParamsForm";
 

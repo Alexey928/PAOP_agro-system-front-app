@@ -2,20 +2,23 @@ import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {RegularEditableSpan} from "../RgularEditinebalSpan/RegularEditableSpan";
 import style from "./formsStyle.module.css"
+import {TextField} from "@mui/material";
 
 interface FieldParamsFormType {
     name: string,
     sqere: string,
 
 }
-type fieldParamsFormType = {
+type fieldParamsFormPropsType = {
     setFieldParams: ( name: string, squere: number)=>void
     name:string,
     sqere:string,
 }
-const FieldParamsForm:React.FC<fieldParamsFormType> = ({setFieldParams}) => {
+const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
     const[plaseholder,setPlaseholder] = useState({sqere:"Введите S ",name:"Введите название"})
-    const {handleSubmit, control} = useForm<FieldParamsFormType>();
+    const {handleSubmit, control} = useForm<FieldParamsFormType>({
+
+    });
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
         console.log(data);
         setFieldParams(data.name, +data.sqere);
@@ -29,15 +32,9 @@ const FieldParamsForm:React.FC<fieldParamsFormType> = ({setFieldParams}) => {
                    <Controller
                        name="sqere"
                        control={control}
-                       render={({field:{onChange}}) =>
-                           <RegularEditableSpan
-                               placeholder={plaseholder.sqere}
-                               type={"number"}
-                               onChange={(newValue)=>{
-                                   onChange(newValue);
-                                   setPlaseholder({...plaseholder,sqere: newValue ? newValue:"Введите площадь"})
-                               }}
-                           />}
+                       render={({field}) => (
+                           <TextField id="outlined-basic" label="Outlined" variant="outlined" {...field} />)
+                       }
                    />
                </span>
                   <br/>

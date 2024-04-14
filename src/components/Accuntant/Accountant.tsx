@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Accuntant = () => {
+const Accountant = () => {
     return (
         <div>
-            
+            ACCUNTANT
         </div>
     );
 };
 
-export default Accuntant;
+export default Accountant;

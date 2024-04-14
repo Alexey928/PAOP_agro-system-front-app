@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {CultureTaskType, CultureType, FieldType, SoilTasksTypes} from "../temp";
+import {CultureTaskType, CultureType, FieldType, SoilTasksTypes} from "../General_agronomist";
 //import {v4 as uuidv4} from 'uuid';
 
 type CultureColorsType =  {
