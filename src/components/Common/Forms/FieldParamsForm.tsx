@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
-import {RegularEditableSpan} from "../RgularEditinebalSpan/RegularEditableSpan";
 import style from "./formsStyle.module.css"
 import {TextField} from "@mui/material";
 
@@ -44,17 +43,8 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                            rules={{required:"Введите Название"}}
                            name="name"
                            control={control}
-                           render={({field:{onChange}}) =>
-                               <RegularEditableSpan
-                                   placeholder={plaseholder.name}
-                                   lang={"ru"}
-                                   type={"text"}
-                                   onChange={(newValue)=>{
-                                       onChange(newValue);
-                                       setPlaseholder({...plaseholder,name: newValue ? newValue:"Введите название"})
-                                   }}
-                               />
-                            }
+                           render={({field}) =>(
+                               <TextField id="outlined-basic" label="Outlined" variant="outlined" {...field} />)}
                        />
                     </span>
            </span>
