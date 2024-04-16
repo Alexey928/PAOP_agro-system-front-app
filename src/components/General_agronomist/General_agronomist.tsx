@@ -100,7 +100,6 @@ const PointOfPoligons = (props: { calback: (position: PositionType | null) => vo
 const General_agronomist = () => {
     const {agroFields,fieldCultures,thoisedFieldID,
         setNewField,setCulture,deleteField,setFieldParams,setThoisedFieldID} = useFields()
-    //const [fields, setFields] = useState<Array<number[][]>>([]);
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const [flagForPaointPaint, setFlagForPointPaint] = useState<boolean>(false);
     const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
@@ -120,7 +119,6 @@ const General_agronomist = () => {
                 tempPaligon.push([el.lat, el.lng]);
             })
             setNewField(tempPaligon)
-            //setFields([...fields, tempPaligon]);
             setPainedPosition([]);
 
         }
@@ -153,7 +151,7 @@ const General_agronomist = () => {
                             }
                         }} pathOptions={limeOptions}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>
-                                <div style={{color: "blue", height: 300, backgroundColor: "#adbbe8", width: 280}}>
+                                <div style={{color: "blue", height: 300, backgroundColor: "#010a28", width: 280}}>
                                     <header style={{width: "100%", backgroundColor: "salmon"}}>
                                         <div style={{color: "white", textAlign: "center"}}>
                                             {el.name??"Поле X Полевая Y"} S = {el.sqere??"?"}

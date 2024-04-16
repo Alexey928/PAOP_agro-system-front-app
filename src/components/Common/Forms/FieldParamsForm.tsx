@@ -14,9 +14,7 @@ type fieldParamsFormPropsType = {
     sqere:string,
 }
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
-    const[plaseholder,setPlaseholder] = useState({sqere:"Введите S ",name:"Введите название"})
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
-
     });
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
         console.log(data);
@@ -27,12 +25,11 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
               action="">
            <span>
                <span>
-                   Площадь - Га{" "}
                    <Controller
                        name="sqere"
                        control={control}
                        render={({field}) => (
-                           <TextField id="outlined-basic" label="Outlined" variant="outlined" {...field} />)
+                           <TextField color={"secondary"} id="outlined-basic" label="Outlined" variant="outlined" {...field} />)
                        }
                    />
                </span>

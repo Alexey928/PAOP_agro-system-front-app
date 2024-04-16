@@ -6,6 +6,7 @@ import React from 'react';
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "./LoginStyle.module.css"
 import AuthNav from "../Common/AuthNav";
+import {useNavigate} from "react-router-dom";
 
 export enum ROLS{
     "ADMIN",
@@ -29,8 +30,10 @@ const Registration = () => {
             Rolls:""
         },
     })
+    const navigate = useNavigate()
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data)
+        navigate("/login")
     }
     let massege:string|undefined = "";
     if(formState.errors["Rolls"]) massege = formState.errors["Rolls"]?.message;

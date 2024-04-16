@@ -171,8 +171,7 @@ const CulturesParamsForm:React.FC<cultureParamsPropsType> = ({setCultuteParam}) 
                       render={({field:{onChange}})=>
                           <SelectComponent
                               onSelect={(newValue)=>{
-                                  console.log("select",newValue)
-                                onChange(newValue)
+                                  onChange(newValue)
                               }}
                               name={"выбрать"}
                               options={cultureColors}

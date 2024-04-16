@@ -1,7 +1,5 @@
 import { AppThunkType } from "./Store";
 import { authMeTC } from "./auth-reduser";
-//import { handleError } from "../utils/error-util";
-
 const initialState = {
     isInitialized: false,
     isRequestProcessing: false,
