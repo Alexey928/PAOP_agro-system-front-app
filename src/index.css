@@ -22,7 +22,7 @@ code {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(1, 13, 70, 0.93);
+  background-color: rgba(0, 10, 51, 0.96);
   display: flex;
   flex-direction: column;
 
@@ -36,4 +36,7 @@ code {
   cursor: pointer;
   background-color: #fff;
   border: 1px solid #ccc;
+}
+.MuiOutlinedInput-notchedOutline{
+  border-color: #01f6bd !important;
 }

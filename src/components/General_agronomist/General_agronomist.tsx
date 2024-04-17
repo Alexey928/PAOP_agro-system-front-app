@@ -208,6 +208,7 @@ const General_agronomist = () => {
                 </button>
             </div>
             {isPopupOpen && <FormPopup
+
                 FieldID={thoisedFieldID}
                 fieldCultures={fieldCultures}
                 setFieldParams={setFieldParams}
