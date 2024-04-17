@@ -13,7 +13,7 @@ code {
 }
 
 .leaflet-popup-content-wrapper{
-  background: #4e66de !important;
+  background: #02125e !important;
 }
 .popup {
   color: white;
@@ -22,7 +22,7 @@ code {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 10, 51, 0.96);
+  background-color: rgba(1, 9, 40, 0.96);
   display: flex;
   flex-direction: column;
 
@@ -39,4 +39,10 @@ code {
 }
 .MuiOutlinedInput-notchedOutline{
   border-color: #01f6bd !important;
+}
+.leaflet-popup-close-button {
+  color: white!important;
+}
+.leaflet-popup-tip {
+  background: rgba(3, 245, 223, 0.97) !important;
 }

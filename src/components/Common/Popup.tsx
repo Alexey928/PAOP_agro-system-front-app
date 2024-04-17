@@ -23,13 +23,9 @@ const FormPopup: React.FC<PopupProps> = ({onClose, FieldID, setFieldParams}) => 
                         setFieldParams(FieldID!, name, squere)
                     }}/>
             </div>
-            <br/>
-            <div >
-                <Button variant={"contained"} onClick={onClose} >
-                    X
-                </Button>
-            </div>
-            <br/>
+
+
+
         </div>
 
 

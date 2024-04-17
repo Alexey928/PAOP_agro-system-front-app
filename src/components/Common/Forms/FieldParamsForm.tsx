@@ -28,14 +28,18 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,clos
         setFieldParams(data.name, +data.sqere);
         setTimeout(()=>closePupup(),500)
     };
+    const deleteButtonHandler = ()=> {
+        closePupup()
+    }
     return (
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}
               action="">
-                <div style={{marginTop:50,width:matches?"25vw":"60vw"}}>
+                <div style={{marginTop:50,width:matches?"25vw":"60" +
+                        "vw"}}>
                    <Controller
                        name="name"
                        control={control}
-                       rules={{required:"Уведыть назву"}}
+                       rules={{required:"Уведыть назву",minLength:3}}
                        render={({field,fieldState}) => (
                            <TextField
                                     fullWidth
@@ -48,7 +52,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,clos
                                         style: {
                                             color:!fieldState.error?'#01f6bd':"red",
                                         }}}
-                                      {...field} />)
+                                    {...field} />)
                        }
                    />
                </div>
@@ -59,7 +63,6 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,clos
                        control={control}
                        render={({field,fieldState}) =>(
                            <TextField
-
                                id="outlined-basic"
                                label="ПЛОЩА"
                                variant="outlined"
@@ -76,9 +79,11 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,clos
                    />
                 </div>
                 <br/>
+                <br/>
+                <br/>
             <div>
-                <Button variant={"contained"}  type={"submit"} >ЗБЕРЕГТИ</Button>
-                <Button variant={"contained"}  color={"error"} >ВИДАЛИТИ</Button>
+                <Button variant={"contained"}  type={"submit"} style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
+                <Button variant={"contained"}  color={"error"} onClick={deleteButtonHandler}>ВИДАЛИТИ</Button>
             </div>
 
         </form>

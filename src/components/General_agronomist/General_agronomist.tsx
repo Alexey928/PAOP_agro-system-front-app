@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FormPopup from "../Common/Popup";
 import {useFields} from "./hooks/useFields";
+import {Button} from "@mui/material";
 
 type PositionType = {
     lat: number,
@@ -132,6 +133,10 @@ const General_agronomist = () => {
         setFlagForPointPaint(false);
     };
 
+    const handleDeleteButton = (id:string)=>{
+
+    }
+
     return (
         <div style={{width: "100vw", height: "100vh", position: "relative"}}>
             <MapContainer center={[49.9935, 36.230383]} zoom={10} scrollWheelZoom={true}
@@ -147,7 +152,6 @@ const General_agronomist = () => {
                             click: () => {
                                 setThoisedFieldID(el.id)
                                 console.log(el.name, el.sqere);
-
                             }
                         }} pathOptions={limeOptions}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>
@@ -173,8 +177,17 @@ const General_agronomist = () => {
                                         </ul>
                                     </div>
                                 </div>
-                                <button onClick={() => setPopupOpen(!isPopupOpen)}>SET</button>
-                                <button onClick={()=>{deleteField(el.id)}}>X</button>
+                                <div style={{width:"100%",display:"flex",justifyContent:"space-around",marginTop:20}}>
+                                    <Button color={"success"}
+                                            variant={"contained"}
+                                            onClick={() => setPopupOpen(!isPopupOpen)}
+                                    >+ ЗАВДАННЯ</Button>
+                                    <Button variant={"contained"}
+                                            onClick={()=>{deleteField(el.id)}}
+                                            color={"error"}
+                                    >ВИДАЛИТИ</Button>
+                                </div>
+
                             </Popup>
                             <Polygon  positions={el.trajectory as LatLngExpression[]}/>
                         </FeatureGroup>
