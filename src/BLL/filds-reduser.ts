@@ -3,7 +3,7 @@ import {mapFieldAPI} from "../API/mapFieldAPI";
 import {trajectoryToDTOstring} from "../Utils/parseTrajectory";
 
 
-export type perimetrType  = {
+export type PerimetrType = {
     id:string
     squre:string
     trajectory:string
@@ -16,7 +16,7 @@ export type fieldType = {
         name:string
         description:string
     }
-    allPerimetersJSON:perimetrType[]
+    allPerimetersJSON:PerimetrType[]
     currentPerimetr:number[][]
 
 }
@@ -25,10 +25,18 @@ export type ActonType ={}
 
 export const fieldReduser = (state:mapFieldStateType = [],action:ActonType):mapFieldStateType => {
 
+
  return []
 }
-export const createFieldAC = (name:string,description:string)=>({name,description} as const)
-export const setFieldPerimetrsAC = (fildID:string)=>({} as const)
+export const createFieldAC = (name:string,description:string)=>(
+    {type:"CREATE/FIELD",name,description} as const
+)
+export const setFieldPerimetrsAC = (fildID:string,perimetrs:PerimetrType[])=>(
+    {
+        type:"SET/FIELD/PERIMETERS",
+        payload:{fildID,perimetrs},
+    } as const
+)
 
 export const createFieldTC = (name:string,description:string, trajectory:string)=> async (dispatch:any)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
@@ -36,6 +44,8 @@ export const createFieldTC = (name:string,description:string, trajectory:string)
        const field =  mapFieldAPI.create();
        const fieldPerimetr = mapFieldAPI.createFieldPerimetr("1",trajectoryToDTOstring([[1,3]]));
        dispatch(createFieldAC("some name", "some description"))
+       dispatch(setFieldPerimetrsAC("1",[]))
+
 
 
 
