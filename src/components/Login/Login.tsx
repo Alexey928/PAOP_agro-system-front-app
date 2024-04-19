@@ -37,7 +37,7 @@ const Login = () => {
             <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
-                        <Controller rules={{ required: "уведіть майл" }} name={"Email"} control={control} render={(field)=>{
+                        <Controller rules={{required: "уведіть майл"}} name={"Email"} control={control} render={(field)=>{
                             console.log(field)
                             return(
                                 <li>

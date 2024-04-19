@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {CultureTaskType, CultureType, FieldType, SoilTasksTypes} from "../General_agronomist";
-//import {v4 as uuidv4} from 'uuid';
 
 type CultureColorsType =  {
     id:string
@@ -12,7 +11,6 @@ export const tempRandomiser = ():string=>{
 }
 export const useFields = () => {
     const [agroFields, setAgroFields] = useState<Array<FieldType>>([]);
-    //"id" is key from FieldType, in this state
     const [fieldTasks, setFieldTasks] = useState<SoilTasksTypes>({
         "id": {
             SOIL_GROUP: [],
