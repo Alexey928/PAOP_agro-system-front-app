@@ -5,7 +5,7 @@ export const mapFieldAPI = {
         return {id:"1"}
     },
     getAll(){
-
+        return {id:"1",description:"sss",name:"sss1",perimetrs:{id:"1",squere:"55"}}
     },
     getOne(id:string){
 
