@@ -3,6 +3,12 @@ import {mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 
 
+export type FieldStateActionType = ReturnType<typeof setFieldStateFromDB_AC>|
+    ReturnType<typeof setFieldsPerimetersAC>|
+    ReturnType<typeof createFieldAC>|
+    ReturnType<typeof setFieldPerimeterAC>
+export type mapFieldStateType = Array<FieldType>
+
 export type PerimetrType = {
     id:string
     squre:string
@@ -20,7 +26,7 @@ export type FieldType = {
     currentPerimetr:number[][]
 
 }
-export type mapFieldStateType = Array<FieldType>
+
 
 
 export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActionType):mapFieldStateType => {
@@ -29,7 +35,7 @@ export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActi
             return [...action.fields]
         case"SET/FIELDS/PERIMETERS":
             const perimeters = action.payload.perimetrs
-            return state.map((el)=>(
+            return state.map((el) => (
                 el.field.id===action.payload.fildID?
                     {...el,
                         allPerimeters:perimeters,
@@ -42,14 +48,24 @@ export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActi
                  currentPerimetr:parseTrajektory(action.perimeter.trajectory)}:
                 el
             )
+        case"CREATE/FIELD":
+            return []
+
+        default:
+            return state
     }
-    return []
 }
-export const createFieldAC = (name:string,description:string)=>(
+//________________________AC___________________________________________________________________________________
+export const createFieldAC = (id:string,name:string,description:string)=>(
     {
         type:"CREATE/FIELD",
-        name,
-        description
+        paylad:{
+            id,
+            name,
+            description
+        },
+
+
     } as const
 );
 export const setFieldsPerimetersAC = (fildID:string, perimetrs:PerimetrType[])=>(// set all perimeters
@@ -72,18 +88,15 @@ const setFieldStateFromDB_AC = (fields:mapFieldStateType)=>(
     } as const
 );
 
-export type FieldStateActionType = ReturnType<typeof setFieldStateFromDB_AC>|
-                                   ReturnType<typeof setFieldsPerimetersAC>|
-                                   ReturnType<typeof createFieldAC>|
-                                    ReturnType<typeof setFieldPerimeterAC>
 
+//______________________________TC_____________________________________________________________________________
 
 export const createFieldTC = (name:string,description:string, trajectory:string)=> async (dispatch:any)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
        const field =  mapFieldAPI.create();
        const fieldPerimetr = mapFieldAPI.createFieldPerimetr("1",trajectoryToDTOstring([[1,3]]));
-       dispatch(createFieldAC("some name", "some description"))
+       dispatch(createFieldAC("1","some name", "some description"))
        dispatch(setFieldsPerimetersAC("1",[]))
     }catch (e:unknown){
         // if error we mast remove of field entity!!!
