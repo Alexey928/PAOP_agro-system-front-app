@@ -1,11 +1,22 @@
 import {instance} from "./commonApiInstanse";
+import {PerimetrType} from "../BLL/filds-reduser";
+
 
 export const mapFieldAPI = {
     create(){
         return {id:"1"}
     },
     getAll(){
-        return {id:"1",description:"sss",name:"sss1",perimetrs:{id:"1",squere:"55"}}
+        return {
+            field:{
+                id:"1",
+                name:"some name",
+                description:"some description"
+            },
+            allPerimeters:[],
+            currentPerimetr:[[]]
+
+        }
     },
     getOne(id:string){
 

@@ -15,9 +15,8 @@ const initialState = {
 
 export type InitialStateType = typeof initialState;
 
-export type AuthActionsType =
-    | ReturnType<typeof setAuthUserDataAC>
-    | ReturnType<typeof setCaptchaUrlAC>
+export type AuthActionsType = | ReturnType<typeof setAuthUserDataAC>
+                              | ReturnType<typeof setCaptchaUrlAC>
 
 export const setCaptchaUrlAC = (captchaUrl: string | null) =>
     ({ type: "AUTH/SET-CAPTCHA", captchaUrl } as const);
