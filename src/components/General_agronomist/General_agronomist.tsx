@@ -8,7 +8,7 @@ import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {selectDrowingFlag, selectFields} from "../../Utils/selectors";
 import {setDBstateTC} from "../../BLL/map-filds-reduser";
-import {setFieldParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
+import {setCanIDrow, setFieldParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
 
 type PositionType = {
     lat: number,
@@ -133,20 +133,20 @@ const General_agronomist = () => {
 
         }
     }
-    const handleOpenPopup = () => {
+    // const handleOpenPopup = () => {
+    //
+    //
+    // };
 
+    // const handleClosePopup = () => {
+    //     setPopupOpen(false);
+    //     setFlagForPointPaint(false);
+    //
+    // };
 
-    };
-
-    const handleClosePopup = () => {
-        setPopupOpen(false);
-        setFlagForPointPaint(false);
-
-    };
-
-    const handleDeleteButton = (id:string)=>{
-
-    }
+    // const handleDeleteButton = (id:string)=>{
+    //
+    // }
 
     return (
         <div style={{width: "100vw", height: "100vh", position: "relative"}}>
@@ -156,7 +156,7 @@ const General_agronomist = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <PointOfPoligons calback={flagForPaointPaint ? calback : () => {}}/>
+                <PointOfPoligons calback={drowingFlag ? calback : () => {}}/>
                 {agroFields.map((el, i) => {
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
@@ -214,8 +214,8 @@ const General_agronomist = () => {
             <div style={{boxShadow:"rgb(41 34 94 / 84%) -1px 0px 7px 1px",color:"white",position:"absolute" ,right:8,top:8,display:"flex",flexDirection:"column",backgroundColor:"rgba(2,9,47,0.78)", padding:5,borderRadius:5}}>
                 Рисовать поле {" "}
                 <input onChange={() => {
-                    setFlagForPointPaint(!flagForPaointPaint)
-                }} type={"checkbox"} checked={flagForPaointPaint}/>
+                    dispatch(setCanIDrow())
+                }} type={"checkbox"} checked={drowingFlag}/>
                 <button style={{color:"red",marginTop:6}} onClick={() => {
                     setPainedPosition([]);
                     console.log("rrr");
@@ -226,7 +226,6 @@ const General_agronomist = () => {
                 Добавить поле
                 <button style={{fontSize:25,padding:0,color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)",fontWeight:"bold"}} disabled={!(painedPosition.length > 2)} onClick={() => {
                     addPoligon();
-                    handleOpenPopup();
                     dispatch(setFieldParamsPopupIsOpen())
                 }}> +
                 </button>

@@ -7,23 +7,22 @@ import {useAppDispatch} from "../../../BLL/Store";
 interface FieldParamsFormType {
     name: string,
     sqere: string,
+    color:string
 
 }
 type fieldParamsFormPropsType = {
-
     setFieldParams: ( name: string, squere: number)=>void
     name:string,
     sqere:string,
 }
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
-
     const matches = useMediaQuery('(min-width:900px)');
     const dispatch = useAppDispatch();
-
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
             name:"",
-            sqere:""
+            sqere:"",
+            color:"#42fc05"
         }
     });
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
@@ -77,11 +76,32 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                                        color:!fieldState.error?'#01f6bd':"red",
                                    }
                                }}
-
                                type={"number"}
                                {...field}
                            />)}
                    />
+                </div>
+                <div style={{marginTop:50,maxWidth:500}}>
+                    <Controller
+                        name="color"
+                        control={control}
+                        rules={{required:"Уведыть назву",minLength:3}}
+                        render={({field,fieldState})=>(
+                            <TextField
+                                        style={{width:150}}
+                                        variant={"outlined"}
+                                         label={"КОЛЯР"}
+                                         type={"color"}
+                                         InputProps={{ style: {backgroundColor: '#00051e' ,color:"white",}}}
+                                         InputLabelProps={{
+                                             style: {
+                                                 color:!fieldState.error?'#01f6bd':"red",
+                                             }
+                                         }}
+                                        {...field}
+                            />
+                        )}
+                    />
                 </div>
                 <br/>
                 <br/>

@@ -1,6 +1,7 @@
 
 export const  MapInterfaseInitial={
     selectedFieldID: null as string|null,
+    selectedFieldColor: "#fffff" as string,
     canIdrow:false as boolean,
     fieldParamsPopup: false as boolean,
     taskParamsPopup:false as boolean
@@ -20,10 +21,11 @@ export const fieldIntarfaseReduser =(state:MapInterfaseType = MapInterfaseInitia
             return {...state,taskParamsPopup:!state.taskParamsPopup}
         case "SET/FIELD/PARAMS_POPUP":
             return {...state,fieldParamsPopup:!state.fieldParamsPopup}
+        case "SET/CAN/I/DRO/FLAG":
+            return {...state,canIdrow:!state.canIdrow}
         default: return state
     }
 }
-
 export const setSelectedFieldID  = (fieldID:string)=>(
     {
         type:"SET/SELECTED/FIELD/ID",
