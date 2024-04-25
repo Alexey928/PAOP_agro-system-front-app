@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FormPopup from "../Common/Popup";
 import {useFields} from "./hooks/useFields";
 import {Button} from "@mui/material";
+import {useAppDispatch, useAppSelector} from "../../BLL/Store";
+import {selectDrowingFlag, selectFields} from "../../Utils/selectors";
+import {setDBstateTC} from "../../BLL/map-filds-reduser";
+import {setFieldParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
 
 type PositionType = {
     lat: number,
@@ -76,7 +80,7 @@ export type CultureTaskType = {
 }
 
 const fillBlueOptions = {fillColor: 'blue'}
-const limeOptions = {color: '#e305f1', fillColor: "rgb(241,5,40)"}
+const limeOptions = {color: '#4bff04', fillColor: "rgb(9,250,176)"}
 const tempBasePosition = {lat: 48.9935, lng: 36.230383};
 
 const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
@@ -104,8 +108,13 @@ const General_agronomist = () => {
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const [flagForPaointPaint, setFlagForPointPaint] = useState<boolean>(false);
     const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
-
-    console.log(agroFields);
+    const dispatch = useAppDispatch();
+    const fields  = useAppSelector(selectFields)
+    const drowingFlag = useAppSelector(selectDrowingFlag)
+    useEffect(()=>{
+        dispatch(setDBstateTC())
+        },[]
+    )
 
     const calback = (position: PositionType | null) => {
         if (!position) return
@@ -125,12 +134,14 @@ const General_agronomist = () => {
         }
     }
     const handleOpenPopup = () => {
-        setPopupOpen(true);
+
+
     };
 
     const handleClosePopup = () => {
         setPopupOpen(false);
         setFlagForPointPaint(false);
+
     };
 
     const handleDeleteButton = (id:string)=>{
@@ -180,14 +191,13 @@ const General_agronomist = () => {
                                 <div style={{width:"100%",display:"flex",justifyContent:"space-around",marginTop:20}}>
                                     <Button color={"success"}
                                             variant={"contained"}
-                                            onClick={() => setPopupOpen(!isPopupOpen)}
+                                            onClick={() => dispatch(setFieldParamsPopupIsOpen())}
                                     >+ ЗАВДАННЯ</Button>
                                     <Button variant={"contained"}
                                             onClick={()=>{deleteField(el.id)}}
                                             color={"error"}
                                     >ВИДАЛИТИ</Button>
                                 </div>
-
                             </Popup>
                             <Polygon  positions={el.trajectory as LatLngExpression[]}/>
                         </FeatureGroup>
@@ -217,17 +227,16 @@ const General_agronomist = () => {
                 <button style={{fontSize:25,padding:0,color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)",fontWeight:"bold"}} disabled={!(painedPosition.length > 2)} onClick={() => {
                     addPoligon();
                     handleOpenPopup();
+                    dispatch(setFieldParamsPopupIsOpen())
                 }}> +
                 </button>
             </div>
-            {isPopupOpen && <FormPopup
-
+             <FormPopup
                 FieldID={thoisedFieldID}
                 fieldCultures={fieldCultures}
                 setFieldParams={setFieldParams}
                 setCulture={setCulture}
-                onClose={handleClosePopup}
-            />}
+             />
 
         </div>
     );

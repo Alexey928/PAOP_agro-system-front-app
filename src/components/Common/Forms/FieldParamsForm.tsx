@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
+import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
+import {useAppDispatch} from "../../../BLL/Store";
 
 interface FieldParamsFormType {
     name: string,
@@ -8,14 +10,15 @@ interface FieldParamsFormType {
 
 }
 type fieldParamsFormPropsType = {
-    closePupup:()=>void
+
     setFieldParams: ( name: string, squere: number)=>void
     name:string,
     sqere:string,
 }
-const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,closePupup}) => {
+const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
 
     const matches = useMediaQuery('(min-width:900px)');
+    const dispatch = useAppDispatch();
 
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
@@ -26,10 +29,12 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,clos
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
         console.log(data);
         setFieldParams(data.name, +data.sqere);
-        setTimeout(()=>closePupup(),500)
+        setTimeout(()=>dispatch(setFieldParamsPopupIsOpen()),500)
     };
     const deleteButtonHandler = ()=> {
-        closePupup()
+        const confirm = window.confirm("Ви певні що бажаєте видплити поле та усі його зміни")
+       if (!confirm) return
+        dispatch(setFieldParamsPopupIsOpen())
     }
     return (
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}

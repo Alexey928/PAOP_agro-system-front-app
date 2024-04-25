@@ -3,11 +3,15 @@ import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {AuthActionsType, authReducer} from "./auth-reduser";
 import {AppActionsType, appReducer} from "./app-reduser";
+import {fieldReduser, FieldStateActionType} from "./map-filds-reduser";
+import {fieldIntarfaseReduser, MapInterfaseActionType} from "./map-interfase-reduser";
 
 
 const rootReducer = combineReducers({
    auth: authReducer,
-   app:appReducer
+   app:appReducer,
+   mapFields:fieldReduser,
+   fieldsInterfase:fieldIntarfaseReduser
 })
 
 export const store = createStore(rootReducer,applyMiddleware(thunkMiddleware));
@@ -15,7 +19,9 @@ export const store = createStore(rootReducer,applyMiddleware(thunkMiddleware));
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
 type AppRootActionsType = AuthActionsType |
-                          AppActionsType;
+                          AppActionsType  |
+                          FieldStateActionType|
+                          MapInterfaseActionType;
 
 export type AppThunkType<ReturnType = void> = ThunkAction<
     ReturnType,

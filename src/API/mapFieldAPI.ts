@@ -1,12 +1,8 @@
+import {FieldType, mapFieldStateType, PerimetrType} from "../BLL/map-filds-reduser";
 import {instance} from "./commonApiInstanse";
-import {PerimetrType} from "../BLL/filds-reduser";
-
-
+import {User} from "./AuthApi";
 export const mapFieldAPI = {
-    create(){
-        return {id:"1"}
-    },
-    getAll(){
+    create(name:string,description:string):FieldType{
         return {
             field:{
                 id:"1",
@@ -14,14 +10,56 @@ export const mapFieldAPI = {
                 description:"some description"
             },
             allPerimeters:[],
-            currentPerimetr:[[]]
+            currentPerimeter:[[]]
 
         }
     },
-    getOne(id:string){
+    updateFieldData(id:string,name:string,description:string):FieldType{
+        return {
+            field:{
+                id:"1",
+                name:"some name",
+                description:"some description"
+            },
+            allPerimeters:[],
+            currentPerimeter:[[]]
+
+        }
+    },
+    getAll(){
+        return   instance.get<mapFieldStateType>("/fields");
+        // return [{
+        //     field:{
+        //         id:"1",
+        //         name:"some name",
+        //         description:"some description"
+        //     },
+        //     allPerimeters:[],
+        //     currentPerimeter:[[]]
+        //
+        // }]
+    },
+    getOne(id:string):FieldType{
+        return (
+            {
+                field:{
+                    id:"1",
+                    name:"some name",
+                    description:"some description"
+                },
+                allPerimeters:[],
+                currentPerimeter:[[]]
+
+            }
+        )
 
     },
-    createFieldPerimetr(fieldID:string,trajectory:string){
-        return {id:"2"}
+    createFieldPerimetr(fieldID:string,trajectory:string,sqere:string):PerimetrType{
+        return ({
+            id:"1",
+            squre:"555",
+            trajectory:"{'0':{lat:4,lang:5},'1':{lat:8,lang:9}}",
+            validFrom: new Date()// !!!!!!
+        })
     }
 }
