@@ -1,7 +1,8 @@
 import {setIsRequestProcessingStatusAC} from "./app-reduser";
-import {mapFieldAPI} from "../API/mapFieldAPI";
+import {fieldDTOType, mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
+
 
 export type FieldStateActionType =
     ReturnType<typeof setFieldStateFromDB_AC>|
@@ -20,12 +21,10 @@ export type PerimetrType = {
 }
 
 export type FieldType = {
-    field:{
-        id:string
-        name:string
-        description:string
-    }
-    allPerimeters:PerimetrType[]
+    id:string
+    name:string
+    description:string
+    perimeters:PerimetrType[]
     currentPerimeter:number[][]
 
 }
@@ -33,26 +32,30 @@ export type FieldType = {
 export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActionType):mapFieldStateType => {
     switch (action.type) {
         case "SET/FIELD/DATA/FROM/DB/TO/STATE":
-            return [...action.fields]
+            return action.fields.map((el)=>(
+                {...el,currentPerimeter:el.perimeters.length > 0 ?
+                    parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : []
+                }))
         case"SET/FIELDS/PERIMETERS":
             const perimeters = action.payload.perimetrs
             return state.map((el) => (
-                el.field.id===action.payload.fildID?
+                el.id===action.payload.fildID?
                     {...el,
                         allPerimeters:perimeters,
                         currentPerimeter:parseTrajektory(perimeters[perimeters.length-1].trajectory)}:
                     el)
             );
             case "SET/FIELD/PERIMETER":
-            return state.map((el) => action.fieldID === el.field.id?
-                {...el,allPerimeters:[...el.allPerimeters,action.perimeter],
+            return state.map((el) => action.fieldID === el.id?
+                {...el,perimeters:[...el.perimeters,action.perimeter],
                  currentPerimeter:parseTrajektory(action.perimeter.trajectory)}:
                 el
             )
         case"CREATE/FIELD":
-            return [...state,action.field]
+            return [...state,{...action.field, currentPerimeter : action.field.perimeters.length > 0?
+                    parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[]}]
         case"RESET/FIELD/DATA":
-            return state.map((el)=> el.field.id === action.data.id?
+            return state.map((el)=> el.id === action.data.id?
                 {...el,name:action.data.name, description:action.data.description}:
             el)
         default:
@@ -60,7 +63,7 @@ export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActi
     }
 }
 //________________________AC___________________________________________________________________________________
-export const createFieldAC = (field:FieldType)=>(
+export const createFieldAC = (field:fieldDTOType)=>(
     {
         type:"CREATE/FIELD",
         field
@@ -79,7 +82,7 @@ export const setFieldPerimeterAC = (fieldID:string,perimeter:PerimetrType)=>(// 
         perimeter,
     } as const
 )
-const setFieldStateFromDB_AC = (fields:mapFieldStateType)=>(
+const setFieldStateFromDB_AC = (fields:Array<fieldDTOType>)=>(
     {
         type:"SET/FIELD/DATA/FROM/DB/TO/STATE",
         fields
@@ -100,8 +103,8 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
        const field = await mapFieldAPI.create(name,description);
-       dispatch(createFieldAC(field))
-        if(field.field.id && trajectory.length) await bindPerimeterToFieldTC(field.field.id,trajectory,sqere)
+       dispatch(createFieldAC(field.data))
+        if(field.data.id && trajectory.length) await bindPerimeterToFieldTC(field.data.id,trajectory,sqere)
     }catch (e:unknown){
         // if error we mast remove of field entity!!!
         console.log(e)

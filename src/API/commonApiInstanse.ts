@@ -1,8 +1,11 @@
 import axios from "axios";
 
 export function setTokenInInstanse(token?: string, storageKey?:string) {
-    instance.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : '';
-    setTokenTooStorage(token ?? "" ,storageKey);
+    //instance.request({headers:{Authorization:`Bearer ${token}`}})
+    instance.defaults.headers['Authorization'] = token ? `Bearer ${token}` : '';
+    console.log(instance)
+    debugger
+   setTokenTooStorage(token ?? "" ,storageKey);
 }
 export function setTokenTooStorage(token:string,key?:string):void{
     localStorage.setItem(key??"some_key", token);

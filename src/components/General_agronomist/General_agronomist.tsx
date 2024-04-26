@@ -103,16 +103,14 @@ const PointOfPoligons = (props: { calback: (position: PositionType | null) => vo
     return null
 }
 const General_agronomist = () => {
-    const {agroFields,fieldCultures,thoisedFieldID,
+    const {agroFields,fieldCultures,thoisedFieldID,//!!!!! agroFields start replasemant
         setNewField,setCulture,deleteField,setFieldParams,setThoisedFieldID} = useFields()
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
-    const [flagForPaointPaint, setFlagForPointPaint] = useState<boolean>(false);
-    const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const fields  = useAppSelector(selectFields)
     const drowingFlag = useAppSelector(selectDrowingFlag)
     useEffect(()=>{
-        dispatch(setDBstateTC())
+       setTimeout(()=>dispatch(setDBstateTC()) )
         },[]
     )
 
@@ -133,21 +131,6 @@ const General_agronomist = () => {
 
         }
     }
-    // const handleOpenPopup = () => {
-    //
-    //
-    // };
-
-    // const handleClosePopup = () => {
-    //     setPopupOpen(false);
-    //     setFlagForPointPaint(false);
-    //
-    // };
-
-    // const handleDeleteButton = (id:string)=>{
-    //
-    // }
-
     return (
         <div style={{width: "100vw", height: "100vh", position: "relative"}}>
             <MapContainer center={[49.9935, 36.230383]} zoom={10} scrollWheelZoom={true}
@@ -157,19 +140,19 @@ const General_agronomist = () => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <PointOfPoligons calback={drowingFlag ? calback : () => {}}/>
-                {agroFields.map((el, i) => {
+                {fields.map((el, i) => {
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
                             click: () => {
                                 setThoisedFieldID(el.id)
-                                console.log(el.name, el.sqere);
+                                console.log(el.name);
                             }
                         }} pathOptions={limeOptions}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>
                                 <div style={{color: "blue", height: 300, backgroundColor: "#010a28", width: 280}}>
                                     <header style={{width: "100%", backgroundColor: "salmon"}}>
                                         <div style={{color: "white", textAlign: "center"}}>
-                                            {el.name??"Поле X Полевая Y"} S = {el.sqere??"?"}
+                                            {el.name??"Поле X Полевая Y"} S = {el.description??"?"}
                                         </div>
                                     </header>
                                     <div style={{}}>
@@ -199,7 +182,7 @@ const General_agronomist = () => {
                                     >ВИДАЛИТИ</Button>
                                 </div>
                             </Popup>
-                            <Polygon  positions={el.trajectory as LatLngExpression[]}/>
+                            <Polygon  positions={el.currentPerimeter as LatLngExpression[]}/>
                         </FeatureGroup>
                     )
                 })}

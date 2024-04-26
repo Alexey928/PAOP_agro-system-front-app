@@ -1,55 +1,37 @@
 import {FieldType, mapFieldStateType, PerimetrType} from "../BLL/map-filds-reduser";
 import {instance} from "./commonApiInstanse";
-import {User} from "./AuthApi";
-export const mapFieldAPI = {
-    create(name:string,description:string):FieldType{
-        return {
-            field:{
-                id:"1",
-                name:"some name",
-                description:"some description"
-            },
-            allPerimeters:[],
-            currentPerimeter:[[]]
 
-        }
+export type fieldDTOType = {
+    id:string
+    name:string
+    description:string
+    perimeters:PerimetrType[]
+}
+export const mapFieldAPI = {
+    create(name:string,description:string){
+        return instance.post<fieldDTOType>("/fields");
     },
     updateFieldData(id:string,name:string,description:string):FieldType{
         return {
-            field:{
-                id:"1",
-                name:"some name",
-                description:"some description"
-            },
-            allPerimeters:[],
+            id:"1",
+            name:"some name",
+            description:"some description",
+            perimeters:[],
             currentPerimeter:[[]]
 
         }
     },
     getAll(){
-        return   instance.get<mapFieldStateType>("/fields");
-        // return [{
-        //     field:{
-        //         id:"1",
-        //         name:"some name",
-        //         description:"some description"
-        //     },
-        //     allPerimeters:[],
-        //     currentPerimeter:[[]]
-        //
-        // }]
+        return instance.get<Array<fieldDTOType>>("/fields");
     },
     getOne(id:string):FieldType{
         return (
             {
-                field:{
-                    id:"1",
-                    name:"some name",
-                    description:"some description"
-                },
-                allPerimeters:[],
+                id:"1",
+                name:"some name",
+                description:"some description",
+                perimeters:[],
                 currentPerimeter:[[]]
-
             }
         )
 

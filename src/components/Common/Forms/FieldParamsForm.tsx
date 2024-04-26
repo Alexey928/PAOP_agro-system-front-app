@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
-import {useAppDispatch} from "../../../BLL/Store";
+import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
+import {selectSelectdFieldColor} from "../../../Utils/selectors";
 
 interface FieldParamsFormType {
     name: string,
@@ -17,6 +18,7 @@ type fieldParamsFormPropsType = {
 }
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
     const matches = useMediaQuery('(min-width:900px)');
+    const selectedFieldColor = useAppSelector(selectSelectdFieldColor)
     const dispatch = useAppDispatch();
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
@@ -88,8 +90,8 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                         rules={{required:"Уведыть назву",minLength:3}}
                         render={({field,fieldState})=>(
                             <TextField
-                                        style={{width:150}}
-                                        variant={"outlined"}
+                                         style={{width:150}}
+                                         variant={"outlined"}
                                          label={"КОЛЯР"}
                                          type={"color"}
                                          InputProps={{ style: {backgroundColor: '#00051e' ,color:"white",}}}
