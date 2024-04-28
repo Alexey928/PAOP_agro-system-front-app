@@ -71,12 +71,12 @@ export const loginTC =
             try {
                 const response = await authAPI.login(email,password);
                 console.log(response)
-                debugger
+
                 if (response.data && response.data.token) {
                     const { id, role, email, name, token } = response.data;
                     setTokenInInstanse(token);
                     dispatch(setAuthUserDataAC(id, role, email, name,true));
-                    debugger
+
                 }
             } catch (e) {
                 handleError(e,dispatch,3000);

@@ -16,10 +16,12 @@ export const selectFields = (state:AppRootStateType):mapFieldStateType => state.
 
 // fields interfase state selectors
 export const selectSelectedFieldID = (state:AppRootStateType):string|null => state.fieldsInterfase.selectedFieldID;
-export const selectFieldParamsPopupIsOpen =(state:AppRootStateType):boolean=> state.fieldsInterfase.fieldParamsPopup;
+export const selectFieldParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.fieldParamsPopup;
 export const selectTaskParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.taskParamsPopup;
-export const selectDrowingFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.canIdrow;
-export const selectSelectdFieldColor = (state:AppRootStateType):string => state.fieldsInterfase.selectedFieldColor
+export const selectDrowingFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.canIDraw;
+export const selectSelectdFieldColor = (state:AppRootStateType):string => state.fieldsInterfase.selectedFieldColor;
+export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory
+//
 
 
 

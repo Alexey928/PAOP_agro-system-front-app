@@ -3,14 +3,14 @@ import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {AuthActionsType, authReducer} from "./auth-reduser";
 import {AppActionsType, appReducer} from "./app-reduser";
-import {fieldReduser, FieldStateActionType} from "./map-filds-reduser";
+import {fieldReducer, FieldStateActionType} from "./map-filds-reduser";
 import {fieldIntarfaseReduser, MapInterfaseActionType} from "./map-interfase-reduser";
 
 
 const rootReducer = combineReducers({
    auth: authReducer,
    app:appReducer,
-   mapFields:fieldReduser,
+   mapFields:fieldReducer,
    fieldsInterfase:fieldIntarfaseReduser
 })
 

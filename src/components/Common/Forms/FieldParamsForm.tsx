@@ -3,7 +3,7 @@ import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectSelectdFieldColor} from "../../../Utils/selectors";
+import {selectSelectdFieldColor, selectSelectedFieldID} from "../../../Utils/selectors";
 
 interface FieldParamsFormType {
     name: string,
@@ -18,8 +18,10 @@ type fieldParamsFormPropsType = {
 }
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
     const matches = useMediaQuery('(min-width:900px)');
-    const selectedFieldColor = useAppSelector(selectSelectdFieldColor)
     const dispatch = useAppDispatch();
+    const selectedFieldColor = useAppSelector(selectSelectdFieldColor);
+
+
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
             name:"",

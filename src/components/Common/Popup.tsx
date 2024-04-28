@@ -1,27 +1,30 @@
 import React from 'react';
-import {CultureType} from "../General_agronomist/General_agronomist";
 import FieldParamsForm from "./Forms/FieldParamsForm";
-import { useAppSelector} from "../../BLL/Store";
-import {selectFieldParamsPopupIsOpen} from "../../Utils/selectors";
-
-
+import {useAppDispatch, useAppSelector} from "../../BLL/Store";
+import {
+    selectFieldParamsPopupIsOpen,
+    selectSelectedFieldID,
+    selectSelectedFieldTrajectory
+} from "../../Utils/selectors";
+import {createFieldTC} from "../../BLL/map-filds-reduser";
 
 interface PopupProps {
-
-    setFieldParams: (id: string, name: string, squere: number) => void
-    setCulture: (FieldID: string, name: string, sqere: number, collor: string, variantyName: string) => void;
-    fieldCultures: CultureType;
-    FieldID: string | undefined;
+    // setFieldParams: (id: string, name: string, squere: number) => void
 }
-const FormPopup: React.FC<PopupProps> = ({FieldID, setFieldParams}) => {
+const FormPopup: React.FC<PopupProps> = () => {
+    const dispatch = useAppDispatch()
     const fieldPopupFlag = useAppSelector(selectFieldParamsPopupIsOpen);
-    console.log(FieldID);
+    const selectedFieldId = useAppSelector(selectSelectedFieldID);
+    const selectedFieldTrajectory = useAppSelector(selectSelectedFieldTrajectory)
+
+    console.log(selectedFieldId);
     return (
         fieldPopupFlag ? <div className="popup">
             <div style={{width:"100%"}}>
                 <FieldParamsForm
                     name={""} sqere={""} setFieldParams={(name:string, squere:number) => {
-                        setFieldParams(FieldID!, name, squere)
+
+                        dispatch(createFieldTC(name,"temp des",selectedFieldTrajectory, squere.toString()));
                     }}/>
             </div>
         </div>:

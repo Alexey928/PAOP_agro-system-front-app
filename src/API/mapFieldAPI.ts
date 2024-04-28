@@ -6,10 +6,11 @@ export type fieldDTOType = {
     name:string
     description:string
     perimeters:PerimetrType[]
+    fillColor:string
 }
 export const mapFieldAPI = {
     create(name:string,description:string){
-        return instance.post<fieldDTOType>("/fields");
+        return instance.post<fieldDTOType>("/fields",{name});
     },
     updateFieldData(id:string,name:string,description:string):FieldType{
         return {
@@ -17,8 +18,8 @@ export const mapFieldAPI = {
             name:"some name",
             description:"some description",
             perimeters:[],
+            fillColor:"#fffff",
             currentPerimeter:[[]]
-
         }
     },
     getAll(){
@@ -31,6 +32,7 @@ export const mapFieldAPI = {
                 name:"some name",
                 description:"some description",
                 perimeters:[],
+                fillColor:"#fffff",
                 currentPerimeter:[[]]
             }
         )

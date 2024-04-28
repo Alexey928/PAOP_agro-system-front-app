@@ -6,78 +6,21 @@ import FormPopup from "../Common/Popup";
 import {useFields} from "./hooks/useFields";
 import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
-import {selectDrowingFlag, selectFields} from "../../Utils/selectors";
+import {selectDrowingFlag, selectFields, selectSelectedFieldID} from "../../Utils/selectors";
 import {setDBstateTC} from "../../BLL/map-filds-reduser";
-import {setCanIDrow, setFieldParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
+import {
+    setCanIDrow,
+    setFieldParamsPopupIsOpen,
+    setSelectedFieldID,
+    setSelectedFieldTrajectory
+} from "../../BLL/map-interfase-reduser";
+import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 
-type PositionType = {
+ export type PositionType = {
     lat: number,
     lng: number
 }
-//_________________________TASKS TYPE_________________________________
-type MowingTheCropTaskType = {
-    fieldID:string
-    status: "isDone" | "inProgres"
-    type: "MOWING_THE_CROP"
-    startDate: Date
-    endDate: Date
-    harvesterID:string
-}
-type SprayingTaskType = {
-    fieldID:string
-    status: "isDone" | "inProgres"
-    type: "SPRAYING_GROUP"
-    startDate: Date
-    endDate: Date
-    sprayingMachineId:string
-}
-type SoilWorksTaskType = {
-    fieldID:string
-    status: "isDone" | "inProgres"
-    type: "SOIL_GROUP"
-    startDate: Date
-    endDate: Date
-    tractorID:string
-}
-type FertilizationTasksType = {
-    fieldID:string
-    status: "isDone" | "inProgres"
-    type: "FERTILIZATION_GROUP"
-    startDate: Date
-    endDate: Date
-}
-//____________________________________________________________________________
 
-export type FieldType = {
-    id: string;// forigen
-    trajectory: number[][];
-    name: string | null;
-    sqere: number| null;
-}
-//  in this case "id" is forigen key from FieldType
-export  type SoilTasksTypes = {
-    [id:string]:{
-        SOIL_GROUP:Array<SoilWorksTaskType>;
-        FERTILIZATION_GROUP:Array<FertilizationTasksType>;
-    }
-}
-export type CultureItemType = {
-    id:string,
-    name:string,
-    variantyName:string,
-    collor:string,
-    sqere:number
-}
-export type CultureType = {
-    [id:string]:Array<CultureItemType>
-}
-//  in this case "id" is forigen key from CultureType children
-export type CultureTaskType = {
-    [id:string]:{
-        "SPRAYING_GROUP":Array<SprayingTaskType>;
-        "MOWING_THE_CROP":Array<MowingTheCropTaskType>
-    }
-}
 
 const fillBlueOptions = {fillColor: 'blue'}
 const limeOptions = {color: '#4bff04', fillColor: "rgb(9,250,176)"}
@@ -103,12 +46,13 @@ const PointOfPoligons = (props: { calback: (position: PositionType | null) => vo
     return null
 }
 const General_agronomist = () => {
-    const {agroFields,fieldCultures,thoisedFieldID,//!!!!! agroFields start replasemant
-        setNewField,setCulture,deleteField,setFieldParams,setThoisedFieldID} = useFields()
+    const {setNewField,deleteField,setThoisedFieldID} = useFields()
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const dispatch = useAppDispatch();
-    const fields  = useAppSelector(selectFields)
-    const drowingFlag = useAppSelector(selectDrowingFlag)
+
+    const fields  = useAppSelector(selectFields);
+    const drowingFlag = useAppSelector(selectDrowingFlag);
+
     useEffect(()=>{
        setTimeout(()=>dispatch(setDBstateTC()) )
         },[]
@@ -144,6 +88,8 @@ const General_agronomist = () => {
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
                             click: () => {
+                                dispatch(setSelectedFieldID(el.id));
+                                dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)));
                                 setThoisedFieldID(el.id)
                                 console.log(el.name);
                             }
@@ -194,7 +140,14 @@ const General_agronomist = () => {
                 })}
             </MapContainer>
 
-            <div style={{boxShadow:"rgb(41 34 94 / 84%) -1px 0px 7px 1px",color:"white",position:"absolute" ,right:8,top:8,display:"flex",flexDirection:"column",backgroundColor:"rgba(2,9,47,0.78)", padding:5,borderRadius:5}}>
+            <div style={
+                {
+                    boxShadow:"rgb(41 34 94 / 84%) -1px 0px 7px 1px",
+                    color:"white",position:"absolute" ,
+                    right:8,top:8,display:"flex",flexDirection:"column",
+                    backgroundColor:"rgba(2,9,47,0.78)", padding:5,borderRadius:5
+                }
+            }>
                 Рисовать поле {" "}
                 <input onChange={() => {
                     dispatch(setCanIDrow())
@@ -209,15 +162,13 @@ const General_agronomist = () => {
                 Добавить поле
                 <button style={{fontSize:25,padding:0,color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)",fontWeight:"bold"}} disabled={!(painedPosition.length > 2)} onClick={() => {
                     addPoligon();
-                    dispatch(setFieldParamsPopupIsOpen())
+                    dispatch(setFieldParamsPopupIsOpen());
+                    dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)))
                 }}> +
                 </button>
             </div>
              <FormPopup
-                FieldID={thoisedFieldID}
-                fieldCultures={fieldCultures}
-                setFieldParams={setFieldParams}
-                setCulture={setCulture}
+                 // setFieldParams={setFieldParams}
              />
 
         </div>

@@ -4,7 +4,7 @@ export function setTokenInInstanse(token?: string, storageKey?:string) {
     //instance.request({headers:{Authorization:`Bearer ${token}`}})
     instance.defaults.headers['Authorization'] = token ? `Bearer ${token}` : '';
     console.log(instance)
-    debugger
+
    setTokenTooStorage(token ?? "" ,storageKey);
 }
 export function setTokenTooStorage(token:string,key?:string):void{

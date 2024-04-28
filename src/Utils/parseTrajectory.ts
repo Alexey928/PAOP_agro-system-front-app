@@ -1,4 +1,6 @@
 
+import {PositionType} from "../components/General_agronomist/General_agronomist";
+
 export type Trajecktory = {
     [key:string]:{
                     lat:number,
@@ -20,5 +22,9 @@ export const trajectoryToDTOstring = (trajectory:number[][]):string=>{
         tr[`${index}`] = {lat:item[0],lang:item[1]}
     })
     return JSON.stringify(tr)
+}
+
+export const fromCirclePositionToTrajectory = (cirklePosition:Array<PositionType>):number[][]=>{
+    return cirklePosition.map((el)=>([el.lat,el.lng]))
 }
 

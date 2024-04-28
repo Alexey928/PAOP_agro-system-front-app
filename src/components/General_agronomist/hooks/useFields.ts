@@ -1,5 +1,67 @@
 import {useState} from "react";
-import {CultureTaskType, CultureType, FieldType, SoilTasksTypes} from "../General_agronomist";
+type MowingTheCropTaskType = {
+     fieldID:string
+    status: "isDone" | "inProgres"
+     type: "MOWING_THE_CROP"
+     startDate: Date
+     endDate: Date
+    harvesterID:string
+}
+type SprayingTaskType = {
+     fieldID:string
+    status: "isDone" | "inProgres"
+    type: "SPRAYING_GROUP"
+     startDate: Date
+     endDate: Date
+     sprayingMachineId:string
+ }
+ type SoilWorksTaskType = {
+     fieldID:string
+     status: "isDone" | "inProgres"
+     type: "SOIL_GROUP"
+     startDate: Date
+     endDate: Date
+     tractorID:string
+ }
+ type FertilizationTasksType = {
+    fieldID:string
+     status: "isDone" | "inProgres"
+     type: "FERTILIZATION_GROUP"
+     startDate: Date
+     endDate: Date
+ }
+//____________________________________________________________________________
+
+export type FieldType = {
+     id: string;// forigen
+     trajectory: number[][];
+    name: string | null;
+     sqere: number| null;
+ }
+  //in this case "id" is forigen key from FieldType
+export  type SoilTasksTypes = {
+     [id:string]:{
+        SOIL_GROUP:Array<SoilWorksTaskType>;
+        FERTILIZATION_GROUP:Array<FertilizationTasksType>;
+    }
+}
+ export type CultureItemType = {
+     id:string,
+     name:string,
+     variantyName:string,
+     collor:string,
+     sqere:number
+ }
+ export type CultureType = {
+     [id:string]:Array<CultureItemType>
+ }
+//  in this case "id" is forigen key from CultureType children
+ export type CultureTaskType = {
+     [id:string]:{
+         "SPRAYING_GROUP":Array<SprayingTaskType>;
+         "MOWING_THE_CROP":Array<MowingTheCropTaskType>
+     }
+}
 
 type CultureColorsType =  {
     id:string

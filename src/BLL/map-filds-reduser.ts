@@ -2,6 +2,7 @@ import {setIsRequestProcessingStatusAC} from "./app-reduser";
 import {fieldDTOType, mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
+import {setSelectedFieldID} from "./map-interfase-reduser";
 
 
 export type FieldStateActionType =
@@ -26,14 +27,14 @@ export type FieldType = {
     description:string
     perimeters:PerimetrType[]
     currentPerimeter:number[][]
-
+    fillColor:string
 }
 
-export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActionType):mapFieldStateType => {
+export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActionType):mapFieldStateType => {
     switch (action.type) {
         case "SET/FIELD/DATA/FROM/DB/TO/STATE":
             return action.fields.map((el)=>(
-                {...el,currentPerimeter:el.perimeters.length > 0 ?
+                {...el, currentPerimeter:el.perimeters.length > 0 ?
                     parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : []
                 }))
         case"SET/FIELDS/PERIMETERS":
@@ -52,7 +53,7 @@ export const fieldReduser = (state:mapFieldStateType = [], action:FieldStateActi
                 el
             )
         case"CREATE/FIELD":
-            return [...state,{...action.field, currentPerimeter : action.field.perimeters.length > 0?
+            return [...state,{...action.field, currentPerimeter : action.field.perimeters?.length > 0 ?
                     parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[]}]
         case"RESET/FIELD/DATA":
             return state.map((el)=> el.id === action.data.id?
@@ -99,12 +100,16 @@ const resetFieldDataAC = (fieldID:string, name:string,description:string="some d
     } as const
 )
 //______________________________TC_____________________________________________________________________________
-export const createFieldTC = (name:string,description:string,trajectory:number[][],sqere:string)=> async (dispatch:DispatchType)=>{
+export const createFieldTC = (name:string,description:string,trajectory:number[][],sqere:string) =>
+    async (dispatch:DispatchType)=> {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
        const field = await mapFieldAPI.create(name,description);
-       dispatch(createFieldAC(field.data))
-        if(field.data.id && trajectory.length) await bindPerimeterToFieldTC(field.data.id,trajectory,sqere)
+       //dispatch(setSelectedFieldID(field.data.id))
+        debugger
+        dispatch(createFieldAC(field.data));
+        debugger
+       if(field.data.id && trajectory.length) await bindPerimeterToFieldTC(field.data.id,trajectory,sqere)
     }catch (e:unknown){
         // if error we mast remove of field entity!!!
         console.log(e)
