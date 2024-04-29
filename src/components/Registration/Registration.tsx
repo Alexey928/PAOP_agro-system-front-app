@@ -5,7 +5,7 @@ import React from 'react';
         } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "./LoginStyle.module.css"
-import AuthNav from "../Common/AuthNav";
+import CommonNav from "../Common/CommonNav";
 import {useNavigate} from "react-router-dom";
 
 export enum ROLS{
@@ -43,7 +43,7 @@ const Registration = () => {
     console.log("Registration")
     return (
         <div className={style.container}>
-            <AuthNav derection={"/login"} linkText={"Login"} headerText={"Registration page"}></AuthNav>
+            <CommonNav derection={"/login"} linkText={"Login"} headerText={"Registration page"}></CommonNav>
             {!massege ? null:
                 <Alert className={style.alert}
                        variant="filled"

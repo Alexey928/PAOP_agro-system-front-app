@@ -89,9 +89,7 @@ const General_agronomist = () => {
                         <FeatureGroup key={el.id} eventHandlers={{
                             click: () => {
                                 dispatch(setSelectedFieldID(el.id));
-                                dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)));
-                                setThoisedFieldID(el.id)
-                                console.log(el.name);
+                                dispatch(setSelectedFieldTrajectory(el.currentPerimeter));
                             }
                         }} pathOptions={limeOptions}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>

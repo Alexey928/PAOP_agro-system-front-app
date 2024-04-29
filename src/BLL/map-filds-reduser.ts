@@ -3,6 +3,7 @@ import {fieldDTOType, mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
 import {setSelectedFieldID} from "./map-interfase-reduser";
+import {handleError} from "../Utils/errorHandler";
 
 
 export type FieldStateActionType =
@@ -109,14 +110,15 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
         debugger
         dispatch(createFieldAC(field.data));
         debugger
-       if(field.data.id && trajectory.length) await bindPerimeterToFieldTC(field.data.id,trajectory,sqere)
+       if(field.data.id) await bindPerimeterToFieldTC(field.data.id,trajectory,sqere)
     }catch (e:unknown){
+        handleError(e,dispatch)
         // if error we mast remove of field entity!!!
-        console.log(e)
     }finally {
         dispatch(setIsRequestProcessingStatusAC(true));
     }
 }
+
 export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqere:string)=> async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {

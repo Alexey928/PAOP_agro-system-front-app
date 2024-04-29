@@ -2,7 +2,7 @@ import React from 'react';
 import {Alert, Button, Input, Paper, } from "@mui/material";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "../Registration/LoginStyle.module.css"
-import AuthNav from "../Common/AuthNav";
+import CommonNav from "../Common/CommonNav";
 import {loginTC} from "../../BLL/auth-reduser";
 import {useAppDispatch} from "../../BLL/Store";
 
@@ -32,7 +32,7 @@ const Login = () => {
     if(formState.errors["Email"]) massege = formState.errors["Email"]?.message;
     return (
         <div className={style.container}>
-            <AuthNav derection={"/registration"} linkText={"registration"} headerText={"Login page"}></AuthNav>
+            <CommonNav derection={"/registration"} linkText={"registration"} headerText={"Login page"}></CommonNav>
             {massege && <Alert className={style.alert} variant="filled" severity="error">{massege}</Alert>}
             <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>

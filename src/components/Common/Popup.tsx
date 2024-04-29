@@ -23,7 +23,6 @@ const FormPopup: React.FC<PopupProps> = () => {
             <div style={{width:"100%"}}>
                 <FieldParamsForm
                     name={""} sqere={""} setFieldParams={(name:string, squere:number) => {
-
                         dispatch(createFieldTC(name,"temp des",selectedFieldTrajectory, squere.toString()));
                     }}/>
             </div>

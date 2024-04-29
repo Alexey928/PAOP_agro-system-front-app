@@ -7,7 +7,8 @@ type AuthNawPropsType = {
     headerText:string
 }
 
-const AuthNav:React.FC<AuthNawPropsType> = ({derection,linkText,headerText}) => {
+
+const CommonNav:React.FC<AuthNawPropsType> = ({derection,linkText,headerText}) => {
     const navigate = useNavigate();
     return (
         <div>
@@ -35,4 +36,4 @@ const AuthNav:React.FC<AuthNawPropsType> = ({derection,linkText,headerText}) => 
         </div>
     );
 };
-export default AuthNav;
+export default CommonNav;
