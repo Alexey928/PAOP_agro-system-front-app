@@ -17,7 +17,6 @@ export const handleError = (e: unknown, dispatch: Dispatch<DispathTYpe>, errHold
                 break
             case "any":
         }
-
         dispatch(setAppErrorAC(error));
         dispatch(setAuthUserDataAC(null,null,null,null,false))
     } else {

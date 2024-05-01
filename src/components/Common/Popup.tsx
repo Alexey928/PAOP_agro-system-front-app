@@ -3,7 +3,6 @@ import FieldParamsForm from "./Forms/FieldParamsForm";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {
     selectFieldParamsPopupIsOpen,
-    selectSelectedFieldID,
     selectSelectedFieldTrajectory
 } from "../../Utils/selectors";
 import {createFieldTC} from "../../BLL/map-filds-reduser";

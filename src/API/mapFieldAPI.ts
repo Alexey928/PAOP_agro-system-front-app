@@ -1,5 +1,6 @@
-import {FieldType, mapFieldStateType, PerimetrType} from "../BLL/map-filds-reduser";
+import {FieldType, PerimetrType} from "../BLL/map-filds-reduser";
 import {instance} from "./commonApiInstanse";
+import {LastRemoved} from "../BLL/map-interfase-reduser";
 
 export type fieldDTOType = {
     id:string
@@ -22,31 +23,15 @@ export const mapFieldAPI = {
             currentPerimeter:[[]]
         }
     },
+    removeFieldFromDB(fieldId:string){
+        return instance.delete<LastRemoved>(`/fields/${fieldId}`)
+        },
     getAll(){
         return instance.get<Array<fieldDTOType>>("/fields");
     },
-    getOne(id:string):FieldType{
-        return (
-            {
-                id:"1",
-                name:"some name",
-                description:"some description",
-                perimeters:[],
-                fillColor:"#fffff",
-                currentPerimeter:[[]]
-            }
-        )
 
-    },
     createFieldPerimetr(fieldId:string,trajectory:string,sqere:string){
         debugger
         return instance.post<PerimetrType>("/ifield-perimetr",{fieldId,sqere,trajectory});
-
-        // return ({
-        //     id:"1",
-        //     squre:"555",
-        //     trajectory:'{"0":{"lat":4,"lang":5},"1":{"lat":8,"lang":9}}',
-        //     validFrom: new Date()// !!!!!!
-        // })
     }
 }

@@ -6,6 +6,7 @@ import {mapFieldStateType} from "../BLL/map-filds-reduser";
 export const selectAppInitStatus = (state: AppRootStateType): boolean => state.app.isInitialized;
 export const selectAppCurrentPas = (state:AppRootStateType):string|null => state.app.currentPass;
 export const selectAppError = (state:AppRootStateType):string|null => state.app.appError
+export const selectRequestProcesingStatus = (state:AppRootStateType):boolean => state.app.isRequestProcessing
 
 // auth state selectors
 export const selectIsAuth = (state:AppRootStateType):boolean => state.auth.isAuth;

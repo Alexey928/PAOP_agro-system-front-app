@@ -5,8 +5,13 @@ import {LatLngExpression} from "leaflet"
 import FormPopup from "../Common/Popup";
 import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
-import {selectDrowingFlag, selectFields, selectSelectedFieldID} from "../../Utils/selectors";
-import {setDBstateTC} from "../../BLL/map-filds-reduser";
+import {
+    selectDrowingFlag,
+    selectFields,
+    selectRequestProcesingStatus,
+    selectSelectedFieldID
+} from "../../Utils/selectors";
+import {removeFieldTC, setDBstateTC} from "../../BLL/map-filds-reduser";
 import {
     setCanIDrow,
     setFieldParamsPopupIsOpen,
@@ -19,8 +24,6 @@ import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
     lat: number,
     lng: number
 }
-
-
 const fillBlueOptions = {fillColor: 'blue'}
 const limeOptions = {color:"#f1a302", fillColor: "rgb(250,9,53)"}
 const tempBasePosition = {lat: 48.9935, lng: 36.230383};
@@ -47,7 +50,7 @@ const PointOfPoligons = (props: { calback: (position: PositionType | null) => vo
 const General_agronomist = () => {
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const dispatch = useAppDispatch();
-
+    const isRequestProcesing = useAppSelector(selectRequestProcesingStatus)
     const fields  = useAppSelector(selectFields);
     const drowingFlag = useAppSelector(selectDrowingFlag);
 
@@ -82,7 +85,7 @@ const General_agronomist = () => {
                                 <div style={{color: "blue", height: 300, backgroundColor: "#010a28", width: 280}}>
                                     <header style={{width: "100%", backgroundColor: "salmon"}}>
                                         <div style={{color: "white", textAlign: "center"}}>
-                                            {el.name??"Поле X Полевая Y"} S = {el.description??"?"}
+                                            {el.name??"Поле X Полевая Y"} S = {el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere:"Не определено!"}
                                         </div>
                                     </header>
                                     <div style={{}}>
@@ -107,7 +110,8 @@ const General_agronomist = () => {
                                             onClick={() => dispatch(setFieldParamsPopupIsOpen())}
                                     >+ ЗАВДАННЯ</Button>
                                     <Button variant={"contained"}
-                                            onClick={()=>{}}
+                                            disabled={isRequestProcesing}
+                                            onClick={()=>{dispatch(removeFieldTC(el.id))}}
                                             color={"error"}
                                     >ВИДАЛИТИ</Button>
                                 </div>

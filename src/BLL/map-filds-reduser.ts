@@ -3,6 +3,7 @@ import {fieldDTOType, mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
 import {handleError} from "../Utils/errorHandler";
+import {setLastRemovedField} from "./map-interfase-reduser";
 
 
 export type FieldStateActionType =
@@ -16,7 +17,7 @@ export type mapFieldStateType = Array<FieldType>
 
 export type PerimetrType = {
     id:string
-    squre:string
+    sqere:string
     trajectory:string
     validFrom:Date
 }
@@ -116,7 +117,7 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
         handleError(e,dispatch)
         // if error we mast remove ,of field entity!!!
     }finally {
-        dispatch(setIsRequestProcessingStatusAC(true));
+        dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
 
@@ -141,7 +142,6 @@ export const setDBstateTC = () => async (dispatch:DispatchType) => {
             console.log(fieldsFromDB.data)
             return
         }
-        // some error wi mast throw here !
         console.error("is error of reading data from response GET '/fields' !!")
     }catch (e){
         console.log(e)
@@ -153,10 +153,23 @@ export const setDBstateTC = () => async (dispatch:DispatchType) => {
 export const resetFieldData = (fieldID:string,name:string,description:string) => async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
-        const resetedField = mapFieldAPI.updateFieldData(fieldID,name,description);
+        const resetedField = await mapFieldAPI.updateFieldData(fieldID,name,description);
         dispatch(resetFieldDataAC(fieldID,name,description))
     }catch (e){
         console.log(e)
+    }finally {
+        dispatch(setIsRequestProcessingStatusAC(false));
+    }
+}
+
+export const removeFieldTC = (fieldId:string)=>async (dispatch:DispatchType)=>{
+    dispatch(setIsRequestProcessingStatusAC(true));
+    try {
+        const removedField = await mapFieldAPI.removeFieldFromDB(fieldId);
+        debugger
+        dispatch(setLastRemovedField(removedField.data))
+    }catch (e){
+        console.log()
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
