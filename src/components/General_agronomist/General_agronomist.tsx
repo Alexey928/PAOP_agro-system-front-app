@@ -22,7 +22,7 @@ import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 
 
 const fillBlueOptions = {fillColor: 'blue'}
-const limeOptions = {color: '#4bff04', fillColor: "rgb(9,250,176)"}
+const limeOptions = {color:"#f1a302", fillColor: "rgb(250,9,53)"}
 const tempBasePosition = {lat: 48.9935, lng: 36.230383};
 
 const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
@@ -60,17 +60,6 @@ const General_agronomist = () => {
         if (!position) return
         setPainedPosition([...painedPosition, position])
         console.log(painedPosition);
-    }
-
-    const addPoligon = () => {
-        if (painedPosition.length > 2) {
-            const tempPaligon: number[][] = [];
-            painedPosition.forEach((el) => {
-                tempPaligon.push([el.lat, el.lng]);
-            })
-
-            setPainedPosition([]);
-        }
     }
     return (
         <div style={{width: "100vw", height: "100vh", position: "relative"}}>
@@ -155,7 +144,7 @@ const General_agronomist = () => {
                 <br/>
                 Добавить поле
                 <button style={{fontSize:25,padding:0,color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)",fontWeight:"bold"}} disabled={!(painedPosition.length > 2)} onClick={() => {
-                    addPoligon();
+                    setPainedPosition([]);
                     dispatch(setFieldParamsPopupIsOpen());
                     dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)))
                 }}> +
