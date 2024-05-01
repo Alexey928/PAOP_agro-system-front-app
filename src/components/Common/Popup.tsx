@@ -14,10 +14,9 @@ interface PopupProps {
 const FormPopup: React.FC<PopupProps> = () => {
     const dispatch = useAppDispatch()
     const fieldPopupFlag = useAppSelector(selectFieldParamsPopupIsOpen);
-    const selectedFieldId = useAppSelector(selectSelectedFieldID);
+    //const selectedFieldId = useAppSelector(selectSelectedFieldID);
     const selectedFieldTrajectory = useAppSelector(selectSelectedFieldTrajectory)
 
-    console.log(selectedFieldId);
     return (
         fieldPopupFlag ? <div className="popup">
             <div style={{width:"100%"}}>

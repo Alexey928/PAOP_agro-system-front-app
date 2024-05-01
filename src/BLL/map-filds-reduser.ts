@@ -2,7 +2,6 @@ import {setIsRequestProcessingStatusAC} from "./app-reduser";
 import {fieldDTOType, mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
-import {setSelectedFieldID} from "./map-interfase-reduser";
 import {handleError} from "../Utils/errorHandler";
 
 
@@ -48,8 +47,9 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
                     el)
             );
             case "SET/FIELD/PERIMETER":
+
             return state.map((el) => action.fieldID === el.id?
-                {...el,perimeters:[...el.perimeters,action.perimeter],
+                {...el, perimeters:[...el.perimeters, action.perimeter],
                  currentPerimeter:parseTrajektory(action.perimeter.trajectory)}:
                 el
             )
@@ -108,12 +108,13 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
        const field = await mapFieldAPI.create(name,description);
        //dispatch(setSelectedFieldID(field.data.id))
         debugger
+        field.data["perimeters"] = [];
         dispatch(createFieldAC(field.data));
         debugger
-       if(field.data.id) await bindPerimeterToFieldTC(field.data.id,trajectory,sqere)
+       if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere))
     }catch (e:unknown){
         handleError(e,dispatch)
-        // if error we mast remove of field entity!!!
+        // if error we mast remove ,of field entity!!!
     }finally {
         dispatch(setIsRequestProcessingStatusAC(true));
     }
@@ -123,9 +124,10 @@ export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqer
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const fieldPerimetr = await mapFieldAPI.createFieldPerimetr(fieldID,trajectoryToDTOstring(trajectory),sqere);
-        dispatch(setFieldPerimeterAC(fieldID,fieldPerimetr))
+        debugger
+        dispatch(setFieldPerimeterAC(fieldID,fieldPerimetr.data));
     }catch (e){
-        console.log(e)
+        handleError(e,dispatch)
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }

@@ -3,7 +3,6 @@ import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, useMapEve
 import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FormPopup from "../Common/Popup";
-import {useFields} from "./hooks/useFields";
 import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {selectDrowingFlag, selectFields, selectSelectedFieldID} from "../../Utils/selectors";
@@ -46,7 +45,6 @@ const PointOfPoligons = (props: { calback: (position: PositionType | null) => vo
     return null
 }
 const General_agronomist = () => {
-    const {setNewField,deleteField,setThoisedFieldID} = useFields()
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const dispatch = useAppDispatch();
 
@@ -67,12 +65,11 @@ const General_agronomist = () => {
     const addPoligon = () => {
         if (painedPosition.length > 2) {
             const tempPaligon: number[][] = [];
-            painedPosition.forEach((el, i) => {
+            painedPosition.forEach((el) => {
                 tempPaligon.push([el.lat, el.lng]);
             })
-            setNewField(tempPaligon)
-            setPainedPosition([]);
 
+            setPainedPosition([]);
         }
     }
     return (
@@ -121,7 +118,7 @@ const General_agronomist = () => {
                                             onClick={() => dispatch(setFieldParamsPopupIsOpen())}
                                     >+ ЗАВДАННЯ</Button>
                                     <Button variant={"contained"}
-                                            onClick={()=>{deleteField(el.id)}}
+                                            onClick={()=>{}}
                                             color={"error"}
                                     >ВИДАЛИТИ</Button>
                                 </div>
@@ -152,7 +149,6 @@ const General_agronomist = () => {
                 }} type={"checkbox"} checked={drowingFlag}/>
                 <button style={{color:"red",marginTop:6}} onClick={() => {
                     setPainedPosition([]);
-                    console.log("rrr");
                 }}>
                     {"Сброс точек"}
                 </button>
@@ -165,10 +161,7 @@ const General_agronomist = () => {
                 }}> +
                 </button>
             </div>
-             <FormPopup
-                 // setFieldParams={setFieldParams}
-             />
-
+             <FormPopup/>
         </div>
     );
 };
