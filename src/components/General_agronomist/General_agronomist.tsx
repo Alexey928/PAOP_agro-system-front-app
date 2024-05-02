@@ -9,7 +9,6 @@ import {
     selectDrowingFlag,
     selectFields,
     selectRequestProcesingStatus,
-    selectSelectedFieldID
 } from "../../Utils/selectors";
 import {removeFieldTC, setDBstateTC} from "../../BLL/map-filds-reduser";
 import {

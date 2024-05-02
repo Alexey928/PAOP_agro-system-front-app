@@ -13,15 +13,9 @@ export const mapFieldAPI = {
     create(name:string,description:string){
         return instance.post<fieldDTOType>("/fields",{name,description});
     },
-    updateFieldData(id:string,name:string,description:string):FieldType{
-        return {
-            id:"1",
-            name:"some name",
-            description:"some description",
-            perimeters:[],
-            fillColor:"#fffff",
-            currentPerimeter:[[]]
-        }
+    updateFieldData(id:string,name:string,description:string){
+        return instance.patch<fieldDTOType>(`/fields/${id}` ,{name,description})
+
     },
     removeFieldFromDB(fieldId:string){
         return instance.delete<LastRemoved>(`/fields/${fieldId}`)

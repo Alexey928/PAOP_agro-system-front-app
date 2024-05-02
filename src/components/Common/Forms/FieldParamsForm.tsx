@@ -3,7 +3,7 @@ import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectSelectdFieldColor, selectSelectedFieldID} from "../../../Utils/selectors";
+import {selectRequestProcesingStatus, selectSelectdFieldColor, selectSelectedFieldID} from "../../../Utils/selectors";
 
 interface FieldParamsFormType {
     name: string,
@@ -19,7 +19,8 @@ type fieldParamsFormPropsType = {
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
     const matches = useMediaQuery('(min-width:900px)');
     const dispatch = useAppDispatch();
-    const selectedFieldColor = useAppSelector(selectSelectdFieldColor);
+    //const selectedFieldColor = useAppSelector(selectSelectdFieldColor);
+    const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
 
 
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
@@ -111,8 +112,8 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                 <br/>
                 <br/>
             <div>
-                <Button variant={"contained"}  type={"submit"} style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
-                <Button variant={"contained"}  color={"error"} onClick={deleteButtonHandler}>ВИДАЛИТИ</Button>
+                <Button disabled={isRequestProcesing} variant={"contained"}  type={"submit"} style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
+                <Button disabled={isRequestProcesing} variant={"contained"}  color={"error"} onClick={deleteButtonHandler}>ВИДАЛИТИ</Button>
             </div>
 
         </form>

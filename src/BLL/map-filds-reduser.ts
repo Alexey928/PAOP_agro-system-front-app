@@ -11,7 +11,8 @@ export type FieldStateActionType =
     ReturnType<typeof setFieldsPerimetersAC>|
     ReturnType<typeof createFieldAC>|
     ReturnType<typeof setFieldPerimeterAC>|
-    ReturnType<typeof resetFieldDataAC>
+    ReturnType<typeof resetFieldDataAC>|
+    ReturnType<typeof removeFieldAC>;
 
 export type mapFieldStateType = Array<FieldType>
 
@@ -61,6 +62,8 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
             return state.map((el)=> el.id === action.data.id?
                 {...el,name:action.data.name, description:action.data.description}:
             el)
+        case "REMOVE/FIELD":
+            return state.filter((el)=>el.id !== action.fieldId)
         default:
             return state
     }
@@ -99,6 +102,12 @@ const resetFieldDataAC = (fieldID:string, name:string,description:string="some d
                 name,
                 description
              }
+    } as const
+)
+const removeFieldAC = (fieldId:string) =>(
+    {
+        type:"REMOVE/FIELD",
+        fieldId
     } as const
 )
 //______________________________TC_____________________________________________________________________________
@@ -153,8 +162,11 @@ export const setDBstateTC = () => async (dispatch:DispatchType) => {
 export const resetFieldData = (fieldID:string,name:string,description:string) => async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
-        const resetedField = await mapFieldAPI.updateFieldData(fieldID,name,description);
-        dispatch(resetFieldDataAC(fieldID,name,description))
+        const confirm = window.confirm("Ви певні що бажаєте оновити данні цього поля ?")
+        if(confirm) {
+            await mapFieldAPI.updateFieldData(fieldID, name, description);
+            dispatch(resetFieldDataAC(fieldID, name, description))
+        }
     }catch (e){
         console.log(e)
     }finally {
@@ -165,22 +177,15 @@ export const resetFieldData = (fieldID:string,name:string,description:string) =>
 export const removeFieldTC = (fieldId:string)=>async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
-        const removedField = await mapFieldAPI.removeFieldFromDB(fieldId);
-        debugger
-        dispatch(setLastRemovedField(removedField.data))
+        const confirm = window.confirm("Ви певні що бажаєте видалити це поле ?")
+        if(confirm) {
+            const removedField = await mapFieldAPI.removeFieldFromDB(fieldId);
+            dispatch(removeFieldAC(fieldId));
+            dispatch(setLastRemovedField(removedField.data));
+        }
     }catch (e){
         console.log()
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
-
-
-
-
-
-
-
-
-
-
