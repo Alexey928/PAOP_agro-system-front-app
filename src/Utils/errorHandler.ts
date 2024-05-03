@@ -13,7 +13,6 @@ export const handleError = (e: unknown, dispatch: Dispatch<DispathTYpe>, errHold
         switch (error){
             case "Unauthorized":
                 setAuthUserDataAC(null,null,null,null,false);
-                debugger
                 break
             case "any":
         }

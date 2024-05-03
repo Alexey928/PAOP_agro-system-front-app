@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export function setTokenInInstanse(token?: string, storageKey?:string) {
-    //instance.request({headers:{Authorization:`Bearer ${token}`}})
     instance.defaults.headers['Authorization'] = token ? `Bearer ${token}` : '';
     console.log(instance)
 

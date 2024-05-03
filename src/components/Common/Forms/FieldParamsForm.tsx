@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
-import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
+import {setFieldParamsPopupIsOpen, setSelectedFieldID} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
 import {selectRequestProcesingStatus, selectSelectdFieldColor, selectSelectedFieldID} from "../../../Utils/selectors";
 
@@ -19,9 +19,9 @@ type fieldParamsFormPropsType = {
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
     const matches = useMediaQuery('(min-width:900px)');
     const dispatch = useAppDispatch();
-    //const selectedFieldColor = useAppSelector(selectSelectdFieldColor);
-    const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
 
+    const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
+    const selectedID = useAppSelector(selectSelectedFieldID);
 
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
@@ -43,6 +43,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
     return (
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}
               action="">
+            {selectedID && <div>update {selectedID}</div>}
                 <div style={{marginTop:50,width:matches?"25vw":"60" +
                         "vw"}}>
                    <Controller

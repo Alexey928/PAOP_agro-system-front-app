@@ -3,7 +3,7 @@ import {fieldDTOType, mapFieldAPI} from "../API/mapFieldAPI";
 import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
 import {handleError} from "../Utils/errorHandler";
-import {setLastRemovedField} from "./map-interfase-reduser";
+import {setLastRemovedField, setSelectedFieldID} from "./map-interfase-reduser";
 
 
 export type FieldStateActionType =
@@ -142,13 +142,13 @@ export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqer
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
+
 export const setDBstateTC = () => async (dispatch:DispatchType) => {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const fieldsFromDB = await mapFieldAPI.getAll();
         if(fieldsFromDB.data.length) {
             dispatch(setFieldStateFromDB_AC(fieldsFromDB.data));
-            console.log(fieldsFromDB.data)
             return
         }
         console.error("is error of reading data from response GET '/fields' !!")
@@ -159,7 +159,7 @@ export const setDBstateTC = () => async (dispatch:DispatchType) => {
     }
 }
 
-export const resetFieldData = (fieldID:string,name:string,description:string) => async (dispatch:DispatchType)=>{
+export const resetFieldDataTC = (fieldID:string,name:string,description:string) => async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const confirm = window.confirm("Ви певні що бажаєте оновити данні цього поля ?")
@@ -171,6 +171,7 @@ export const resetFieldData = (fieldID:string,name:string,description:string) =>
         console.log(e)
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
+        dispatch(setSelectedFieldID(""));
     }
 }
 
@@ -184,7 +185,7 @@ export const removeFieldTC = (fieldId:string)=>async (dispatch:DispatchType)=>{
             dispatch(setLastRemovedField(removedField.data));
         }
     }catch (e){
-        console.log()
+        handleError(e,dispatch)
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }

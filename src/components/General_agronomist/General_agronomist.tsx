@@ -3,7 +3,7 @@ import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, useMapEve
 import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FormPopup from "../Common/Popup";
-import {Button} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {
     selectDrowingFlag,
@@ -81,34 +81,70 @@ const General_agronomist = () => {
                             }
                         }} pathOptions={limeOptions}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>
-                                <div style={{color: "blue", height: 300, backgroundColor: "#010a28", width: 280}}>
-                                    <header style={{width: "100%", backgroundColor: "salmon"}}>
-                                        <div style={{color: "white", textAlign: "center"}}>
-                                            {el.name??"Поле X Полевая Y"} S = {el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere:"Не определено!"}
-                                        </div>
-                                    </header>
-                                    <div style={{}}>
-                                        <ul style={{
-                                            listStyle: "none",
-                                            padding: 0,
-                                            color: "white",
-                                            width: "100%",
-                                            height: "100%"
-                                        }}>
-                                            <li><span>культура - </span></li>
-                                            <li><span>посев : 25,03,2024 р </span></li>
-                                            <li><span>Обработка почв : 3 --</span></li>
-                                            <li><span>Внесение Удобрений :</span></li>
-                                            <li><span>Уборка : Дата </span></li>
-                                        </ul>
+                                <header style={{width: "100%", backgroundColor: "#010b2c"}}>
+                                    <div style={{color: "white", textAlign: "center",fontSize:18}}>
+                                        {el.name??"Поле X Полевая Y"}   S = {el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere:"Не определено!"}
                                     </div>
+                                </header>
+                                <hr/>
+                                <div style={{color: "blue", height: 300,flexDirection:"column",display:"flex",alignItems:"center",backgroundColor: "#010b2c", width: "100%"}}>
+                                    <FormControl  style={{width:190, marginTop:30}} >
+                                            <InputLabel id="demo-simple-select-label">Виконані</InputLabel>
+                                            <Select
+                                                SelectDisplayProps={
+                                                    {style: {
+                                                            color:'#01f6bd',
+                                                        }
+                                                    }}
+                                                value={""}
+                                                color={"primary"}
+                                                variant={"outlined"}
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                            >
+                                                <MenuItem value={""}></MenuItem>
+                                                <MenuItem value={"1"}>ЗАВДАННЯ 1</MenuItem>
+                                                <MenuItem value={"2"}>ЗАВДАННЯ 2</MenuItem>
+                                                <MenuItem value={"3"}>ЗАВДАННЯ 3</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                        <FormControl  style={{width:190, marginTop:30}} >
+                                            <InputLabel id="demo-simple-select-label">До виконання</InputLabel>
+                                            <Select
+                                                SelectDisplayProps={
+                                                   {style: {
+                                                           color:'#01f6bd',
+                                                       }
+                                               }}
+                                                value={""}
+                                                color={"primary"}
+                                                variant={"outlined"}
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                            >
+                                                <MenuItem value={""}></MenuItem>
+                                                <MenuItem value={"1"}>ЗАВДАННЯ 1</MenuItem>
+                                                <MenuItem value={"2"}>ЗАВДАННЯ 2</MenuItem>
+                                                <MenuItem value={"3"}>ЗАВДАННЯ 3</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                 </div>
-                                <div style={{width:"100%",display:"flex",justifyContent:"space-around",marginTop:20}}>
-                                    <Button color={"success"}
+                                <div style={{width:"100%",display:"flex",marginTop:20, justifyContent:"space-between"}}>
+                                    <Button
+                                        onClick={()=>{}}
+                                        size={"small"}
+                                        color={"success"}
+                                        variant={"contained"}>+ ЗАВДАННЯ
+                                    </Button>
+                                    <Button
+                                        size={"small"}
+                                        color={"success"}
                                             variant={"contained"}
                                             onClick={() => dispatch(setFieldParamsPopupIsOpen())}
-                                    >+ ЗАВДАННЯ</Button>
-                                    <Button variant={"contained"}
+                                    >ЗМІНИТИ</Button>
+                                    <Button
+                                        size={"small"}
+                                        variant={"contained"}
                                             disabled={isRequestProcesing}
                                             onClick={()=>{dispatch(removeFieldTC(el.id))}}
                                             color={"error"}
