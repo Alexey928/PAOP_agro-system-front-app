@@ -3,3 +3,19 @@
     font-size: 50px;
     color: snow;
 }
+
+.popup_header{
+    border-radius: 5px;
+    width: 100%;
+    background-color: #010b2c
+}
+.popup_body {
+    border-radius:8px;
+    width: 100%;
+    background-color: #010b2c;
+    height: 300px;
+    flex-direction:column;
+    display:flex;
+    align-items:center;
+
+}

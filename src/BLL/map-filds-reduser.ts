@@ -115,18 +115,16 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
     async (dispatch:DispatchType)=> {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
-       const field = await mapFieldAPI.create(name,description);
-       //dispatch(setSelectedFieldID(field.data.id))
-        debugger
+        const field = await mapFieldAPI.create(name,description);
         field.data["perimeters"] = [];
         dispatch(createFieldAC(field.data));
-        debugger
-       if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere))
+        if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere))
     }catch (e:unknown){
         handleError(e,dispatch)
         // if error we mast remove ,of field entity!!!
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
+        dispatch(setSelectedFieldID(""));
     }
 }
 

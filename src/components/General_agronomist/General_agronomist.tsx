@@ -18,6 +18,7 @@ import {
     setSelectedFieldTrajectory
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
+import style from "./general-agronomist.module.css"
 
  export type PositionType = {
     lat: number,
@@ -34,7 +35,6 @@ const PointOfPoligons = (props: { calback: (position: PositionType | null) => vo
             console.log(e)
         },
         dblclick(e) {
-
             map.flyTo(tempBasePosition, map.getZoom())
         },
         zoom(e) {
@@ -60,7 +60,8 @@ const General_agronomist = () => {
 
     const calback = (position: PositionType | null) => {
         if (!position) return
-        setPainedPosition([...painedPosition, position])
+        setPainedPosition([...painedPosition, position]);
+        dispatch(setSelectedFieldID(""));
         console.log(painedPosition);
     }
     return (
@@ -71,7 +72,7 @@ const General_agronomist = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <PointOfPoligons calback={drowingFlag ? calback : () => {}}/>
+                <PointOfPoligons calback={drowingFlag ? calback : () => {dispatch(setSelectedFieldID(""));}}/>
                 {fields.map((el, i) => {
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
@@ -81,13 +82,13 @@ const General_agronomist = () => {
                             }
                         }} pathOptions={limeOptions}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>
-                                <header style={{width: "100%", backgroundColor: "#010b2c"}}>
+                                <header className={style.popup_header}>
                                     <div style={{color: "white", textAlign: "center",fontSize:18}}>
-                                        {el.name??"Поле X Полевая Y"}   S = {el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere:"Не определено!"}
+                                        {el.name??"Поле X Полевая Y"}  <span style={{color:"#01f6bd"}}>S = {el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere:"Не определено!"} Га</span>
                                     </div>
                                 </header>
                                 <hr/>
-                                <div style={{color: "blue", height: 300,flexDirection:"column",display:"flex",alignItems:"center",backgroundColor: "#010b2c", width: "100%"}}>
+                                <div className={style.popup_body}>
                                     <FormControl  style={{width:190, marginTop:30}} >
                                             <InputLabel id="demo-simple-select-label">Виконані</InputLabel>
                                             <Select
@@ -162,7 +163,6 @@ const General_agronomist = () => {
                     )
                 })}
             </MapContainer>
-
             <div style={
                 {
                     boxShadow:"rgb(41 34 94 / 84%) -1px 0px 7px 1px",

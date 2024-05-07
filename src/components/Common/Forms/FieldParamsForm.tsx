@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen, setSelectedFieldID} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectRequestProcesingStatus, selectSelectdFieldColor, selectSelectedFieldID} from "../../../Utils/selectors";
+import {selectRequestProcesingStatus,  selectSelectedFieldID} from "../../../Utils/selectors";
 
 interface FieldParamsFormType {
     name: string,
@@ -19,7 +19,6 @@ type fieldParamsFormPropsType = {
 const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
     const matches = useMediaQuery('(min-width:900px)');
     const dispatch = useAppDispatch();
-
     const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
     const selectedID = useAppSelector(selectSelectedFieldID);
 
@@ -35,15 +34,16 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
         setFieldParams(data.name, +data.sqere);
         setTimeout(()=>dispatch(setFieldParamsPopupIsOpen()),500)
     };
-    const deleteButtonHandler = ()=> {
-        const confirm = window.confirm("Ви певні що бажаєте видплити поле та усі його зміни")
+    const exitButtonHandler = ()=> {
+        const confirm = window.confirm("Ви певні що бажаєте вийти ?")
        if (!confirm) return
-        dispatch(setFieldParamsPopupIsOpen())
+        dispatch(setFieldParamsPopupIsOpen());
+        dispatch(setSelectedFieldID(""));
     }
     return (
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}
               action="">
-            {selectedID && <div>update {selectedID}</div>}
+            {selectedID ? <div>Оновити поле</div>:<div>Створити поле</div>}
                 <div style={{marginTop:50,width:matches?"25vw":"60" +
                         "vw"}}>
                    <Controller
@@ -91,7 +91,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                     <Controller
                         name="color"
                         control={control}
-                        rules={{required:"Уведыть назву",minLength:3}}
+                        rules={{required:"Уведыть назву"}}
                         render={({field,fieldState})=>(
                             <TextField
                                          style={{width:150}}
@@ -114,7 +114,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                 <br/>
             <div>
                 <Button disabled={isRequestProcesing} variant={"contained"}  type={"submit"} style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
-                <Button disabled={isRequestProcesing} variant={"contained"}  color={"error"} onClick={deleteButtonHandler}>ВИДАЛИТИ</Button>
+                <Button disabled={isRequestProcesing} variant={"contained"}  color={"error"} onClick={exitButtonHandler}>ВИХІД</Button>
             </div>
 
         </form>

@@ -41,8 +41,11 @@ code {
 .MuiOutlinedInput-notchedOutline{
   border-color: #01f6bd !important;
 }
-.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
-  color: #01f6bd !important;
+/*.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{*/
+/*  color: #01f6bd !important;*/
+/*}*/
+#demo-simple-select-label{
+  color: #01f6bd ;
 }
 .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
   color: #01fa94 !important;
