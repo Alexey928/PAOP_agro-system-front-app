@@ -25,7 +25,7 @@ import style from "./general-agronomist.module.css"
     lng: number
 }
 const fillBlueOptions = {fillColor: 'blue'}
-const limeOptions = {color:"#f1a302", fillColor: "rgb(250,9,53)"}
+const limeOptions = {color:"#7bf606", fillColor: "#7bf606"}
 const tempBasePosition = {lat: 48.9935, lng: 36.230383};
 
 const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {

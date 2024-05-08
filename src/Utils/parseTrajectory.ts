@@ -9,6 +9,7 @@ export type Trajecktory = {
 }
 
 export const parseTrajektory = (trajektory:string):number[][]=>{
+
     const tempTrajectory:Trajecktory = JSON.parse(trajektory);
     const result:number[][]=[];
     for( let key in tempTrajectory){

@@ -20,8 +20,8 @@ const FormPopup: React.FC<PopupProps> = () => {
         fieldPopupFlag ? <div className="popup">
             <div style={{width:"100%"}}>
                 <FieldParamsForm
-                    name={""} sqere={""} setFieldParams={(name:string, squere:number) => {
-                        dispatch(createFieldTC(name,"temp des",selectedFieldTrajectory, squere.toString()));
+                    name={""} sqere={""} setFieldParams={(name:string, squere:number, color:string) => {
+                        dispatch(createFieldTC(name,"temp des",selectedFieldTrajectory, squere.toString(),color));
                     }}/>
             </div>
         </div>:

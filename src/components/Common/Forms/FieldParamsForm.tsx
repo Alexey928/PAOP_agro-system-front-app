@@ -12,7 +12,7 @@ interface FieldParamsFormType {
 
 }
 type fieldParamsFormPropsType = {
-    setFieldParams: ( name: string, squere: number)=>void
+    setFieldParams: ( name: string, squere: number,color:string)=>void
     name:string,
     sqere:string,
 }
@@ -31,7 +31,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
     });
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
         console.log(data);
-        setFieldParams(data.name, +data.sqere);
+        setFieldParams(data.name, +data.sqere, data.color);
         setTimeout(()=>dispatch(setFieldParamsPopupIsOpen()),500)
     };
     const exitButtonHandler = ()=> {

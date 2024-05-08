@@ -111,11 +111,11 @@ const removeFieldAC = (fieldId:string) =>(
     } as const
 )
 //______________________________TC_____________________________________________________________________________
-export const createFieldTC = (name:string,description:string,trajectory:number[][],sqere:string) =>
+export const createFieldTC = (name:string,description:string,trajectory:number[][],sqere:string,color:string) =>
     async (dispatch:DispatchType)=> {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
-        const field = await mapFieldAPI.create(name,description);
+        const field = await mapFieldAPI.create(name,description,color);
         field.data["perimeters"] = [];
         dispatch(createFieldAC(field.data));
         if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere))

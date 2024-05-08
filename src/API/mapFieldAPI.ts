@@ -10,8 +10,8 @@ export type fieldDTOType = {
     fillColor:string
 }
 export const mapFieldAPI = {
-    create(name:string,description:string){
-        return instance.post<fieldDTOType>("/fields",{name,description});
+    create(name:string,description:string,color:string){
+        return instance.post<fieldDTOType>("/fields",{name,description,color});
     },
     updateFieldData(id:string,name:string,description:string){
         return instance.patch<fieldDTOType>(`/fields/${id}` ,{name,description})
