@@ -10,10 +10,10 @@ import {
     selectFields,
     selectRequestProcesingStatus,
 } from "../../Utils/selectors";
-import {removeFieldTC, setDBstateTC} from "../../BLL/map-filds-reduser";
+import {FieldType, PerimetrType, removeFieldTC, setDBstateTC} from "../../BLL/map-filds-reduser";
 import {
     setCanIDrow,
-    setFieldParamsPopupIsOpen,
+    setFieldParamsPopupIsOpen, setSelectedField,
     setSelectedFieldID,
     setSelectedFieldTrajectory
 } from "../../BLL/map-interfase-reduser";
@@ -25,8 +25,9 @@ import style from "./general-agronomist.module.css"
     lng: number
 }
 const fillBlueOptions = {fillColor: 'blue'}
-const limeOptions = {color:"#7bf606", fillColor: "#7bf606"}
+const defaultFieldColor = "#7bf606"
 const tempBasePosition = {lat: 48.9935, lng: 36.230383};
+const resSelectedFieldEntity = {id:"1",name:"",perimeters:[{sqere:""} as PerimetrType]} as FieldType
 
 const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
     const map = useMapEvents({
@@ -61,7 +62,6 @@ const General_agronomist = () => {
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
-        dispatch(setSelectedFieldID(""));
         console.log(painedPosition);
     }
     return (
@@ -80,7 +80,10 @@ const General_agronomist = () => {
                                 dispatch(setSelectedFieldID(el.id));
                                 dispatch(setSelectedFieldTrajectory(el.currentPerimeter));
                             }
-                        }} pathOptions={limeOptions}>
+                        }} pathOptions={{
+                            color:el.fillColor ?? defaultFieldColor,
+                            fillColor: el.fillColor ?? defaultFieldColor,
+                        }}>
                             <Popup  className={"leaflet-popup-content-wrapper"}>
                                 <header className={style.popup_header}>
                                     <div style={{color: "white", textAlign: "center",fontSize:18}}>
@@ -141,7 +144,12 @@ const General_agronomist = () => {
                                         size={"small"}
                                         color={"success"}
                                             variant={"contained"}
-                                            onClick={() => dispatch(setFieldParamsPopupIsOpen())}
+                                            onClick={
+                                        () => {
+                                            dispatch(setSelectedField(el));
+                                            dispatch(setFieldParamsPopupIsOpen())
+                                        }
+                                    }
                                     >ЗМІНИТИ</Button>
                                     <Button
                                         size={"small"}
@@ -184,6 +192,7 @@ const General_agronomist = () => {
                 Добавить поле
                 <button style={{fontSize:25,padding:0,color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)",fontWeight:"bold"}} disabled={!(painedPosition.length > 2)} onClick={() => {
                     setPainedPosition([]);
+                    dispatch(setSelectedField(resSelectedFieldEntity));
                     dispatch(setFieldParamsPopupIsOpen());
                     dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)))
                 }}> +

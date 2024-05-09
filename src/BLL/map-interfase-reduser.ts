@@ -1,10 +1,12 @@
+import {FieldType, PerimetrType} from "./map-filds-reduser";
+
 export type LastRemoved = {
     name:string|null,
     description:string|null,
     fillColor:string|null
-
 }
 export const  MapInterfaceInitial={
+    selectedField:{id:"1",name:"",perimeters:[{sqere:""} as PerimetrType]} as FieldType,
     selectedFieldID: null as string|null,
     selectedFieldColor: "#fffff" as string,
     canIDraw:false as boolean,
@@ -20,7 +22,8 @@ export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
                           ReturnType<typeof setFieldParamsPopupIsOpen>|
                           ReturnType<typeof setCanIDrow>|
                           ReturnType<typeof setSelectedFieldTrajectory>|
-                          ReturnType<typeof setLastRemovedField>;
+                          ReturnType<typeof setLastRemovedField>|
+                          ReturnType<typeof setSelectedField>;
 
 export const fieldIntarfaseReduser = (
                                          state:MapInterfaseType = MapInterfaceInitial,
@@ -39,6 +42,8 @@ export const fieldIntarfaseReduser = (
             return {...state,selectedFieldTrajectory: action.trajectory}
         case "SET/LAST/REMOVED/FIELD/":
             return {...state,lastRemovedField: action.field}
+        case "SET/SELECTED/FIELD":
+            return {...state,selectedField:action.field}
         default: return state
     }
 }
@@ -75,5 +80,12 @@ export const setLastRemovedField = (field:LastRemoved) => (
     {
         type:"SET/LAST/REMOVED/FIELD/",
         field
+    } as const
+)
+export const setSelectedField = (field:FieldType)=>(
+    {
+        type:"SET/SELECTED/FIELD",
+        field
+
     } as const
 )

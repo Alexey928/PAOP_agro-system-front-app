@@ -1,9 +1,9 @@
 import React from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
-import {setFieldParamsPopupIsOpen, setSelectedFieldID} from "../../../BLL/map-interfase-reduser";
+import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectRequestProcesingStatus,  selectSelectedFieldID} from "../../../Utils/selectors";
+import {selectRequestProcesingStatus, selectSelectedFieldID} from "../../../Utils/selectors";
 
 interface FieldParamsFormType {
     name: string,
@@ -15,18 +15,20 @@ type fieldParamsFormPropsType = {
     setFieldParams: ( name: string, squere: number,color:string)=>void
     name:string,
     sqere:string,
+    color:string,
 }
-const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) => {
+const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name,sqere,color}) => {
     const matches = useMediaQuery('(min-width:900px)');
     const dispatch = useAppDispatch();
     const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
     const selectedID = useAppSelector(selectSelectedFieldID);
 
+    console.log("form")
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
-            name:"",
-            sqere:"",
-            color:"#42fc05"
+            name:name??"",
+            sqere:sqere??"",
+            color: color??"#57fd02",
         }
     });
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
@@ -38,7 +40,6 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
         const confirm = window.confirm("Ви певні що бажаєте вийти ?")
        if (!confirm) return
         dispatch(setFieldParamsPopupIsOpen());
-        dispatch(setSelectedFieldID(""));
     }
     return (
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}
@@ -95,6 +96,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams}) =>
                         render={({field,fieldState})=>(
                             <TextField
                                          style={{width:150}}
+                                         disabled={!!selectedID}
                                          variant={"outlined"}
                                          label={"КОЛЯР"}
                                          type={"color"}

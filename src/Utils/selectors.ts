@@ -1,6 +1,6 @@
 import {AppRootStateType} from "../BLL/Store";
 import {ROOLS} from "../API/AuthApi";
-import {mapFieldStateType} from "../BLL/map-filds-reduser";
+import {FieldType, mapFieldStateType} from "../BLL/map-filds-reduser";
 
 // app state selectors
 export const selectAppInitStatus = (state: AppRootStateType): boolean => state.app.isInitialized;
@@ -17,6 +17,7 @@ export const selectFields = (state:AppRootStateType):mapFieldStateType => state.
 
 // fields interfase state selectors
 export const selectSelectedFieldID = (state:AppRootStateType):string|null => state.fieldsInterfase.selectedFieldID;
+export const selectSelectedField  = (state:AppRootStateType):FieldType =>state.fieldsInterfase.selectedField
 export const selectFieldParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.fieldParamsPopup;
 export const selectTaskParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.taskParamsPopup;
 export const selectDrowingFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.canIDraw;
