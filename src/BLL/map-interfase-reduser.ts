@@ -37,7 +37,7 @@ export const fieldIntarfaseReduser = (
         case "SET/FIELD/PARAMS_POPUP":
             return {...state,fieldParamsPopup:!state.fieldParamsPopup}
         case "SET/CAN/I/DRO/FLAG":
-            return {...state,canIDraw:!state.canIDraw};
+            return action.flag?{...state, canIDraw: !action.flag}:{...state,canIDraw:!state.canIDraw};
         case "SET/SELECTED/FIELD/TRAJECTORY":
             return {...state,selectedFieldTrajectory: action.trajectory}
         case "SET/LAST/REMOVED/FIELD/":
@@ -71,9 +71,10 @@ export const setFieldParamsPopupIsOpen = ()=>(
         type:"SET/FIELD/PARAMS_POPUP"
     } as const
 )
-export const setCanIDrow = ()=>(
+export const setCanIDrow = (flag?:boolean)=>(
     {
-        type:"SET/CAN/I/DRO/FLAG"
+        type:"SET/CAN/I/DRO/FLAG",
+        flag
     } as const
 )
 export const setLastRemovedField = (field:LastRemoved) => (
@@ -86,6 +87,5 @@ export const setSelectedField = (field:FieldType)=>(
     {
         type:"SET/SELECTED/FIELD",
         field
-
     } as const
 )

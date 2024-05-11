@@ -17,5 +17,9 @@
     flex-direction:column;
     display:flex;
     align-items:center;
-
+}
+.add_field_button {
+    font-size:25px;
+    padding:0;
+    font-weight:bold;
 }

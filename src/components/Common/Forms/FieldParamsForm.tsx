@@ -23,7 +23,6 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
     const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
     const selectedID = useAppSelector(selectSelectedFieldID);
 
-    console.log("form")
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
             name:name??"",
@@ -33,6 +32,10 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
     });
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
         console.log(data);
+        if (name===data.name && sqere===data.sqere){
+            window.alert("У ваших діях нема сенсу, ви не змінили жодного параметру")
+            return
+        }
         setFieldParams(data.name, +data.sqere, data.color);
         setTimeout(()=>dispatch(setFieldParamsPopupIsOpen()),500)
     };
@@ -117,6 +120,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
             <div>
                 <Button disabled={isRequestProcesing} variant={"contained"}  type={"submit"} style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
                 <Button disabled={isRequestProcesing} variant={"contained"}  color={"error"} onClick={exitButtonHandler}>ВИХІД</Button>
+                {selectedID && <Button style={{margin:20}} disabled={isRequestProcesing} variant={"contained"}  color={"success"} onClick={exitButtonHandler}>ЗМІНИТИ ПЕРИМЕТР</Button>}
             </div>
 
         </form>

@@ -59,7 +59,7 @@ export const authMeTC = (): AppThunkType => async (dispatch:DispatchType) => {
             dispatch(setAuthUserDataAC(id, role, email, name,true));
         }
     } catch (e) {
-        handleError(e,dispatch,5000)
+        handleError(e,dispatch,1500)
     } finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
@@ -79,7 +79,7 @@ export const loginTC =
 
                 }
             } catch (e) {
-                handleError(e,dispatch,3000);
+                handleError(e,dispatch,1500);
             } finally {
                 dispatch(setIsRequestProcessingStatusAC(false));
             }

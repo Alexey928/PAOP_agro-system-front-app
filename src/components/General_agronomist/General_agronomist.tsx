@@ -62,7 +62,7 @@ const General_agronomist = () => {
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
-        console.log(painedPosition);
+
     }
     return (
         <div style={{width: "100vw", height: "100vh", position: "relative"}}>
@@ -72,13 +72,14 @@ const General_agronomist = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <PointOfPoligons calback={drowingFlag ? calback : () => {dispatch(setSelectedFieldID(""));}}/>
+                <PointOfPoligons calback={drowingFlag ? calback : () => {}}/>
                 {fields.map((el, i) => {
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
                             click: () => {
                                 dispatch(setSelectedFieldID(el.id));
                                 dispatch(setSelectedFieldTrajectory(el.currentPerimeter));
+                                dispatch(setCanIDrow(true));
                             }
                         }} pathOptions={{
                             color:el.fillColor ?? defaultFieldColor,
@@ -190,11 +191,17 @@ const General_agronomist = () => {
                 </button>
                 <br/>
                 Добавить поле
-                <button style={{fontSize:25,padding:0,color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)",fontWeight:"bold"}} disabled={!(painedPosition.length > 2)} onClick={() => {
+                <button
+                    className={style.add_field_button}
+                    style={{color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)"}}
+                    disabled={!(painedPosition.length > 2)}
+                    onClick={ () => {
                     setPainedPosition([]);
-                    dispatch(setSelectedField(resSelectedFieldEntity));
-                    dispatch(setFieldParamsPopupIsOpen());
                     dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)))
+                    dispatch(setSelectedFieldID(""))
+                    dispatch(setSelectedField(resSelectedFieldEntity));
+                    dispatch(setCanIDrow(true))
+                    dispatch(setFieldParamsPopupIsOpen());
                 }}> +
                 </button>
             </div>
