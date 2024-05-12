@@ -127,12 +127,30 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
         dispatch(setSelectedFieldID(""));
     }
 }
+export const updateFieldTC = (config: {fieldID:string,name:string,description:string,trajectory?:number[][],sqere:string,color:string})=>
+    async (dispatch:DispatchType)=>{
+    const {fieldID,description,name,trajectory,sqere,color} = config
+        dispatch(setIsRequestProcessingStatusAC(true));
+        try {
+            const confirm = window.confirm("Ви певні що бажаєте оновити данні цього поля ?")
+            if(confirm) {
+                const updatedField = await mapFieldAPI.updateFieldData(fieldID, name, description, color);
+                dispatch(resetFieldDataAC(updatedField.data.id, updatedField.data.name, updatedField.data.description));
+                trajectory && sqere && await dispatch(bindPerimeterToFieldTC(fieldID, trajectory, sqere)); // hear we are bind trajectory and square logically , only if both of them is chaining
+            }
+        }catch (e){
+            console.log(e)
+        }finally {
+            dispatch(setIsRequestProcessingStatusAC(false));
+            dispatch(setSelectedFieldID(""));
+        }
 
+
+}
 export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqere:string)=> async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const fieldPerimetr = await mapFieldAPI.createFieldPerimetr(fieldID,trajectoryToDTOstring(trajectory),sqere);
-        debugger
         dispatch(setFieldPerimeterAC(fieldID,fieldPerimetr.data));
     }catch (e){
         handleError(e,dispatch)
@@ -158,21 +176,8 @@ export const setDBstateTC = () => async (dispatch:DispatchType) => {
 }
 
 export const resetFieldDataTC = (fieldID:string,name:string,description:string) => async (dispatch:DispatchType)=>{
-    dispatch(setIsRequestProcessingStatusAC(true));
-    try {
-        const confirm = window.confirm("Ви певні що бажаєте оновити данні цього поля ?")
-        if(confirm) {
-            await mapFieldAPI.updateFieldData(fieldID, name, description);
-            dispatch(resetFieldDataAC(fieldID, name, description))
-        }
-    }catch (e){
-        console.log(e)
-    }finally {
-        dispatch(setIsRequestProcessingStatusAC(false));
-        dispatch(setSelectedFieldID(""));
-    }
-}
 
+}
 export const removeFieldTC = (fieldId:string)=>async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
@@ -188,3 +193,4 @@ export const removeFieldTC = (fieldId:string)=>async (dispatch:DispatchType)=>{
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
+

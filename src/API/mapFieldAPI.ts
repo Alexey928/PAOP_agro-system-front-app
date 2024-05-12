@@ -9,12 +9,13 @@ export type fieldDTOType = {
     perimeters:PerimetrType[]
     fillColor:string
 }
+
 export const mapFieldAPI = {
     create(name:string,description:string,color:string){
         return instance.post<fieldDTOType>("/fields",{name,description,color});
     },
-    updateFieldData(id:string,name:string,description:string){
-        return instance.patch<fieldDTOType>(`/fields/${id}` ,{name,description})
+    updateFieldData(id:string,name:string,description:string,color:string){
+        return instance.patch<fieldDTOType>(`/fields/${id}` ,{name,description,color})
 
     },
     removeFieldFromDB(fieldId:string){
@@ -25,7 +26,6 @@ export const mapFieldAPI = {
     },
 
     createFieldPerimetr(fieldId:string,trajectory:string,sqere:string){
-        debugger
         return instance.post<PerimetrType>("/ifield-perimetr",{fieldId,sqere,trajectory});
     }
 }
