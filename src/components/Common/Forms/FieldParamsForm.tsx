@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button,  TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectRequestProcesingStatus, selectSelectedFieldID} from "../../../Utils/selectors";
+import {
+    selectRequestProcesingStatus,
+    selectSelectedFieldID,
+    selectSelectedFieldTrajectory
+} from "../../../Utils/selectors";
+import {updateFieldTC} from "../../../BLL/map-filds-reduser";
+import FieldDemonstrateAndEdition from "../viueForDemoOrEditField/fieldDemonstrateAndEdition";
 
 interface FieldParamsFormType {
     name: string,
@@ -22,28 +28,45 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
     const dispatch = useAppDispatch();
     const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
     const selectedID = useAppSelector(selectSelectedFieldID);
+    const selectedTraiectory = useAppSelector(selectSelectedFieldTrajectory);
+
+    const [currentTrajectoru, setCurrentTrajectory] = useState(selectedTraiectory);
+    const [editTrajectory , setEditTrajectory] = useState(false)
 
     const {handleSubmit, control} = useForm<FieldParamsFormType>({
         defaultValues:{
-            name:name??"",
-            sqere:sqere??"",
-            color: color??"#57fd02",
+            name:name?? "",
+            sqere:sqere?? "",
+            color: color ?? "#57fd02",
         }
     });
-    const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
+    const onSubmit: SubmitHandler<FieldParamsFormType> = useCallback((data) => {
         console.log(data);
         if (name===data.name && sqere===data.sqere){
             window.alert("У ваших діях нема сенсу, ви не змінили жодного параметру")
             return
         }
-        setFieldParams(data.name, +data.sqere, data.color);
-        setTimeout(()=>dispatch(setFieldParamsPopupIsOpen()),500)
-    };
+
+        !selectedID && setFieldParams(data.name, +data.sqere, data.color);
+        if(selectedID){
+            sqere===data.sqere ?
+                dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color})):
+                dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color}))
+
+        }
+
+        setTimeout(() => dispatch(setFieldParamsPopupIsOpen()),500)
+    },[])
     const exitButtonHandler = ()=> {
         const confirm = window.confirm("Ви певні що бажаєте вийти ?")
        if (!confirm) return
         dispatch(setFieldParamsPopupIsOpen());
     }
+    const setNewTrajectory = (trajectory:number[][])=>{
+        setCurrentTrajectory(trajectory);
+        setEditTrajectory(!editTrajectory);
+    }
+
     return (
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}
               action="">
@@ -91,8 +114,8 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
                            />)}
                    />
                 </div>
-                <div style={{marginTop:50,maxWidth:500}}>
-                    <Controller
+                <div style={{marginTop:50,maxWidth:500,maxHeight:300}}>
+                    {!editTrajectory ? <Controller
                         name="color"
                         control={control}
                         rules={{required:"Уведыть назву"}}
@@ -112,15 +135,20 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
                                         {...field}
                             />
                         )}
-                    />
+                    /> : <FieldDemonstrateAndEdition setNewTrajectory={setNewTrajectory}/>}
                 </div>
                 <br/>
                 <br/>
                 <br/>
             <div>
-                <Button disabled={isRequestProcesing} variant={"contained"}  type={"submit"} style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
-                <Button disabled={isRequestProcesing} variant={"contained"}  color={"error"} onClick={exitButtonHandler}>ВИХІД</Button>
-                {selectedID && <Button style={{margin:20}} disabled={isRequestProcesing} variant={"contained"}  color={"success"} onClick={exitButtonHandler}>ЗМІНИТИ ПЕРИМЕТР</Button>}
+                <Button disabled={isRequestProcesing} variant={"contained"}  type={"submit"}
+                        style={{marginRight:20}} >ЗБЕРЕГТИ</Button>
+                <Button disabled={isRequestProcesing} variant={"contained"}  color={"error"}
+                        onClick={exitButtonHandler}>ВИХІД</Button>
+                {selectedID && <Button style={{margin:20}}
+                                       disabled={isRequestProcesing || editTrajectory} variant={"contained"}
+                                       color={"success"}
+                                       onClick={()=>{setEditTrajectory(!editTrajectory)}}>ЗМІНИТИ ПЕРИМЕТР</Button>}
             </div>
 
         </form>

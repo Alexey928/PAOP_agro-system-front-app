@@ -127,7 +127,7 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
         dispatch(setSelectedFieldID(""));
     }
 }
-export const updateFieldTC = (config: {fieldID:string,name:string,description:string,trajectory?:number[][],sqere:string,color:string})=>
+export const updateFieldTC = (config: {fieldID:string,name:string,description:string,trajectory?:number[][],sqere?:string,color:string})=>
     async (dispatch:DispatchType)=>{
     const {fieldID,description,name,trajectory,sqere,color} = config
         dispatch(setIsRequestProcessingStatusAC(true));
@@ -139,12 +139,11 @@ export const updateFieldTC = (config: {fieldID:string,name:string,description:st
                 trajectory && sqere && await dispatch(bindPerimeterToFieldTC(fieldID, trajectory, sqere)); // hear we are bind trajectory and square logically , only if both of them is chaining
             }
         }catch (e){
-            console.log(e)
+            console.log(e);
         }finally {
             dispatch(setIsRequestProcessingStatusAC(false));
             dispatch(setSelectedFieldID(""));
         }
-
 
 }
 export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqere:string)=> async (dispatch:DispatchType)=>{

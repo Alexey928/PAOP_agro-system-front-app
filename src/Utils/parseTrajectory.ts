@@ -24,8 +24,16 @@ export const trajectoryToDTOstring = (trajectory:number[][]):string=>{
     })
     return JSON.stringify(tr)
 }
-
 export const fromCirclePositionToTrajectory = (cirklePosition:Array<PositionType>):number[][]=>{
     return cirklePosition.map((el)=>([el.lat,el.lng]))
+}
+
+const isEquleTrajectory = (trajectory_1:number[][],trajectory_2:number[][]):boolean => {
+    if(trajectory_1.length !== trajectory_2.length) return false;
+    let result:boolean = true;
+    trajectory_1.forEach((it,i) => {
+        if(it[0]!==trajectory_2[i][0] || it[1]!==trajectory_2[i][1]) result = false
+    })
+    return result
 }
 
