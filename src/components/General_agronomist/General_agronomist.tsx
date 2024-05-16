@@ -24,12 +24,12 @@ import style from "./general-agronomist.module.css"
     lat: number,
     lng: number
 }
-const fillBlueOptions = {fillColor: 'blue'}
+ export const fillBlueOptions = {fillColor: 'blue'}
 const defaultFieldColor = "#7bf606"
-const tempBasePosition = {lat: 48.9935, lng: 36.230383};
+const tempBasePosition = {lat: 49.13658523465133, lng:35.60931303636023};
 const resSelectedFieldEntity = {id:"1",name:"",perimeters:[{sqere:""} as PerimetrType]} as FieldType
 
-const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
+ export const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
     const map = useMapEvents({
         click(e) {
             props.calback(e.latlng)
@@ -66,7 +66,7 @@ const General_agronomist = () => {
     }
     return (
         <div style={{width: "100vw", height: "100vh", position: "relative"}}>
-            <MapContainer center={[49.9935, 36.230383]} zoom={10} scrollWheelZoom={true}
+            <MapContainer center={[49.13658523465133, 35.60931303636023]} zoom={12} scrollWheelZoom={true}
                           style={{width: "100%", height: "100%", padding: 0,margin:0, zIndex: 0, cursor: "pointer"}}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

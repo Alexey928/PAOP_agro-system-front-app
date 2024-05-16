@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
-import {Button,  TextField, useMediaQuery} from "@mui/material";
+import {Button, InputAdornment, TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
 import {
@@ -54,7 +54,6 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
                 dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color}))
 
         }
-
         setTimeout(() => dispatch(setFieldParamsPopupIsOpen()),500)
     },[])
     const exitButtonHandler = ()=> {
@@ -84,7 +83,9 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
                                     id="outlined-basic"
                                     label="НАЗВА"
                                     variant="outlined"
-                                    InputProps={{ style: {backgroundColor: '#00051e' ,color:"white",}}}
+                                    InputProps={{
+                                        style: {backgroundColor: '#00051e' ,color:"white"},
+                                    }}
                                     InputLabelProps={{
                                         style: {
                                             color:!fieldState.error?'#01f6bd':"red",
@@ -100,10 +101,13 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
                        control={control}
                        render={({field,fieldState}) =>(
                            <TextField
-                               id="outlined-basic"
+                               id="outlined-start-adornment"
                                label="ПЛОЩА"
                                variant="outlined"
-                               InputProps={{ style: {backgroundColor: '#00051e' ,color:"white",}}}
+                               InputProps={{
+                                   style: {backgroundColor: '#00051e' ,color:"white"},
+                                   endAdornment: <InputAdornment position="end"> Га </InputAdornment>
+                               }}
                                InputLabelProps={{
                                    style: {
                                        color:!fieldState.error?'#01f6bd':"red",
