@@ -148,7 +148,8 @@ const General_agronomist = () => {
                                             onClick={
                                         () => {
                                             dispatch(setSelectedField(el));
-                                            dispatch(setFieldParamsPopupIsOpen())
+                                            dispatch(setFieldParamsPopupIsOpen());
+                                            dispatch(setCanIDrow(true))
                                         }
                                     }
                                     >ЗМІНИТИ</Button>

@@ -40,6 +40,8 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
             color: color ?? "#57fd02",
         }
     });
+
+    console.log(currentTrajectoru,selectedTraiectory,)
     const onSubmit: SubmitHandler<FieldParamsFormType> = useCallback((data) => {
         console.log(data);
         if (name===data.name && sqere===data.sqere){
@@ -51,6 +53,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
         if(selectedID){
             sqere===data.sqere ?
                 dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color})):
+
                 dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color}))
 
         }
