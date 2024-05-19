@@ -28,7 +28,7 @@ export const fromCirclePositionToTrajectory = (cirklePosition:Array<PositionType
     return cirklePosition.map((el)=>([el.lat,el.lng]))
 }
 
-const isEquleTrajectory = (trajectory_1:number[][],trajectory_2:number[][]):boolean => {
+export  const isEquleTrajectory = (trajectory_1:number[][],trajectory_2:number[][]):boolean => {
     if(trajectory_1.length !== trajectory_2.length) return false;
     let result:boolean = true;
     trajectory_1.forEach((it,i) => {

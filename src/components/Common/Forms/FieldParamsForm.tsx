@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
 import {Button, InputAdornment, TextField, useMediaQuery} from "@mui/material";
 import {setFieldParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
@@ -10,6 +10,7 @@ import {
 } from "../../../Utils/selectors";
 import {updateFieldTC} from "../../../BLL/map-filds-reduser";
 import FieldDemonstrateAndEdition from "../viueForDemoOrEditField/fieldDemonstrateAndEdition";
+import {isEquleTrajectory} from "../../../Utils/parseTrajectory";
 
 interface FieldParamsFormType {
     name: string,
@@ -41,24 +42,31 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
         }
     });
 
-    console.log(currentTrajectoru,selectedTraiectory,)
-    const onSubmit: SubmitHandler<FieldParamsFormType> = useCallback((data) => {
-        console.log(data);
-        if (name===data.name && sqere===data.sqere){
-            window.alert("У ваших діях нема сенсу, ви не змінили жодного параметру")
+    console.log(currentTrajectoru,selectedTraiectory,isEquleTrajectory(currentTrajectoru,selectedTraiectory))
+    const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
+    console.log(data, sqere);
+    if(selectedID){
+        if (name===data.name && sqere==data.sqere && isEquleTrajectory(currentTrajectoru,selectedTraiectory)){
+            window.alert("У ваших діях нема сенсу, ви не змінили жодного параметру !")
             return
         }
-
-        !selectedID && setFieldParams(data.name, +data.sqere, data.color);
-        if(selectedID){
-            sqere===data.sqere ?
-                dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color})):
-
-                dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color}))
-
+        if(sqere == data.sqere && !isEquleTrajectory(currentTrajectoru,selectedTraiectory)){
+            window.alert("У ваших діях нема сенсу, ви змінили ПЕРИМЕТР але не змінили ПЛОЩЮ !?")
+            return
         }
-        setTimeout(() => dispatch(setFieldParamsPopupIsOpen()),500)
-    },[])
+        if (sqere != data.sqere && isEquleTrajectory(currentTrajectoru,selectedTraiectory)){
+            window.alert("У ваших діях нема сенсу, ви змінили ПЛОЩЮ але не змінили ПЕРИМЕТР !?")
+            return
+        }
+        sqere === data.sqere && isEquleTrajectory(currentTrajectoru,selectedTraiectory) ?
+            dispatch(updateFieldTC({fieldID:selectedID,name:data.name,description:"temp des",color:data.color})):
+            dispatch(updateFieldTC({fieldID:selectedID,
+                name:data.name,description:"temp des",color:data.color,
+                trajectory:currentTrajectoru,sqere:data.sqere}
+            ))
+    }else{setFieldParams(data.name, +data.sqere, data.color);}
+    setTimeout(() => dispatch(setFieldParamsPopupIsOpen()),300)
+    }
     const exitButtonHandler = ()=> {
         const confirm = window.confirm("Ви певні що бажаєте вийти ?")
        if (!confirm) return
@@ -73,6 +81,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
         <form style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} onSubmit={handleSubmit(onSubmit)}
               action="">
             {selectedID ? <div>Оновити поле</div>:<div>Створити поле</div>}
+
                 <div style={{marginTop:50,width:matches?"25vw":"60" +
                         "vw"}}>
                    <Controller
@@ -154,7 +163,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
                         onClick={exitButtonHandler}>ВИХІД</Button>
                 {selectedID && <Button style={{margin:20}}
                                        disabled={isRequestProcesing || editTrajectory} variant={"contained"}
-                                       color={"success"}
+                                       color={isEquleTrajectory(currentTrajectoru,selectedTraiectory)?"success":"secondary"}
                                        onClick={()=>{setEditTrajectory(!editTrajectory)}}>ЗМІНИТИ ПЕРИМЕТР</Button>}
             </div>
 

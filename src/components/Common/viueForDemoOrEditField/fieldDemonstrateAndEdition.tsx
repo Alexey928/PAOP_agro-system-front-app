@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Circle, FeatureGroup, MapContainer, Polygon, TileLayer} from "react-leaflet";
-import {Button} from "@mui/material";
+import {Button, useMediaQuery} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
 import {selectDrowingFlag, selectSelectedFieldTrajectory} from "../../../Utils/selectors";
 import {LatLngExpression} from "leaflet";
@@ -23,12 +23,21 @@ const findCenter = (tragectory:number[][]):number[]=>{
 const FieldDemonstrateAndEdition:React.FC<FieldDemoPropsType> = ({setNewTrajectory}) => {
     const selectedTraiectory = useAppSelector(selectSelectedFieldTrajectory);
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
+    const matches = useMediaQuery('(min-width:900px)');
 
     const dispatch = useAppDispatch();
 
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
+    }
+    const editFieldHandler = ()=>{
+        if(painedPosition.length<3) {
+            window.alert("некоректна траекторія або ви не змінили її взвгвлі. Периметер буде повернуто до початкового значення");
+            setNewTrajectory(selectedTraiectory);
+            return
+        }
+        setNewTrajectory(fromCirclePositionToTrajectory(painedPosition));
 
     }
 
@@ -55,11 +64,11 @@ const FieldDemonstrateAndEdition:React.FC<FieldDemoPropsType> = ({setNewTrajecto
                     )
                 })}
             </MapContainer>
-            <div   style={{ position:"absolute", zIndex:10, top:5, right:5}}>
+            <div   style={{ position:"absolute", zIndex:10, top:5, right:matches?5:65}}>
                 <Button variant={"contained"}
-                        onClick={()=>{setNewTrajectory(fromCirclePositionToTrajectory(painedPosition))}}> OK </Button>
+                        onClick={editFieldHandler}> OK </Button>
             </div>
-            <div   style={{ position:"absolute", zIndex:10, top:45, right:5}}>
+            <div   style={{ position:"absolute", zIndex:10, top:45, right:matches?5:65}}>
                 <Button variant={"contained"} onClick={()=>{setPainedPosition([])}}>
                     RES
                 </Button>

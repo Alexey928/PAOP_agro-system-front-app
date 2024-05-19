@@ -49,8 +49,7 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
                     el)
             );
             case "SET/FIELD/PERIMETER":
-
-            return state.map((el) => action.fieldID === el.id?
+                return state.map((el) => action.fieldID === el.id?
                 {...el, perimeters:[...el.perimeters, action.perimeter],
                  currentPerimeter:parseTrajektory(action.perimeter.trajectory)}:
                 el
@@ -135,21 +134,24 @@ export const updateFieldTC = (config: {fieldID:string,name:string,description:st
             const confirm = window.confirm("Ви певні що бажаєте оновити данні цього поля ?")
             if(confirm) {
                 const updatedField = await mapFieldAPI.updateFieldData(fieldID, name, description, color);
+                console.log(updatedField.data)
                 dispatch(resetFieldDataAC(updatedField.data.id, updatedField.data.name, updatedField.data.description));
                 trajectory && sqere && await dispatch(bindPerimeterToFieldTC(fieldID, trajectory, sqere)); // hear we are bind trajectory and square logically , only if both of them is chaining
             }
         }catch (e){
-            console.log(e);
+            handleError(e,dispatch);
         }finally {
             dispatch(setIsRequestProcessingStatusAC(false));
             dispatch(setSelectedFieldID(""));
         }
 
 }
+
 export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqere:string)=> async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const fieldPerimetr = await mapFieldAPI.createFieldPerimetr(fieldID,trajectoryToDTOstring(trajectory),sqere);
+        console.log(fieldPerimetr.data)
         dispatch(setFieldPerimeterAC(fieldID,fieldPerimetr.data));
     }catch (e){
         handleError(e,dispatch)
