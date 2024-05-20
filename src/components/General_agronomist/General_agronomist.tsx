@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
-import FormPopup from "../Common/Popup";
+import FieldParamFormPopup from "../Common/FieldParamPopup";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {
@@ -19,6 +19,7 @@ import {
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
+import TaskParamPopup from "../Common/TaskParamPopup";
 
  export type PositionType = {
     lat: number,
@@ -58,7 +59,7 @@ const General_agronomist = () => {
        setTimeout(()=>dispatch(setDBstateTC()) )
         },[]
     )
-
+    console.log("general")
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
@@ -206,7 +207,8 @@ const General_agronomist = () => {
                 }}> +
                 </button>
             </div>
-             <FormPopup/>
+             <FieldParamFormPopup/>
+            <TaskParamPopup/>
         </div>
     );
 };

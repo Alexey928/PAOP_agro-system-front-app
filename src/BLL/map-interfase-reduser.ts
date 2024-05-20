@@ -13,12 +13,14 @@ export const  MapInterfaceInitial={
     selectedFieldTrajectory:[] as number[][],
     fieldParamsPopup: false as boolean,
     taskParamsPopup:false as boolean,
-    lastRemovedField:{} as LastRemoved
+    lastRemovedField:{} as LastRemoved,
+
+
 };
 export type MapInterfaseType = typeof MapInterfaceInitial;
 
 export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
-                          ReturnType<typeof setTaskParamsPupupIsOpen>|
+                          ReturnType<typeof setTaskParamsPopupIsOpen>|
                           ReturnType<typeof setFieldParamsPopupIsOpen>|
                           ReturnType<typeof setCanIDrow>|
                           ReturnType<typeof setSelectedFieldTrajectory>|
@@ -44,6 +46,7 @@ export const fieldIntarfaseReduser = (
             return {...state,lastRemovedField: action.field}
         case "SET/SELECTED/FIELD":
             return {...state,selectedField:action.field}
+
         default: return state
     }
 }
@@ -61,7 +64,7 @@ export const setSelectedFieldTrajectory = (trajectory:number[][]) =>(
         trajectory
     }  as const
 )
-export const setTaskParamsPupupIsOpen = () => (
+export const setTaskParamsPopupIsOpen = () => (
     {
         type:"SET/TASK/PARAMS_POPUP",
     } as const

@@ -8,12 +8,11 @@ import {
 import {createFieldTC} from "../../BLL/map-filds-reduser";
 
 interface PopupProps {
-    // setFieldParams: (id: string, name: string, squere: number) => void
+
 }
-const FormPopup: React.FC<PopupProps> = () => {
+const FieldParamFormPopup: React.FC<PopupProps> = () => {
     const dispatch = useAppDispatch()
     const fieldPopupFlag = useAppSelector(selectFieldParamsPopupIsOpen);
-    //const selectedFieldId = useAppSelector(selectSelectedFieldID);
     const selectedFieldTrajectory = useAppSelector(selectSelectedFieldTrajectory)
     const selectedField = useAppSelector(selectSelectedField);
     return (
@@ -31,4 +30,4 @@ const FormPopup: React.FC<PopupProps> = () => {
             <></>
     );
 };
-export default FormPopup;
+export default FieldParamFormPopup;
