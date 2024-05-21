@@ -15,7 +15,7 @@ import {
     setCanIDrow,
     setFieldParamsPopupIsOpen, setSelectedField,
     setSelectedFieldID,
-    setSelectedFieldTrajectory
+    setSelectedFieldTrajectory, setTaskParamsPopupIsOpen
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
@@ -137,7 +137,7 @@ const General_agronomist = () => {
                                 </div>
                                 <div style={{width:"100%",display:"flex",marginTop:20, justifyContent:"space-between"}}>
                                     <Button
-                                        onClick={()=>{}}
+                                        onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}
                                         size={"small"}
                                         color={"success"}
                                         variant={"contained"}>+ ЗАВДАННЯ
