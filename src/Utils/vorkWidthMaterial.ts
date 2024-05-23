@@ -6,6 +6,7 @@ export const materialSortByType = (materials:MaterialType[]):materialsStateType=
         fertilizer:[],
         crops:[],
         fuel:[],
+        package:[]
 
     };
     materials.forEach((material)=>{
@@ -20,7 +21,8 @@ export const materialSortByType = (materials:MaterialType[]):materialsStateType=
                 sorted.fuel.push(material);
                 break
             case "пакування":
-                
+                sorted.package.push();
+                break;
 
 
 

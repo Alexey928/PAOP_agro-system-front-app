@@ -5,6 +5,8 @@ import {Button, InputLabel, MenuItem, Select} from "@mui/material";
 import {setTaskParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
 import {useForm} from "react-hook-form";
 
+
+
 enum TypesOfTask  {
     "SHOWING_CROPS",
     "SHOWING_CROPS_WIDTH_FERTILYZE",
@@ -60,6 +62,7 @@ const TaskParamPopup = () => {
                             <MenuItem value={"10"}>Протровка семян</MenuItem>
 
                     </Select>
+
                 </div>
             <Button variant={"contained"}
                     style={{marginTop:500,backgroundColor:"red"}}
