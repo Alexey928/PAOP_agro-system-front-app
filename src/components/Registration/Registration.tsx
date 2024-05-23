@@ -55,7 +55,7 @@ const Registration = () => {
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
                         <Controller rules={{required: "уведіть імья"}} name={"Name"} control={control} render={(field)=>{
-                            console.log(field.fieldState.error,formState)
+                            console.log(formState)
                             return(
                             <li>
                                 <label style={{color:field.fieldState.error?"red":"black"}}>Name *</label>
@@ -66,7 +66,7 @@ const Registration = () => {
                             rules={{required:"Уведіть пароль",minLength:{value:6,message:"Не меньше 6 символів"}}}
                             name={"Password"} control={control}
                             render={(field)=>{
-                            console.log(field.fieldState.error)
+                            console.log(field)
                                 return(
                                 <li>
                                     <label style={{color:field.fieldState.error?"red":"black"}}>Password *</label>

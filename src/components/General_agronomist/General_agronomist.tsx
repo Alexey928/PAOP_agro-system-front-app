@@ -20,6 +20,7 @@ import {
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
 import TaskParamPopup from "../Common/TaskParamPopup";
+import {ROLS} from "../Registration/Registration";
 
  export type PositionType = {
     lat: number,
@@ -59,7 +60,7 @@ const General_agronomist = () => {
        setTimeout(()=>dispatch(setDBstateTC()) )
         },[]
     )
-    console.log("general")
+    console.log("general",ROLS[1])
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
@@ -105,6 +106,7 @@ const General_agronomist = () => {
                                                 value={""}
                                                 color={"primary"}
                                                 variant={"outlined"}
+
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                             >
