@@ -23,9 +23,6 @@ export const materialSortByType = (materials:MaterialType[]):materialsStateType=
             case "пакування":
                 sorted.package.push();
                 break;
-
-
-
         }
     })
     return{}
