@@ -65,3 +65,14 @@ code {
 .leaflet-popup-tip {
   background: rgba(50, 1, 124, 0.97) !important;
 }
+
+/*data piker*/
+.MuiFormLabel-root.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+  color: #01f6bd  ;
+}
+.MuiInputBase-input.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+  color: #01f6bd ;
+}
+.css-i4bv87-MuiSvgIcon-root{
+  stroke: #01f6bd !important;
+}
