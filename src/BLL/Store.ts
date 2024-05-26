@@ -5,13 +5,15 @@ import {AuthActionsType, authReducer} from "./auth-reduser";
 import {AppActionsType, appReducer} from "./app-reduser";
 import {fieldReducer, FieldStateActionType} from "./map-filds-reduser";
 import {fieldIntarfaseReduser, MapInterfaseActionType} from "./map-interfase-reduser";
+import {MaterialActionType, materialReduser, materialsStateType} from "./material-reduser";
 
 
 const rootReducer = combineReducers({
    auth: authReducer,
    app:appReducer,
    mapFields:fieldReducer,
-   fieldsInterfase:fieldIntarfaseReduser
+   fieldsInterfase:fieldIntarfaseReduser,
+   materials:materialReduser
 })
 
 export const store = createStore(rootReducer,applyMiddleware(thunkMiddleware));
@@ -21,7 +23,8 @@ export type AppRootStateType = ReturnType<typeof rootReducer>;
 type AppRootActionsType = AuthActionsType |
                           AppActionsType  |
                           FieldStateActionType|
-                          MapInterfaseActionType;
+                          MapInterfaseActionType|
+                          MaterialActionType;
 
 export type AppThunkType<ReturnType = void> = ThunkAction<
     ReturnType,

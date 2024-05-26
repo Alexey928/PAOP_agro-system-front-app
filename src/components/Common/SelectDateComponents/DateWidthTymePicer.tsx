@@ -8,7 +8,9 @@ export default function BasicDateTimePicker() {
     return (
         <LocalizationProvider  dateAdapter={AdapterDayjs}>
             <DemoContainer  components={['DateTimePicker']}>
-                <DateTimePicker  label="Дата виконання" />
+                <DateTimePicker ampm={false} onClose={()=>{
+                    console.log("close")}} onChange={(value)=>{
+                    console.log(value?value.toDate():null)}} label="Планова дата виконання" />
             </DemoContainer>
         </LocalizationProvider>
     );

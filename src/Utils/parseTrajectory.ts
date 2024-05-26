@@ -1,4 +1,3 @@
-
 import {PositionType} from "../components/General_agronomist/General_agronomist";
 
 export type Trajecktory = {
@@ -17,6 +16,7 @@ export const parseTrajektory = (trajektory:string):number[][]=>{
     }
     return result
 }
+
 export const trajectoryToDTOstring = (trajectory:number[][]):string=>{
     const tr:Trajecktory={}
     trajectory.forEach((item,index)=>{
@@ -24,9 +24,11 @@ export const trajectoryToDTOstring = (trajectory:number[][]):string=>{
     })
     return JSON.stringify(tr)
 }
+
 export const fromCirclePositionToTrajectory = (cirklePosition:Array<PositionType>):number[][]=>{
     return cirklePosition.map((el)=>([el.lat,el.lng]))
 }
+
 
 export  const isEquleTrajectory = (trajectory_1:number[][],trajectory_2:number[][]):boolean => {
     if(trajectory_1.length !== trajectory_2.length) return false;
