@@ -25,6 +25,7 @@ code {
   background-color: rgba(1, 9, 40, 0.96);
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 }
 .close-button {
   z-index: 100;

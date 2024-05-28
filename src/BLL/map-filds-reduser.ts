@@ -160,7 +160,7 @@ export const bindPerimeterToFieldTC = (fieldID:string,trajectory:number[][],sqer
     }
 }
 
-export const setDBstateTC = () => async (dispatch:DispatchType) => {
+export const setFieldsDBstateTC = () => async (dispatch:DispatchType) => {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const fieldsFromDB = await mapFieldAPI.getAll();
@@ -176,9 +176,6 @@ export const setDBstateTC = () => async (dispatch:DispatchType) => {
     }
 }
 
-export const resetFieldDataTC = (fieldID:string,name:string,description:string) => async (dispatch:DispatchType)=>{
-
-}
 export const removeFieldTC = (fieldId:string)=>async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {

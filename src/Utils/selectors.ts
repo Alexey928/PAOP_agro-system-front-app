@@ -1,6 +1,7 @@
 import {AppRootStateType} from "../BLL/Store";
 import {ROOLS} from "../API/AuthApi";
 import {FieldType, mapFieldStateType} from "../BLL/map-filds-reduser";
+import {MaterialItemType} from "../BLL/material-reducer";
 
 // app state selectors
 export const selectAppInitStatus = (state: AppRootStateType): boolean => state.app.isInitialized;
@@ -17,13 +18,27 @@ export const selectFields = (state:AppRootStateType):mapFieldStateType => state.
 
 // fields interfase state selectors
 export const selectSelectedFieldID = (state:AppRootStateType):string|null => state.fieldsInterfase.selectedFieldID;
-export const selectSelectedField  = (state:AppRootStateType):FieldType =>state.fieldsInterfase.selectedField
+export const selectSelectedField  = (state:AppRootStateType):FieldType => state.fieldsInterfase.selectedField
 export const selectFieldParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.fieldParamsPopup;
 export const selectTaskParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.taskParamsPopup;
 export const selectDrowingFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.canIDraw;
 export const selectSelectdFieldColor = (state:AppRootStateType):string => state.fieldsInterfase.selectedFieldColor;
-export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory
-//
+export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory;
+//materials selectors
+export const selectMaterialsByOptionalType = (state:AppRootStateType,type?:MaterialItemType)=> {
+    if(!type) return state
+    switch (type){
+        case "пальне":
+            return state.materials.fuel;
+        case "пакування":
+            return state.materials.package;
+        case "насіння":
+            return state.materials.crops;
+        case "добрива":
+            return state.materials.fertilizer;
+
+    }
+}
 
 
 

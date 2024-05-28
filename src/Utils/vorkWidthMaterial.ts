@@ -1,8 +1,8 @@
-import {initialMaterialStateCreator, materialsStateType, MaterialType, remoweMaterial} from "../BLL/material-reduser";
+import {initialMaterialStateCreator, materialsStateType, MaterialType, remoweMaterialAC} from "../BLL/material-reducer";
 
 export const materialSortByType = (materials:MaterialType[],  state?:materialsStateType):materialsStateType=>{
 
-    const sortedMaterials:materialsStateType = state ? initialMaterialStateCreator(): state!
+    const sortedMaterials:materialsStateType = state ? state : initialMaterialStateCreator();
 
     materials.forEach((material)=>{
         switch (material.type) {
@@ -22,30 +22,48 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
                 sortedMaterials.suply.push(material)
                 break
             case "хімія":
-                sortedMaterials.kemikal.push(material)
+                sortedMaterials.chemistry.push(material)
         }
     })
-    return sortedMaterials
+    return {...sortedMaterials}
 }
 
- export const removeByTypeOfTask =  (action:ReturnType<typeof remoweMaterial>,state:materialsStateType)=>{
+ export const removeByTypeOfTask =  (action:ReturnType<typeof remoweMaterialAC>, state:materialsStateType)=>{
     switch (action.payload.type) {
         case "хімія":
-            return {...state,kemikal: state.kemikal.filter(it=>it.id!==action.payload.id)}
+            return {...state,chemistry: state.chemistry.filter(it=>it.id!==action.payload.id)};
         case "супутні":
-            return {...state,suply: state.suply.filter(it=>it.id!==action.payload.id)}
+            return {...state,suply: state.suply.filter(it=>it.id!==action.payload.id)};
+        case "добрива":
+            return {...state,fertilizer: state.fertilizer.filter(it=>it.id!==action.payload.id)};
+        case "пальне":
+            return {...state,fuel: state.fuel.filter(it=>it.id!==action.payload.id)};
+        case "насіння":
+            return {...state,crops: state.crops.filter(it=>it.id!==action.payload.id)};
+        case "пакування":
+            return {...state,package: state.package.filter(it=>it.id!==action.payload.id)};
         default:
         return {...state}
 
     }
 
 }
+
 export const updateMaterialHeandler = (material:MaterialType,state:materialsStateType):materialsStateType=>{
+    //const mapShalowCopy = (arr: MaterialType[]) => arr.map(it => it.id!==material.id ? it : material)?????
     switch (material.type) {
         case "хімія":
-            return {...state,kemikal: state.kemikal.map(it => it.id!==material.id ? it : material)}
+            return {...state,chemistry:state.chemistry.map(it => it.id!==material.id ? it : material)};
         case "супутні":
-            return {...state,suply: state.suply.filter(it=>it.id!==material.id)}
+            return {...state,suply: state.suply.map(it => it.id!==material.id ? it : material)};
+        case "пакування":
+            return {...state,package: state.package.map(it => it.id!==material.id ? it : material)};
+        case "насіння":
+            return {...state,crops: state.crops.map(it => it.id!==material.id ? it : material)};
+        case "пальне":
+            return {...state,fuel: state.fuel.map(it => it.id!==material.id ? it : material)};
+        case "добрива":
+            return {...state,fertilizer: state.fertilizer.map(it => it.id!==material.id ? it : material)};
         default:
             return {...state}
 

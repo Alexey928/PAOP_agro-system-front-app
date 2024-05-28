@@ -12,6 +12,7 @@ import RedirectFromRole from "./Utils/Redirect";
 import General_agronomist from "./components/General_agronomist/General_agronomist";
 import SimpleAgronomist from "./components/Simple_agronomist/SimpleAgronomist";
 import Accountant from "./components/Accuntant/Accountant";
+import {setMaterialsFromDB} from "./BLL/material-reducer";
 
 function App() {
     const isAppInitialized = useSelector(selectAppInitStatus);
@@ -19,9 +20,10 @@ function App() {
     const appError = useSelector(selectAppError)
     const dispatch = useAppDispatch();
     const navigate: NavigateFunction = useNavigate();
-    console.log("app")
+
     useEffect(() => {
         dispatch(initializeAppTC());
+        dispatch(setMaterialsFromDB())
     }, [dispatch]);
 
     const redirect = useMemo(()=>{

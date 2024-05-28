@@ -11,63 +11,69 @@ enum TypesOfTask  {
     "SHOWING_CROPS",
     "SHOWING_CROPS_WIDTH_FERTILYZE",
 }
-
 const TaskParamPopup = () => {
+
     const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
     const dispatch = useAppDispatch();
 
     const { control, handleSubmit, formState} = useForm({
         defaultValues: {
             type: "",
-            materials: "",
+            materials:[] as {}[],
             from:Date,
-            Rolls:""
         },
     })
 
     return (
         fieldPopupFlag ? <div className="popup">
+            <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
                 <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",}}>
                     <InputLabel id="demo-simple-select-label">Тип завданя</InputLabel>
                     <Select
-                            SelectDisplayProps={
-                                {style: {
-                                        color:'#01f6bd',
-                                        width:150
-                                    }
-                                }}
-                            value={""}
-                            color={"primary"}
-                            variant={"outlined"}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            onChange={(e)=>{
-                                console.log(e)}}
-                        >
-                            <MenuItem value={"0"}></MenuItem>
-                            <MenuItem value={"1"}>Посів культури</MenuItem>
-                            <MenuItem value={"8"}>Посів із добривами</MenuItem>
-                            <MenuItem value={"2"}>Оприскування</MenuItem>
-                            <MenuItem value={"3"}>Обробіток грунту</MenuItem>
-                            <MenuItem value={"4"}>Внесення Добрив</MenuItem>
-                            <MenuItem value={"5"}>Збирання врожаю</MenuItem>
-                            <MenuItem value={"6"}>Валкування</MenuItem>
-                            <MenuItem value={"7"}>Покос Багаторічника</MenuItem>
-                            <MenuItem value={"8"}>Тюкування</MenuItem>
-                            <MenuItem value={"9"}>Транспортування</MenuItem>
-                            <MenuItem value={"10"}>Протровка семян</MenuItem>
-
+                        SelectDisplayProps={
+                            {style: {
+                                    color:'#01f6bd',
+                                    width:150,
+                                }
+                            }}
+                        value={""}
+                        color={"primary"}
+                        variant={"outlined"}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        onChange={(e)=>{
+                            console.log(e)}}
+                    >
+                        <MenuItem value={"0"}></MenuItem>
+                        <MenuItem value={"1"}>Посів культури</MenuItem>
+                        <MenuItem value={"8"}>Посів із добривами</MenuItem>
+                        <MenuItem value={"2"}>Оприскування</MenuItem>
+                        <MenuItem value={"3"}>Обробіток грунту</MenuItem>
+                        <MenuItem value={"4"}>Внесення Добрив</MenuItem>
+                        <MenuItem value={"5"}>Збирання врожаю</MenuItem>
+                        <MenuItem value={"6"}>Валкування</MenuItem>
+                        <MenuItem value={"7"}>Покос Багаторічника</MenuItem>
+                        <MenuItem value={"8"}>Тюкування</MenuItem>
+                        <MenuItem value={"9"}>Транспортування</MenuItem>
+                        <MenuItem value={"10"}>Протровка семян</MenuItem>
                     </Select>
                     <BasicDateTimePicker/>
-
                 </div>
-            <Button variant={"contained"}
-                    style={{marginTop:500,backgroundColor:"red"}}
-                    onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}> Вихід
-            </Button>
+            </div>
+            <div>
+                <Button variant={"contained"}
+                        color={"error"}
+                        onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}> Вихід
+                </Button>
+                <Button variant={"contained"}
+                        color={"primary"}
+                        onClick={()=>{}}> OK
+                </Button>
+            </div>
 
-            </div>:
-            <></>
+
+        </div>:
+        <></>
     );
 };
 

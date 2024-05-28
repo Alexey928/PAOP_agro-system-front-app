@@ -5,7 +5,7 @@ import {AuthActionsType, authReducer} from "./auth-reduser";
 import {AppActionsType, appReducer} from "./app-reduser";
 import {fieldReducer, FieldStateActionType} from "./map-filds-reduser";
 import {fieldIntarfaseReduser, MapInterfaseActionType} from "./map-interfase-reduser";
-import {MaterialActionType, materialReduser, materialsStateType} from "./material-reduser";
+import {MaterialActionType, materialReducer, materialsStateType} from "./material-reducer";
 
 
 const rootReducer = combineReducers({
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
    app:appReducer,
    mapFields:fieldReducer,
    fieldsInterfase:fieldIntarfaseReduser,
-   materials:materialReduser
+   materials:materialReducer
 })
 
 export const store = createStore(rootReducer,applyMiddleware(thunkMiddleware));
