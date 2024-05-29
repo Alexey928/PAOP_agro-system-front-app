@@ -13,10 +13,10 @@ export const  MapInterfaceInitial={
     selectedFieldTrajectory:[] as number[][],
     fieldParamsPopup: false as boolean,
     taskParamsPopup:false as boolean,
+    materialEditorIsOpen: false as boolean,
     lastRemovedField:{} as LastRemoved,
-
-
 };
+
 export type MapInterfaseType = typeof MapInterfaceInitial;
 
 export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
@@ -25,7 +25,8 @@ export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
                           ReturnType<typeof setCanIDrow>|
                           ReturnType<typeof setSelectedFieldTrajectory>|
                           ReturnType<typeof setLastRemovedField>|
-                          ReturnType<typeof setSelectedField>;
+                          ReturnType<typeof setSelectedField>|
+                          ReturnType<typeof setMaterialEditorFlag>;
 
 export const fieldIntarfaseReduser = (
                                          state:MapInterfaseType = MapInterfaceInitial,
@@ -38,6 +39,8 @@ export const fieldIntarfaseReduser = (
             return {...state,taskParamsPopup:!state.taskParamsPopup}
         case "SET/FIELD/PARAMS_POPUP":
             return {...state,fieldParamsPopup:!state.fieldParamsPopup}
+        case "SET/MATERIAL/EDITOR/FLAG":
+            return {...state,materialEditorIsOpen:!state.materialEditorIsOpen}
         case "SET/CAN/I/DRO/FLAG":
             return action.flag?{...state, canIDraw: !action.flag}:{...state,canIDraw:!state.canIDraw};
         case "SET/SELECTED/FIELD/TRAJECTORY":
@@ -72,6 +75,11 @@ export const setTaskParamsPopupIsOpen = () => (
 export const setFieldParamsPopupIsOpen = ()=>(
     {
         type:"SET/FIELD/PARAMS_POPUP"
+    } as const
+)
+export const setMaterialEditorFlag  =  ()=>(
+    {
+        type:"SET/MATERIAL/EDITOR/FLAG"
     } as const
 )
 export const setCanIDrow = (flag?:boolean)=>(

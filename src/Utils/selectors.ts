@@ -24,9 +24,9 @@ export const selectTaskParamsPopupIsOpen = (state:AppRootStateType):boolean => s
 export const selectDrowingFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.canIDraw;
 export const selectSelectdFieldColor = (state:AppRootStateType):string => state.fieldsInterfase.selectedFieldColor;
 export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory;
+export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.materialEditorIsOpen
 //materials selectors
-export const selectMaterialsByOptionalType = (state:AppRootStateType,type?:MaterialItemType)=> {
-    if(!type) return state
+export const selectMaterialsByOptionalType = (type:MaterialItemType) => (state:AppRootStateType)  => {
     switch (type){
         case "пальне":
             return state.materials.fuel;
@@ -36,6 +36,8 @@ export const selectMaterialsByOptionalType = (state:AppRootStateType,type?:Mater
             return state.materials.crops;
         case "добрива":
             return state.materials.fertilizer;
+        default:
+            return []
 
     }
 }

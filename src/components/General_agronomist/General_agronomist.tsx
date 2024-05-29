@@ -3,13 +3,13 @@ import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, useMapEve
 import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FieldParamFormPopup from "../Common/FieldParamPopup";
-import {Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, styled, Switch} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, styled, Switch} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {selectDrowingFlag, selectFields, selectRequestProcesingStatus} from "../../Utils/selectors";
 import {FieldType, PerimetrType, removeFieldTC, setFieldsDBstateTC} from "../../BLL/map-filds-reduser";
 import {
     setCanIDrow,
-    setFieldParamsPopupIsOpen, setSelectedField,
+    setFieldParamsPopupIsOpen, setMaterialEditorFlag, setSelectedField,
     setSelectedFieldID,
     setSelectedFieldTrajectory, setTaskParamsPopupIsOpen
 } from "../../BLL/map-interfase-reduser";
@@ -17,6 +17,7 @@ import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
 import TaskParamPopup from "../Common/TaskParamPopup";
 import {ROLS} from "../Registration/Registration";
+import MaterialParamsPopup from "../Common/MaterialParamsPopup";
 
  export type PositionType = {
     lat: number,
@@ -226,18 +227,17 @@ const General_agronomist = () => {
                 }
             }>
 
-                <FormControlLabel
-                    control={<MaterialUISwitch sx={{ m: 1 }} />}
-                    label="Мал"
-                    onChange={()=>{dispatch(setCanIDrow())}}
-                    checked={drwoingFlag}
-                />
+                <MaterialUISwitch sx={{ m: 1 }}
+                                  onChange={()=>{
+                                    dispatch(setCanIDrow())}
+                                  }
+                                  checked={drwoingFlag} />
                 <button style={{color:"red",marginTop:6}} onClick={() => {
                     setPainedPosition([]);
                 }}>
                     {"Сброс точек"}
                 </button>
-                <button>матеріали</button>
+                <button onClick={()=>{dispatch(setMaterialEditorFlag())}}>матеріали</button>
                 Добавить поле
                 <button
                     className={style.add_field_button}
@@ -255,6 +255,7 @@ const General_agronomist = () => {
             </div>
              <FieldParamFormPopup/>
              <TaskParamPopup/>
+            {/*<MaterialParamsPopup />*/}
         </div>
     );
 };

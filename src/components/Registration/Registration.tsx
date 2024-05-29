@@ -15,7 +15,7 @@ export enum ROLS{
    "ACCOUNTANT",
 }
 
-interface IFormInputs {
+ interface IFormInputs {
  Name: string;
  Password: string;
  Email:string
@@ -66,7 +66,6 @@ const Registration = () => {
                             rules={{required:"Уведіть пароль",minLength:{value:6,message:"Не меньше 6 символів"}}}
                             name={"Password"} control={control}
                             render={(field)=>{
-                            console.log(field)
                                 return(
                                 <li>
                                     <label style={{color:field.fieldState.error?"red":"black"}}>Password *</label>
