@@ -40,17 +40,17 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
             transform: 'translateX(22px)',
             '& .MuiSwitch-thumb:before': {
                 backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-                    '#ee0303',
-                )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+                    '#20fd00',
+                )}" d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"/><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"/></svg>')`,
             },
             '& + .MuiSwitch-track': {
                 opacity: 1,
-                backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+                backgroundColor: theme.palette.mode === 'dark' ? '#01264b' : '#4afc03',
             },
         },
     },
     '& .MuiSwitch-thumb': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+        backgroundColor: theme.palette.mode === 'dark' ? '#3c82f8' : '#2060a1',
         width: 32,
         height: 32,
         '&::before': {
@@ -63,13 +63,13 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-                '#05f8db',
-            )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+                '#fc232a',
+            )}" d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"/><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"/></svg>')`,
         },
     },
     '& .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#ff0000',
         borderRadius: 20 / 2,
     },
 }));
@@ -222,40 +222,46 @@ const General_agronomist = () => {
                 {
                     boxShadow:"rgb(41 34 94 / 84%) -1px 0px 7px 1px",
                     color:"white",position:"absolute",
-                    right:8,top:8,display:"flex",flexDirection:"column",
+                    right:8,top:8,display:"flex",flexDirection:"column",width:145,
                     backgroundColor:"rgba(2,9,47,0.78)", padding:5,borderRadius:5
                 }
             }>
+              <div style={{width:"100%"}}>
+                  <MaterialUISwitch sx={{ m: 1 }}
+                                    onChange={()=>{
+                                        dispatch(setCanIDrow());setPainedPosition([])}
+                                    }
+                                    checked={drwoingFlag} />
+                  <Button size={"small"} style={{display:"inline-block", width:50}} variant={"contained"} color={"primary"} onClick={() => {
+                      setPainedPosition([]);
+                  }}>
+                      {"Скид"}
+                  </Button>
+              </div>
+                <hr style={{width:"100%"}}/>
+                {drwoingFlag && <div>
+                    <Button  variant={"contained"} onClick={()=>{dispatch(setMaterialEditorFlag())}}>матеріали</Button>
+                    <hr style={{width:"100%"}}/>
 
-                <MaterialUISwitch sx={{ m: 1 }}
-                                  onChange={()=>{
-                                    dispatch(setCanIDrow())}
-                                  }
-                                  checked={drwoingFlag} />
-                <button style={{color:"red",marginTop:6}} onClick={() => {
-                    setPainedPosition([]);
-                }}>
-                    {"Сброс точек"}
-                </button>
-                <button onClick={()=>{dispatch(setMaterialEditorFlag())}}>матеріали</button>
-                Добавить поле
-                <button
-                    className={style.add_field_button}
-                    style={{color:!(painedPosition.length > 2)?"rgba(82,74,101,0.92)":"rgb(8,227,1)"}}
-                    disabled={!(painedPosition.length > 2)}
-                    onClick={ () => {
-                    setPainedPosition([]);
-                    dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)))
-                    dispatch(setSelectedFieldID(""))
-                    dispatch(setSelectedField(resSelectedFieldEntity));
-                    dispatch(setCanIDrow(true))
-                    dispatch(setFieldParamsPopupIsOpen());
-                }}> +
-                </button>
+                    <Button
+                        color={(painedPosition.length > 2)?"success":"error"}
+                        variant={"contained"}
+                        onClick={ () => {
+                            if(!(painedPosition.length > 2)) return
+                            setPainedPosition([]);
+                            dispatch(setSelectedFieldTrajectory(fromCirclePositionToTrajectory(painedPosition)))
+                            dispatch(setSelectedFieldID(""))
+                            dispatch(setSelectedField(resSelectedFieldEntity));
+                            dispatch(setCanIDrow(true))
+                            dispatch(setFieldParamsPopupIsOpen());
+                        }}> +Поле
+                    </Button>
+                </div>}
+
             </div>
              <FieldParamFormPopup/>
              <TaskParamPopup/>
-            {/*<MaterialParamsPopup />*/}
+            <MaterialParamsPopup />
         </div>
     );
 };

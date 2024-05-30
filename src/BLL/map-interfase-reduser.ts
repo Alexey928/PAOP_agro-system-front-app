@@ -40,6 +40,7 @@ export const fieldIntarfaseReduser = (
         case "SET/FIELD/PARAMS_POPUP":
             return {...state,fieldParamsPopup:!state.fieldParamsPopup}
         case "SET/MATERIAL/EDITOR/FLAG":
+            console.log("mat")
             return {...state,materialEditorIsOpen:!state.materialEditorIsOpen}
         case "SET/CAN/I/DRO/FLAG":
             return action.flag?{...state, canIDraw: !action.flag}:{...state,canIDraw:!state.canIDraw};
