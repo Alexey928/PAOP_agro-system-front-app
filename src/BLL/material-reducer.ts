@@ -92,6 +92,32 @@ export const createMaterialInDB_TC = ()=> async (dispatch:DispatchType)=>{
     }catch (e) {
 
     }finally {
-
+        dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
+export const removeMaterialFromDB = ()=> async () =>(dispatch:DispatchType) =>{
+    dispatch(setIsRequestProcessingStatusAC(true));
+
+    try {
+
+    }catch (e) {
+
+    }finally {
+        dispatch(setIsRequestProcessingStatusAC(false));
+    }
+
+}
+export const updateMaterialFromDB = ()=> async () =>(dispatch:DispatchType) =>{
+    dispatch(setIsRequestProcessingStatusAC(true));
+
+    try {
+
+    }catch (e) {
+
+    }finally {
+        dispatch(setIsRequestProcessingStatusAC(false));
+    }
+
+}
+
+

@@ -3,14 +3,25 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from "dayjs";
 
-export default function BasicDateTimePicker() {
+type BasicDateTimePickerPropsType = {
+    onChange:(...event: any[]) => void
+
+}
+export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({onChange})=> {
     return (
         <LocalizationProvider  dateAdapter={AdapterDayjs}>
             <DemoContainer  components={['DateTimePicker']}>
-                <DateTimePicker ampm={false} onClose={()=>{
-                    console.log("close")}} onChange={(value)=>{
-                    console.log(value?value.toDate():null)}} label="Планова дата виконання" />
+                <DateTimePicker value={dayjs()} ampm={false}
+                    onClose={()=>{
+                    console.log("close")}
+                }
+                    onChange={(value)=>{
+                    console.log(value?value.toDate():null)
+                       if(value) onChange(value.toDate())
+                    }}
+                label="Планова дата виконання" />
             </DemoContainer>
         </LocalizationProvider>
     );

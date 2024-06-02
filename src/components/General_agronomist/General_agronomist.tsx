@@ -146,6 +146,7 @@ const General_agronomist = () => {
                                                             color:'#01f6bd',
                                                         }
                                                     }}
+                                                label={"Виконані"}
                                                 value={""}
                                                 color={"primary"}
                                                 variant={"outlined"}
@@ -166,6 +167,7 @@ const General_agronomist = () => {
                                                            color:'#01f6bd',
                                                        }
                                                }}
+                                                label={"До виконання"}
                                                 value={""}
                                                 color={"primary"}
                                                 variant={"outlined"}
@@ -213,7 +215,7 @@ const General_agronomist = () => {
                 })}
                 {painedPosition.map((el, i) => {
                     return (
-                        <Circle key={el.lat * el.lng - i} center={[el.lat, el.lng]} pathOptions={fillBlueOptions}
+                        <Circle key={el.lat * el.lng + i*el.lng} center={[el.lat, el.lng]} pathOptions={fillBlueOptions}
                                 radius={18}/>
                     )
                 })}
@@ -246,6 +248,7 @@ const General_agronomist = () => {
                     <Button
                         color={(painedPosition.length > 2)?"success":"error"}
                         variant={"contained"}
+                        style={{color:(painedPosition.length > 2)?"#03fcd7":"white"}}
                         onClick={ () => {
                             if(!(painedPosition.length > 2)) return
                             setPainedPosition([]);
@@ -254,7 +257,7 @@ const General_agronomist = () => {
                             dispatch(setSelectedField(resSelectedFieldEntity));
                             dispatch(setCanIDrow(true))
                             dispatch(setFieldParamsPopupIsOpen());
-                        }}> +Поле
+                        }}> + Поле
                     </Button>
                 </div>}
 

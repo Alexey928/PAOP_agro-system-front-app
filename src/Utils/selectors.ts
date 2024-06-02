@@ -38,8 +38,8 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType) => (state:A
             return state.materials.fertilizer;
         case "хімія":
             return state.materials.chemistry;
-
-
+        case "супутні":
+            return state.materials.suply
         default:
             return []
 
