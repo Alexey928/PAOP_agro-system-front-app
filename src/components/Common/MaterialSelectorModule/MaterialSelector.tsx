@@ -2,9 +2,9 @@ import React, {useMemo, useState} from 'react';
 import {useAppSelector} from "../../../BLL/Store";
 import {selectMaterialsByOptionalType} from "../../../Utils/selectors";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-
 import {MaterialItemType} from "../../../BLL/material-reducer";
 import {MaterialType} from "../../../BLL/material-reducer";
+
 
 interface IFormInputs {
     materialID:number
@@ -14,6 +14,8 @@ type MaterialSelectorType  = {
     materialType:MaterialItemType
     krud?:boolean
     onChange?:(material:MaterialType) => void
+    task?:string
+    onSelect?:(material:MaterialType)=>void
 }
 
 
@@ -28,10 +30,9 @@ const plaseolderMaterial:MaterialType = {
 
 }
 
-const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onChange}) => {
-
-    const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType))
-    const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(currentMaterials[0]??plaseolderMaterial)
+const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onChange,task,onSelect}) => {
+    const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task))
+    const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(currentMaterials[0] ?? plaseolderMaterial)
 
     const hashByIDMaterials = useMemo(():{[key:string]:MaterialType}=>{
         const hash:{[key:string]:MaterialType} = {};
@@ -42,6 +43,9 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onCh
     const setMaterialHeandler = (value:string) => {
         setCurrentMaterial(hashByIDMaterials[value]);
         if(onChange) {
+
+        }
+        if(onSelect){
 
         }
     }
@@ -56,7 +60,7 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onCh
                         id="demo-simple-select"
                         value={currentMaterial.id}
                         label={materialType}
-                        onChange={onChange && krud?(e)=>{setMaterialHeandler(e.target.value)}:()=>{}}>
+                        onChange={(e)=>{setMaterialHeandler(e.target.value)}}>
 
                         {currentMaterials.map((el:MaterialType)=>{
                             return(
@@ -65,13 +69,12 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onCh
                         })}
                     </Select>
                 </FormControl>
-            {krud && <div>
+            {krud && onChange ? <div>
                             <Button variant={"contained"}>+</Button>
                             <Button variant={"contained"} color={"error"} style={{margin:2}}>DEl</Button>
                             <Button variant={"contained"} color={"secondary"}>EDIT</Button>
+            </div>:<></>
 
-
-            </div>
             }
 
     </div>

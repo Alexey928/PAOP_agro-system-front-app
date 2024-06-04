@@ -7,7 +7,7 @@ import {BasicDateTimePicker} from "./SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 
 
-enum TypesOfTask  {
+export enum TypesOfTask  {
     "SHOWING_CROPS",
     "SHOWING_CROPS_WIDTH_FERTILYZE",
 }
@@ -16,23 +16,18 @@ interface IFormInputs{
     from:string
 }
 const TaskParamPopup = () => {
-
-
     const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
     const dispatch = useAppDispatch();
 
-    const { control, handleSubmit, formState} = useForm({
+    const { control, handleSubmit, formState, getValues} = useForm({
         defaultValues: {
             type: "",
-            //materials:[] as {}[],
             from:"",
         },
     })
-    const onSubmit:SubmitHandler<IFormInputs> = (data) => {
-        console.log(data)
+    const onSubmit:SubmitHandler<IFormInputs> = () => {
+        console.log(TypesOfTask[+getValues().type])
     }
-
-
     return (
         fieldPopupFlag ?
             <form  onSubmit={handleSubmit(onSubmit)}>
@@ -50,16 +45,15 @@ const TaskParamPopup = () => {
                                                     width:150,
                                                 }
                                             }}
-
                                         value={field.value}
                                         color={"primary"}
                                         variant={"outlined"}
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         onChange={field.onChange}
-                                    ><MenuItem value={""}></MenuItem>
-                                        <MenuItem value={"1"} >Посів культури</MenuItem>
-                                        <MenuItem value={"8"}>Посів із добривами</MenuItem>
+                                    >
+                                        <MenuItem value={"0"} >Посів культури</MenuItem>
+                                        <MenuItem value={"1"}>Посів із добривами</MenuItem>
                                         <MenuItem value={"2"}>Оприскування</MenuItem>
                                         <MenuItem value={"3"}>Обробіток грунту</MenuItem>
                                         <MenuItem value={"4"}>Внесення Добрив</MenuItem>
@@ -75,7 +69,7 @@ const TaskParamPopup = () => {
 
                             <Controller control={control} rules={{ required:"Вкажіть дату!" }} render={({field})=>(
                                 <FormControl>
-                                     <BasicDateTimePicker onChange={field.onChange}/>
+                                     <BasicDateTimePicker value={field.value} onChange={field.onChange}/>
                                 </FormControl>
                             )} name={"from"}
                             />
@@ -97,9 +91,7 @@ const TaskParamPopup = () => {
                 </div>
             </form>:
             <></>
-
-
-    );
+        );
 };
 
 export default TaskParamPopup;

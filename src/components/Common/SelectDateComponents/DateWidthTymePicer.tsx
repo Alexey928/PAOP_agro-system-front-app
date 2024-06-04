@@ -7,13 +7,14 @@ import dayjs from "dayjs";
 
 type BasicDateTimePickerPropsType = {
     onChange:(...event: any[]) => void
+    value:string
 
 }
-export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({onChange})=> {
+export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({onChange,value})=> {
     return (
         <LocalizationProvider  dateAdapter={AdapterDayjs}>
             <DemoContainer  components={['DateTimePicker']}>
-                <DateTimePicker value={dayjs()} ampm={false}
+                <DateTimePicker  value={value?dayjs(value):null} ampm={false}
                     onClose={()=>{
                     console.log("close")}
                 }

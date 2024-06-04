@@ -103,7 +103,7 @@ const General_agronomist = () => {
        setTimeout(()=>dispatch(setFieldsDBstateTC()))
         },[]
     )
-    console.log("general",ROLS[1])
+    console.log("general",ROLS[1]);
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
@@ -234,7 +234,11 @@ const General_agronomist = () => {
                                         dispatch(setCanIDrow());setPainedPosition([])}
                                     }
                                     checked={drwoingFlag} />
-                  <Button size={"small"} style={{display:"inline-block", width:50}} variant={"contained"} color={"primary"} onClick={() => {
+                  <Button size={"small"} style={{display:"inline-block",width:50,color:painedPosition.length?"#7bf606":"white",fontWeight:painedPosition.length?"bold":"normal"}}
+
+                          variant={"contained"}
+                          color={painedPosition.length?"secondary":"primary"}
+                          onClick={() => {
                       setPainedPosition([]);
                   }}>
                       {"Скид"}
