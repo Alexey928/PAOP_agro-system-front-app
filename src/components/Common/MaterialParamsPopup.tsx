@@ -13,7 +13,7 @@ const dispatch = useDispatch();
         popupFlag ?
             <div>
                 <div className="popup" style={{flexDirection:"row",flexWrap:"wrap",gap:20,overflow:"scroll"}}>
-                    <MaterialSelector materialType={"хімія"} krud/>
+                    <MaterialSelector materialType={"хімія"} krud onChange={()=>{}}/>
                     <MaterialSelector materialType={"пакування"} krud/>
                     <MaterialSelector materialType={"насіння"} krud/>
                     <MaterialSelector materialType={"супутні"} krud/>

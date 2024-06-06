@@ -121,16 +121,18 @@ const General_agronomist = () => {
                 {fields.map((el, i) => {
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
-                            click: () => {
-                                dispatch(setSelectedFieldID(el.id));
-                                dispatch(setSelectedFieldTrajectory(el.currentPerimeter));
-                                dispatch(setCanIDrow(true));
-                            }
-                        }} pathOptions={{
-                            color:el.fillColor ?? defaultFieldColor,
-                            fillColor: el.fillColor ?? defaultFieldColor,
-                        }}>
-                            <Popup  className={"leaflet-popup-content-wrapper"}>
+                                click: () => {
+                                    dispatch(setSelectedFieldID(el.id));
+                                    dispatch(setSelectedFieldTrajectory(el.currentPerimeter));
+                                    dispatch(setCanIDrow(true));
+                                }
+                            }}
+                                pathOptions={{
+                                color:el.fillColor ?? defaultFieldColor,
+                                fillColor: el.fillColor ?? defaultFieldColor,
+                            }}>
+                            <Popup
+                               closeButton={false}  className={"leaflet-popup-content-wrapper"}>
                                 <header className={style.popup_header}>
                                     <div style={{color: "white", textAlign: "center",fontSize:18}}>
                                         {el.name??"Поле X Полевая Y"}  <span style={{color:"#01f6bd"}}>S = {el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere:"Не определено!"} Га</span>
@@ -209,6 +211,7 @@ const General_agronomist = () => {
                                     >ВИДАЛИТИ</Button>
                                 </div>
                             </Popup>
+                            {/* React.memo  contayner */}
                             <Polygon  positions={el.currentPerimeter as LatLngExpression[]}/>
                         </FeatureGroup>
                     )

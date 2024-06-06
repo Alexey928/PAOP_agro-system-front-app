@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 import {selectTaskParamsPopupIsOpen} from "../../Utils/selectors";
-import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {setTaskParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
 import {BasicDateTimePicker} from "./SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
+import TaskMaterialSelector, {MaterialTaskType} from "./TaskMaterialSelector";
 
 
 export enum TypesOfTask  {
@@ -13,9 +14,18 @@ export enum TypesOfTask  {
 }
 interface IFormInputs{
     type:string,
-    from:string
+    from:string,
+    taskSquere:number
 }
+
+type TaskParamPopupPropsType = {
+    currentFieldSqere:number
+}
+
+
 const TaskParamPopup = () => {
+    const [materialTasksEntity, setMaterialTaskEntity] = useState<MaterialTaskType[]>([]);
+
     const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
     const dispatch = useAppDispatch();
 
@@ -23,6 +33,8 @@ const TaskParamPopup = () => {
         defaultValues: {
             type: "",
             from:"",
+            taskSquere:10
+
         },
     })
     const onSubmit:SubmitHandler<IFormInputs> = () => {
@@ -50,7 +62,7 @@ const TaskParamPopup = () => {
                                         variant={"outlined"}
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        onChange={field.onChange}
+                                        onChange={(event,)=>{field.onChange(event);setMaterialTaskEntity([])}}
                                     >
                                         <MenuItem value={"0"} >Посів культури</MenuItem>
                                         <MenuItem value={"1"}>Посів із добривами</MenuItem>
@@ -66,14 +78,32 @@ const TaskParamPopup = () => {
                                     </Select>
                                 </FormControl>
                             )} />
+                            <TextField
+                                onChange={(event)=>{}}
+                                type={"number"}
+                                InputProps={{
+                                    style: {backgroundColor: '#00051e' ,color:"white"},
+                                    endAdornment: <InputAdornment color={"white"} position="end"> {`ГА`} </InputAdornment>
+                                }}
+                                id="outlined-start-adornment"
+                                label="Площа завдання"
+                                variant="outlined"
 
+                            />
                             <Controller control={control} rules={{ required:"Вкажіть дату!" }} render={({field})=>(
                                 <FormControl>
                                      <BasicDateTimePicker value={field.value} onChange={field.onChange}/>
                                 </FormControl>
                             )} name={"from"}
                             />
-                            {formState.isValid && <div>valid</div>}
+                            {
+                                formState.isValid &&
+                                <div>
+                                    <TaskMaterialSelector setTascMaterial={(taskMaterial)=>{}}
+                                                                             currentFieldSqere={123}
+                                                                             taskType={TypesOfTask[+getValues().type]}/>
+                                </div>
+                            }
 
                         </div>
                     </div>

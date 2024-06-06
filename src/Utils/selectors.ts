@@ -53,7 +53,6 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
                 return state.materials.crops
             case "SHOWING_CROPS_WIDTH_FERTILYZE":
                 return [...state.materials.crops, ...state.materials.fertilizer]
-
             default:
                 return []
 
