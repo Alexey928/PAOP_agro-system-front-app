@@ -22,12 +22,14 @@ type MaterialSelectorType  = {
 const plaseolderMaterial:MaterialType = {
     id:"0",
     name:"заглушка",
+    subName:"",
     type:"хімія",
     cValue:"л",
     consumptionRate:"",
+    metaData:"",
     basePrice:0,
     packaging:0,
-
+    thousenMas:0
 }
 
 const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onChange,task,onSelect}) => {

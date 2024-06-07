@@ -4,21 +4,23 @@ import {setIsRequestProcessingStatusAC} from "./app-reduser";
 import {materialAPI} from "../API/materialAPI";
 
 type CValueType = "га"|"кг"|"л"|"м"|"шт"
-export type MaterialItemType = "хімія"|"добрива"|"пальне"|"насіння"|"пакування"|"супутні"|"ВОДА"|""
+export type MaterialItemType = "хімія"|"добрива"|"насіння"|"пакування"|"супутні"|"ВОДА"|""
 
 export type MaterialType={
     id:string,
-    name:string,
+    name:string,// конкретное название
+    subName:string//пестициды,гербициды,инсектициды , фунгициды... у семян это культура : кукуруза ячмень и тд
     type:MaterialItemType
     cValue:CValueType,// base logic value
     consumptionRate:string,
     basePrice:number,// "$" default
-    packaging:number, // cValue "200кг,шт,л..."
+    packaging:number,// cValue "200кг,шт,л..."
+    metaData:string// ДВ у удобрений и химии или Геннерация у семян или
+    thousenMas:number// только для семян у остальных 0
 }
 export const initialMaterialStateCreator = () => ( {
     fertilizer:[] as MaterialType[],
     crops:[] as MaterialType[],
-    fuel:[] as MaterialType[],
     package:[] as MaterialType[],
     suply:[] as MaterialType[],
     chemistry:[] as MaterialType[],
@@ -83,11 +85,11 @@ export const setMaterialsFromDB = () => async (dispatch:DispatchType)=>{
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
-export const createMaterialInDB_TC = ()=> async (dispatch:DispatchType)=>{
-
+export const createMaterialInDB_TC = (material:MaterialType)=> async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
-
     try {
+
+
 
     }catch (e) {
 

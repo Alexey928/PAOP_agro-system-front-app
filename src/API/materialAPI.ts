@@ -7,5 +7,8 @@ export const materialAPI = {
     },
     createMaterial(){
         return instance.post("materials",{})
+    },
+    updateMaterial(){
+        return instance.patch("materials", {})
     }
 }

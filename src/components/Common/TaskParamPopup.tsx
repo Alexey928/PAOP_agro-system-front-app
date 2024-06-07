@@ -11,7 +11,18 @@ import TaskMaterialSelector, {MaterialTaskType} from "./TaskMaterialSelector";
 export enum TypesOfTask  {
     "SHOWING_CROPS",
     "SHOWING_CROPS_WIDTH_FERTILYZE",
+    "SPRAYING",
+    "SOIL_WORKS",
+    "FERTILIZATION",
+    "HARVEST",
+    "WINDROWING_OF_PERENNIALS",
+    "MOWING_PERENNIALS",
+    "BALINING_OF_PERENNIALS",
+    "TRANPORTING",
+    "SEED TREATMENT",
 }
+
+
 interface IFormInputs{
     type:string,
     from:string,
@@ -23,7 +34,7 @@ type TaskParamPopupPropsType = {
 }
 
 
-const TaskParamPopup = () => {
+const TaskParamPopup:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) => {
     const [materialTasksEntity, setMaterialTaskEntity] = useState<MaterialTaskType[]>([]);
 
     const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
@@ -33,7 +44,7 @@ const TaskParamPopup = () => {
         defaultValues: {
             type: "",
             from:"",
-            taskSquere:10
+            taskSquere:currentFieldSqere
 
         },
     })
@@ -45,7 +56,7 @@ const TaskParamPopup = () => {
             <form  onSubmit={handleSubmit(onSubmit)}>
                 <div className="popup">
                     <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
-                        <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",}}>
+                        <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                             <Controller control={control} name={"type"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(
                                 <FormControl>
                                     <InputLabel  id="demo-simple-select-label">Тип завданя</InputLabel>
@@ -78,18 +89,30 @@ const TaskParamPopup = () => {
                                     </Select>
                                 </FormControl>
                             )} />
-                            <TextField
-                                onChange={(event)=>{}}
-                                type={"number"}
-                                InputProps={{
-                                    style: {backgroundColor: '#00051e' ,color:"white"},
-                                    endAdornment: <InputAdornment color={"white"} position="end"> {`ГА`} </InputAdornment>
-                                }}
-                                id="outlined-start-adornment"
-                                label="Площа завдання"
-                                variant="outlined"
+                            <Controller name={"taskSquere"} control={control} rules={{ required:"Вкажіть!" }}
+                                        render={({field})=>(
+                                <FormControl>
+                                    <TextField
+                                        onChange={field.onChange}
+                                        type={"number"}
+                                        InputProps={{
+                                            style: {backgroundColor: '#00051e' ,color:"white"},
+                                            endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ГА`} </InputAdornment>
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color:'#01f6bd'
+                                            }
+                                        }}
+                                        id="outlined-start-adornment"
+                                        label="Площа завдання"
+                                        variant="outlined"
 
-                            />
+                                    />
+                                </FormControl>
+
+                            )}/>
+
                             <Controller control={control} rules={{ required:"Вкажіть дату!" }} render={({field})=>(
                                 <FormControl>
                                      <BasicDateTimePicker value={field.value} onChange={field.onChange}/>
@@ -100,24 +123,25 @@ const TaskParamPopup = () => {
                                 formState.isValid &&
                                 <div>
                                     <TaskMaterialSelector setTascMaterial={(taskMaterial)=>{}}
-                                                                             currentFieldSqere={123}
+                                                                             currentFieldSqere={currentFieldSqere}
                                                                              taskType={TypesOfTask[+getValues().type]}/>
                                 </div>
                             }
 
                         </div>
+                        <div>
+                            <Button variant={"contained"}
+                                    color={"error"}
+                                    onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}> Вихід
+                            </Button>
+                            <Button type={"submit"}
+                                    variant={"contained"}
+                                    color={"primary"}
+                                    onClick={()=>{}}> OK
+                            </Button>
+                        </div>
                     </div>
-                    <div>
-                        <Button variant={"contained"}
-                                color={"error"}
-                                onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}> Вихід
-                        </Button>
-                        <Button type={"submit"}
-                                variant={"contained"}
-                                color={"primary"}
-                                onClick={()=>{}}> OK
-                        </Button>
-                    </div>
+
                 </div>
             </form>:
             <></>

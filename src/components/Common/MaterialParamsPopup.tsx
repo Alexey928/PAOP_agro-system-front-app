@@ -18,7 +18,7 @@ const dispatch = useDispatch();
                     <MaterialSelector materialType={"насіння"} krud/>
                     <MaterialSelector materialType={"супутні"} krud/>
                     <MaterialSelector materialType={"добрива"} krud/>
-                    <MaterialSelector materialType={"пальне"} krud/>
+
                     <Button onClick={()=>{dispatch(setMaterialEditorFlag())}}
                             style={{backgroundColor:"red",color:"white",borderRadius:"50%",position:"fixed",top:10,right:30,maxWidth:50}}
                             variant={"contained"}

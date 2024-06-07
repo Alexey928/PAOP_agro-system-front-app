@@ -12,9 +12,6 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
             case "насіння":
                 sortedMaterials.crops.push(material);
                 break;
-            case "пальне":
-                sortedMaterials.fuel.push(material);
-                break
             case "пакування":
                 sortedMaterials.package.push(material);
                 break;
@@ -36,8 +33,7 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
             return {...state,suply: state.suply.filter(it=>it.id!==action.payload.id)};
         case "добрива":
             return {...state,fertilizer: state.fertilizer.filter(it=>it.id!==action.payload.id)};
-        case "пальне":
-            return {...state,fuel: state.fuel.filter(it=>it.id!==action.payload.id)};
+
         case "насіння":
             return {...state,crops: state.crops.filter(it=>it.id!==action.payload.id)};
         case "пакування":
@@ -60,8 +56,7 @@ export const updateMaterialHeandler = (material:MaterialType,state:materialsStat
             return {...state,package: state.package.map(it => it.id!==material.id ? it : material)};
         case "насіння":
             return {...state,crops: state.crops.map(it => it.id!==material.id ? it : material)};
-        case "пальне":
-            return {...state,fuel: state.fuel.map(it => it.id!==material.id ? it : material)};
+
         case "добрива":
             return {...state,fertilizer: state.fertilizer.map(it => it.id!==material.id ? it : material)};
         default:

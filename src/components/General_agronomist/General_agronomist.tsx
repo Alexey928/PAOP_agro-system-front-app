@@ -270,7 +270,7 @@ const General_agronomist = () => {
 
             </div>
              <FieldParamFormPopup/>
-             <TaskParamPopup/>
+             <TaskParamPopup currentFieldSqere={123}/>
             <MaterialParamsPopup />
         </div>
     );

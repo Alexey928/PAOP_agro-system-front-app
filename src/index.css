@@ -23,9 +23,9 @@ code {
   width: 100%;
   height: 100%;
   background-color: rgba(1, 9, 40, 0.96);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*justify-content: space-evenly;*/
 }
 .close-button {
   z-index: 100;
@@ -76,4 +76,8 @@ code {
 }
 .css-i4bv87-MuiSvgIcon-root{
   stroke: #01f6bd !important;
+}
+/*number field lable*/
+.MuiInputAdornment-root.MuiInputAdornment-positionEnd.MuiInputAdornment-outlined{
+  color: #54ff00;
 }

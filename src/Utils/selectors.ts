@@ -27,11 +27,10 @@ export const selectSelectdFieldColor = (state:AppRootStateType):string => state.
 export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory;
 export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.materialEditorIsOpen
 //materials selectors
+
 export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:string) => (state:AppRootStateType)  => {
     if(task){
         switch (type){
-            case "пальне":
-                return state.materials.fuel;
             case "пакування":
                 return state.materials.package;
             case "насіння":
@@ -44,21 +43,35 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
                 return state.materials.suply
             default:
                 return []
-
         }
-
     }else{
         switch (task) {
             case"SHOWING_CROPS":
                 return state.materials.crops
             case "SHOWING_CROPS_WIDTH_FERTILYZE":
-                return [...state.materials.crops, ...state.materials.fertilizer]
+                return [...state.materials.crops, ...state.materials.fertilizer];
+            case "SPRAYING":
+                return [...state.materials.chemistry];
+            case "SOIL_WORKS":
+                return []
+            case "FERTILIZATION":
+                return [...state.materials.fertilizer]
+            case "HARVEST":
+                return []
+            case "WINDROWING_OF_PERENNIALS":// валкование
+                return []
+            case "MOWING_PERENNIALS"://покос кормовоЇ
+                return []
+            case "BALINING_OF_PERENNIALS":
+                return [...state.materials.package]
+            case "TRANPORTING":
+                return [];
+            case "SEED TREATMENT":
+                return [...state.materials.chemistry]
             default:
                 return []
-
         }}
-
-}
+    }
 
 
 

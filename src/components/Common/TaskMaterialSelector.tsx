@@ -59,14 +59,14 @@ const TaskMaterialSelector:React.FC<TaskMaterialsPropsType> = ({taskType,current
         <div>
             <MaterialSelector materialType={""} task={taskType}  onSelect={updateMaterialTask}/>
             {
-                <>
+                !! materialTasks.length && <>
                     {
                          <TextField
                              onChange={(event)=>{updatePlanedMaterialAmount(+event.target.value)}}
                              type={"number"}
                              InputProps={{
                                  style: {backgroundColor: '#00051e' ,color:"white"},
-                                 endAdornment: <InputAdornment position="end"> {`/га`} </InputAdornment>
+                                 endAdornment: <InputAdornment position="end"> {`??/га`} </InputAdornment>
                              }}
                             id="outlined-start-adornment"
                             label="Плануєма Н/В"
