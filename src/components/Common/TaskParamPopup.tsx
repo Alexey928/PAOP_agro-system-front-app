@@ -10,7 +10,7 @@ const TaskParamPopup = () => {
         fieldPopupFlag ? <div className="popup">
             <div>Створення Завдання для:{<div style={{color:"#54ff00"}}>{selectedField.name.toUpperCase()}</div>}</div>
             <TaskParamForm currentFieldSqere={+selectedField.perimeters[selectedField.perimeters.length-1].sqere}/>
-        </div>:<></>
+        </div>: <></>
     );
 };
 
