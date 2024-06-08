@@ -1,13 +1,14 @@
 import React from 'react';
 import MaterialSelector from "./MaterialSelectorModule/MaterialSelector";
 import {useAppSelector} from "../../BLL/Store";
-import {selectMaterialeditorFlag} from "../../Utils/selectors";
+import {selectMaterialeditorFlag, selectSelectedField} from "../../Utils/selectors";
 import {Button} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {setMaterialEditorFlag} from "../../BLL/map-interfase-reduser";
 
-const MaterialParamsPopup = () => {
+const MaterialParamsPopupContayner = () => {
 const popupFlag = useAppSelector(selectMaterialeditorFlag);
+
 const dispatch = useDispatch();
     return (
         popupFlag ?
@@ -34,4 +35,4 @@ const dispatch = useDispatch();
     );
 };
 
-export default MaterialParamsPopup;
+export default MaterialParamsPopupContayner;

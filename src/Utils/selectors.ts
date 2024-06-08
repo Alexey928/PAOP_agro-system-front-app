@@ -2,7 +2,7 @@ import {AppRootStateType} from "../BLL/Store";
 import {ROOLS} from "../API/AuthApi";
 import {FieldType, mapFieldStateType} from "../BLL/map-filds-reduser";
 import {MaterialItemType} from "../BLL/material-reducer";
-import {TypesOfTask} from "../components/Common/TaskParamPopup";
+import {TypesOfTask} from "../components/Common/Forms/TaskParamForm";
 
 // app state selectors
 export const selectAppInitStatus = (state: AppRootStateType): boolean => state.app.isInitialized;

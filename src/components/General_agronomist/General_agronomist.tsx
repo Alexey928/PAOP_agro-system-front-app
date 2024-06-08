@@ -15,9 +15,10 @@ import {
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
-import TaskParamPopup from "../Common/TaskParamPopup";
+import TaskParamForm from "../Common/Forms/TaskParamForm";
 import {ROLS} from "../Registration/Registration";
-import MaterialParamsPopup from "../Common/MaterialParamsPopup";
+import MaterialParamsPopupContayner from "../Common/MaterialParamsPopupContayner";
+import TaskParamPopup from "../Common/TaskParamPopup";
 
  export type PositionType = {
     lat: number,
@@ -125,6 +126,7 @@ const General_agronomist = () => {
                                     dispatch(setSelectedFieldID(el.id));
                                     dispatch(setSelectedFieldTrajectory(el.currentPerimeter));
                                     dispatch(setCanIDrow(true));
+                                    dispatch(setSelectedField(el))
                                 }
                             }}
                                 pathOptions={{
@@ -185,7 +187,7 @@ const General_agronomist = () => {
                                 </div>
                                 <div style={{width:"100%",display:"flex",marginTop:20, justifyContent:"space-between"}}>
                                     <Button
-                                        onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}
+                                        onClick={()=>{dispatch(setTaskParamsPopupIsOpen());}}
                                         size={"small"}
                                         color={"success"}
                                         variant={"contained"}>+ ЗАВДАННЯ
@@ -270,8 +272,8 @@ const General_agronomist = () => {
 
             </div>
              <FieldParamFormPopup/>
-             <TaskParamPopup currentFieldSqere={123}/>
-            <MaterialParamsPopup />
+            <TaskParamPopup/>
+            <MaterialParamsPopupContayner />
         </div>
     );
 };
