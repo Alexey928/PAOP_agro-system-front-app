@@ -15,6 +15,7 @@ export const  MapInterfaceInitial={
     taskParamsPopup:false as boolean,
     materialEditorIsOpen: false as boolean,
     lastRemovedField:{} as LastRemoved,
+
 };
 
 export type MapInterfaseType = typeof MapInterfaceInitial;

@@ -3,7 +3,7 @@ import {DispatchType} from "./Store";
 import {setIsRequestProcessingStatusAC} from "./app-reduser";
 import {materialAPI} from "../API/materialAPI";
 
-type CValueType = "га"|"кг"|"л"|"м"|"шт"
+export  type CValueType = "га"|"кг"|"л"|"м"|"шт"
 export type MaterialItemType = "хімія"|"добрива"|"насіння"|"пакування"|"супутні"|"ВОДА"|""
 
 export type MaterialType={
@@ -21,7 +21,8 @@ export type MaterialType={
 export const initialMaterialStateCreator = () => ( {
     fertilizer:[] as MaterialType[],
     crops:[] as MaterialType[],
-    package:[] as MaterialType[],
+
+    //package:[] as MaterialType[],
     suply:[] as MaterialType[],
     chemistry:[] as MaterialType[],
     Water:{} as MaterialType

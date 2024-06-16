@@ -12,9 +12,7 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
             case "насіння":
                 sortedMaterials.crops.push(material);
                 break;
-            case "пакування":
-                sortedMaterials.package.push(material);
-                break;
+
             case "супутні":
                 sortedMaterials.suply.push(material)
                 break
@@ -33,11 +31,9 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
             return {...state,suply: state.suply.filter(it=>it.id!==action.payload.id)};
         case "добрива":
             return {...state,fertilizer: state.fertilizer.filter(it=>it.id!==action.payload.id)};
-
         case "насіння":
             return {...state,crops: state.crops.filter(it=>it.id!==action.payload.id)};
-        case "пакування":
-            return {...state,package: state.package.filter(it=>it.id!==action.payload.id)};
+
         default:
         return {...state}
 
@@ -52,8 +48,7 @@ export const updateMaterialHeandler = (material:MaterialType,state:materialsStat
             return {...state,chemistry:state.chemistry.map(it => it.id!==material.id ? it : material)};
         case "супутні":
             return {...state,suply: state.suply.map(it => it.id!==material.id ? it : material)};
-        case "пакування":
-            return {...state,package: state.package.map(it => it.id!==material.id ? it : material)};
+
         case "насіння":
             return {...state,crops: state.crops.map(it => it.id!==material.id ? it : material)};
 

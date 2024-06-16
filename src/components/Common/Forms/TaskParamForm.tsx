@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectSelectedField, selectTaskParamsPopupIsOpen} from "../../../Utils/selectors";
+import { selectTaskParamsPopupIsOpen} from "../../../Utils/selectors";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {setTaskParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {BasicDateTimePicker} from "../SelectDateComponents/DateWidthTymePicer";

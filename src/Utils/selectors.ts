@@ -29,10 +29,9 @@ export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => stat
 //materials selectors
 
 export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:string) => (state:AppRootStateType)  => {
-    if(task){
+    if(!task){
         switch (type){
-            case "пакування":
-                return state.materials.package;
+
             case "насіння":
                 return state.materials.crops;
             case "добрива":
@@ -63,7 +62,7 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
             case "MOWING_PERENNIALS"://покос кормовоЇ
                 return []
             case "BALINING_OF_PERENNIALS":
-                return [...state.materials.package]
+                return [...state.materials.suply]
             case "TRANPORTING":
                 return [];
             case "SEED TREATMENT":

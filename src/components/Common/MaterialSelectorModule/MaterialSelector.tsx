@@ -13,7 +13,7 @@ interface IFormInputs {
 type MaterialSelectorType  = {
     materialType:MaterialItemType
     krud?:boolean
-    onChange?:(material:MaterialType) => void
+    onAddMaterial?:(material:MaterialType) => void
     task?:string
     onSelect?:(material:MaterialType)=>void
 }
@@ -23,7 +23,7 @@ const plaseolderMaterial:MaterialType = {
     id:"0",
     name:"заглушка",
     subName:"",
-    type:"хімія",
+    type:"насіння",
     cValue:"л",
     consumptionRate:"",
     metaData:"",
@@ -32,10 +32,21 @@ const plaseolderMaterial:MaterialType = {
     thousenMas:0
 }
 
-const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onChange,task,onSelect}) => {
-    const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task))
-    const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(currentMaterials[0] ?? plaseolderMaterial)
-
+const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onAddMaterial,task,onSelect}) => {
+    const plaseolderMaterial:MaterialType = {
+        id:"0",
+        name:"заглушка",
+        subName:"",
+        type:materialType,
+        cValue:"л",
+        consumptionRate:"",
+        metaData:"",
+        basePrice:0,
+        packaging:0,
+        thousenMas:0
+    }
+    const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task));
+    const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(currentMaterials[0] ?? plaseolderMaterial);
     const hashByIDMaterials = useMemo(():{[key:string]:MaterialType}=>{
         const hash:{[key:string]:MaterialType} = {};
         currentMaterials.forEach((it) => hash[`${it.id}`] = it)
@@ -44,11 +55,11 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onCh
 
     const setMaterialHeandler = (value:string) => {
         setCurrentMaterial(hashByIDMaterials[value]);
-        if(onChange) {
-
+        if(onAddMaterial) {
+            onAddMaterial(hashByIDMaterials[value])
         }
         if(onSelect){
-
+            onSelect(hashByIDMaterials[value])
         }
     }
     return (
@@ -71,8 +82,10 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onCh
                         })}
                     </Select>
                 </FormControl>
-            {krud && onChange ? <div>
-                            <Button variant={"contained"}>+</Button>
+            {krud && onAddMaterial ? <div>
+                            <Button onClick={()=>{
+                                onAddMaterial(currentMaterial)
+                               }} variant={"contained"}>+</Button>
                             <Button variant={"contained"} color={"error"} style={{margin:2}}>DEl</Button>
                             <Button variant={"contained"} color={"secondary"}>EDIT</Button>
             </div>:<></>
