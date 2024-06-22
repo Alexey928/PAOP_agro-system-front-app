@@ -1,7 +1,7 @@
 import {materialSortByType, removeByTypeOfTask, updateMaterialHeandler} from "../Utils/vorkWidthMaterial";
 import {DispatchType} from "./Store";
 import {setIsRequestProcessingStatusAC} from "./app-reduser";
-import {materialAPI} from "../API/materialAPI";
+import {materialAPI, MaterialDTOtype} from "../API/materialAPI";
 
 export  type CValueType = "га"|"кг"|"л"|"м"|"шт"
 export type MaterialItemType = "хімія"|"добрива"|"насіння"|"пакування"|"супутні"|"ВОДА"|""
@@ -9,23 +9,21 @@ export type MaterialItemType = "хімія"|"добрива"|"насіння"|"�
 export type MaterialType={
     id:string,
     name:string,// конкретное название
-    subName:string//пестициды,гербициды,инсектициды , фунгициды... у семян это культура : кукуруза ячмень и тд
+    subType:string//пестициды,гербициды,инсектициды , фунгициды... у семян это культура : кукуруза ячмень и тд
     type:MaterialItemType
     cValue:CValueType,// base logic value
     consumptionRate:string,
     basePrice:number,// "$" default
     packaging:number,// cValue "200кг,шт,л..."
     metaData:string// ДВ у удобрений и химии или Геннерация у семян или
-    thousenMas:number// только для семян у остальных 0
+    massOfThousen:number// только для семян у остальных 0
 }
 export const initialMaterialStateCreator = () => ( {
     fertilizer:[] as MaterialType[],
     crops:[] as MaterialType[],
-
-    //package:[] as MaterialType[],
     suply:[] as MaterialType[],
     chemistry:[] as MaterialType[],
-    Water:{} as MaterialType
+
 } as const);
 
 export type materialsStateType = ReturnType<typeof initialMaterialStateCreator>
@@ -79,20 +77,22 @@ export const setMaterialsFromDB = () => async (dispatch:DispatchType)=>{
     try {
         const {data:materialData} = await materialAPI.getAll();
         console.log(materialData, "< - materials");
-        materialData.length && setMaterialsFromDB_AC(materialData);
+        materialData.length && dispatch(setMaterialsFromDB_AC(materialData));
     }catch (e){
         console.log(e)
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
-export const createMaterialInDB_TC = (material:MaterialType)=> async (dispatch:DispatchType)=>{
+export const createMaterial_TC = (material:MaterialDTOtype)=> async (dispatch:DispatchType)=>{
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
+        debugger
+        const {data:newMaterial} = await materialAPI.createMaterial(material);
+        console.log(newMaterial);
+        dispatch(setNewMaterialFromDB_AC(newMaterial));
 
-
-
-    }catch (e) {
+    }catch (e){
 
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));

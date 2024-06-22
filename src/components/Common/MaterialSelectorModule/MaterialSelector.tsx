@@ -1,6 +1,10 @@
 import React, {useMemo, useState} from 'react';
 import {useAppSelector} from "../../../BLL/Store";
-import {selectMaterialsByOptionalType} from "../../../Utils/selectors";
+import {
+    selectMaterialsByOptionalSubType,
+    selectMaterialsByOptionalType,
+    subTypesOfMaterial
+} from "../../../Utils/selectors";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {MaterialItemType} from "../../../BLL/material-reducer";
 import {MaterialType} from "../../../BLL/material-reducer";
@@ -12,6 +16,7 @@ interface IFormInputs {
 
 type MaterialSelectorType  = {
     materialType:MaterialItemType
+    materialSubType?:subTypesOfMaterial
     krud?:boolean
     onAddMaterial?:(material:MaterialType) => void
     task?:string
@@ -20,38 +25,43 @@ type MaterialSelectorType  = {
 
 
 const plaseolderMaterial:MaterialType = {
-    id:"0",
+    id:"",
     name:"заглушка",
-    subName:"",
+    subType:"",
     type:"насіння",
     cValue:"л",
     consumptionRate:"",
     metaData:"",
     basePrice:0,
     packaging:0,
-    thousenMas:0
+    massOfThousen:0
 }
 
-const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onAddMaterial,task,onSelect}) => {
+const MaterialSelector:React.FC<MaterialSelectorType> = ({materialSubType ,materialType,krud,onAddMaterial,task,onSelect}) => {
+    console.log("ms ", materialType)
     const plaseolderMaterial:MaterialType = {
-        id:"0",
+        id:"",
         name:"заглушка",
-        subName:"",
+        subType:"",
         type:materialType,
         cValue:"л",
         consumptionRate:"",
         metaData:"",
         basePrice:0,
         packaging:0,
-        thousenMas:0
+        massOfThousen:0
     }
     const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task));
-    const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(currentMaterials[0] ?? plaseolderMaterial);
+    const currentMaterialsBySubtype = useAppSelector(selectMaterialsByOptionalSubType(materialSubType,materialType));
+
+    const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(plaseolderMaterial);
+
     const hashByIDMaterials = useMemo(():{[key:string]:MaterialType}=>{
         const hash:{[key:string]:MaterialType} = {};
-        currentMaterials.forEach((it) => hash[`${it.id}`] = it)
+        !currentMaterialsBySubtype.length?currentMaterials.forEach((it) => hash[`${it.id}`] = it):
+         currentMaterialsBySubtype.forEach((it) => hash[`${it.id}`] = it)
         return hash
-    },[currentMaterials])
+    },[currentMaterials,currentMaterialsBySubtype])
 
     const setMaterialHeandler = (value:string) => {
         setCurrentMaterial(hashByIDMaterials[value]);
@@ -65,21 +75,33 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onAd
     return (
         <div style={{width:400,height:120,flexWrap:"wrap",backgroundColor:"#090d44bd",padding:5,borderRadius:15,boxShadow:" rgb(68 71 108 / 75%) 2px 5px 16px 3px"}}>
             <FormControl  style={{width:190}} >
-                    <InputLabel id="demo-simple-select-label">{materialType}</InputLabel>
+                    <InputLabel id="demo-simple-select-label">{materialType?materialType:"Оберіть матеріл"}</InputLabel>
                     <Select
+                        SelectDisplayProps={
+                            {style: {
+                                    color:'#01f6bd',
+                                    width:200,
+
+                                }
+                            }}
                         color={"secondary"}
                         variant={"outlined"}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={currentMaterial.id}
-                        label={materialType}
+                        label={materialType ? materialType : "Оберіть матеріл"}
                         onChange={(e)=>{setMaterialHeandler(e.target.value)}}>
-
-                        {currentMaterials.map((el:MaterialType)=>{
-                            return(
-                                <MenuItem value={el.id}>{el.name}</MenuItem>
-                            )
-                        })}
+                        {!currentMaterialsBySubtype.length ? currentMaterials.map((el:MaterialType)=>{
+                                return(
+                                    <MenuItem value={el.id}>{el.name}</MenuItem>
+                                )
+                            }):
+                            currentMaterialsBySubtype.map((el:MaterialType)=>{
+                                return(
+                                    <MenuItem value={el.id}>{el.name}</MenuItem>
+                                )
+                            })
+                        }
                     </Select>
                 </FormControl>
             {krud && onAddMaterial ? <div>
@@ -95,5 +117,4 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialType,krud,onAd
     </div>
     );
 };
-
 export default MaterialSelector;

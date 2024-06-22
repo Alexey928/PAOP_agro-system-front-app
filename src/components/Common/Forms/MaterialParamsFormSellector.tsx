@@ -1,5 +1,5 @@
 import React from 'react';
-import {MaterialItemType, MaterialType} from "../../../BLL/material-reducer";
+import {MaterialItemType} from "../../../BLL/material-reducer";
 import CemicalCreateParamsForm from "./materialForms/CemicalCreateParamsForm";
 import FertilizerCreateParamsForm from "./materialForms/FertilizerCreateParamsForm";
 import CropsCreateParamsForm from "./materialForms/CropsCreateParamsForm";
@@ -7,9 +7,9 @@ import SuplyAMterialCreateParamsForm from "./materialForms/suplyAMterialCreatePa
 type MaterialParamsFormSellectorPropsType = {
     typeOfMaterial:MaterialItemType
     onExit:()=>void
-
-
 }
+
+
 const MaterialParamsFormSellector:React.FC<MaterialParamsFormSellectorPropsType> = ({onExit, typeOfMaterial}) => {
     return (
         <div>

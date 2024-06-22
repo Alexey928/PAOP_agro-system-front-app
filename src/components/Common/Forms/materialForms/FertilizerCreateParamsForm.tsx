@@ -23,12 +23,13 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
     const { control, handleSubmit, formState, getValues,resetField} = useForm({
         defaultValues: {
             fertilizeName:"",
-            fertilizeType:"хімія" as MaterialItemType,
+            fertilizeType:"добрива" as MaterialItemType,
             fertilizeSubType:"",
             fertilizeMetadata:"",
             cValue:"кг" as CValueType,
             consumptionRate:"",
             basePrice:0,
+
         },
     })
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
@@ -71,27 +72,34 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         />
                                     </FormControl>
                                 )}/>
-                    <Controller name={"fertilizeSubType"} control={control} rules={{ required:"Вкажіть!" }}
-                                render={({field})=>(
-                                    <FormControl>
-                                        <TextField
-                                            type={"text"}
-                                            InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                    <Controller control={control} name={"fertilizeSubType"} rules={{ required:"Оберіть!" }} render={({field})=>(
+                        <FormControl>
+                            <InputLabel  id="demo-simple-select-label">Тип добрива</InputLabel>
+                            <Select
+                                label={"Тип добрива"}
+                                SelectDisplayProps={
+                                    {style: {
+                                            color:'#01f6bd',
+                                            width:150,
+                                        }
 
-                                            }}
-                                            InputLabelProps={{
-                                                style: {
-                                                    color:'#01f6bd'
-                                                }
-                                            }}
-                                            id="outlined-start-adornment"
-                                            label="Тип добрив"
-                                            variant="outlined"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                )}/>
+                                    }}
+                                value={getValues("fertilizeSubType")}
+                                color={"primary"}
+                                variant={"outlined"}
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                onChange={(event,)=>{
+                                    field.onChange(event);
+                                }}
+                            >
+                                <MenuItem value={"Органичні(сухі)"} >Органичні(сухі)</MenuItem>
+                                <MenuItem value={"Мінеральні(сухі)"}>Мінеральні(сухі)</MenuItem>
+                                <MenuItem value={"Мінеральні(рідкі)"}>Мінеральні(рідкі)</MenuItem>
+                                <MenuItem value={"Органичні(рідкі)"}>Органичні(рідкі)</MenuItem>
+                            </Select>
+                        </FormControl>
+                    )} />
                     <Controller control={control} name={"cValue"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(
                         <FormControl>
                             <InputLabel  id="demo-simple-select-label">Сис Виміру</InputLabel>

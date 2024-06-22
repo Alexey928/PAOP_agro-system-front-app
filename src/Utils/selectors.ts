@@ -3,6 +3,13 @@ import {ROOLS} from "../API/AuthApi";
 import {FieldType, mapFieldStateType} from "../BLL/map-filds-reduser";
 import {MaterialItemType} from "../BLL/material-reducer";
 import {TypesOfTask} from "../components/Common/Forms/TaskParamForm";
+type subTypeOfCemical = "Гербецид"|"Фунгіцид"|"Інсектицид"|"Десикант"|
+                        "Протруйник"|"Регулятор росту"|"Вітамини та пожив/речовини"
+
+type subTypeOfFertilzer = ""|"ddd"
+
+export  type subTypesOfMaterial = subTypeOfCemical | subTypeOfFertilzer
+
 
 // app state selectors
 export const selectAppInitStatus = (state: AppRootStateType): boolean => state.app.isInitialized;
@@ -31,7 +38,6 @@ export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => stat
 export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:string) => (state:AppRootStateType)  => {
     if(!task){
         switch (type){
-
             case "насіння":
                 return state.materials.crops;
             case "добрива":
@@ -46,7 +52,7 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
     }else{
         switch (task) {
             case"SHOWING_CROPS":
-                return state.materials.crops
+                return [...state.materials.crops];
             case "SHOWING_CROPS_WIDTH_FERTILYZE":
                 return [...state.materials.crops, ...state.materials.fertilizer];
             case "SPRAYING":
@@ -72,6 +78,22 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
         }}
     }
 
+
+    export const selectMaterialsByOptionalSubType = (subType: subTypesOfMaterial|undefined , type:MaterialItemType)=> (state:AppRootStateType) => {
+        if(type==="хімія"){
+            return state.materials.chemistry.filter((el)=>el.subType===subType)
+        }
+        if(type==="насіння"){
+            return state.materials.crops.filter((el)=>el.subType===subType)
+        }
+        if(type==="добрива"){
+            return state.materials.fertilizer.filter((el)=>el.subType===subType)
+        }
+        if(type==="супутні"){
+            return state.materials.suply
+        }
+        return []
+}
 
 
 

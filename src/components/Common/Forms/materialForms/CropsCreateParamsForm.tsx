@@ -10,7 +10,9 @@ interface IFormInputs{
     cropsMetadata:string,
     cValue:CValueType,
     consumptionRate:string,
-    basePrice:number
+    basePrice:number,
+    masOfThausen: number|null,
+    packaging:number|null
 
 }
 type CropsCreateParamsFormPropsType = {
@@ -18,15 +20,17 @@ type CropsCreateParamsFormPropsType = {
 }
 
 const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}) => {
-    const { control, handleSubmit, formState, getValues} = useForm({
+    const { control, handleSubmit,  getValues} = useForm({
         defaultValues: {
             cropsName:"",
-            type:"насіння",
+            type:"насіння" as MaterialItemType,
             cropsSubType: "",// as culture group in this case
-            cropsMetadata:"",// generation  in this case
-            cValue:"шт",
-            consumptionRate:"",//"1-3" as sample
+            cropsMetadata:"перша",// generation  in this case
+            cValue:"шт" as CValueType,
+            consumptionRate:"", //"1-3" as sample
             basePrice:0,
+            masOfThausen:null,
+            packaging:null
         },
     })
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
@@ -36,7 +40,6 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
             subType:data.cropsSubType.trim(),
             metadata:data.cropsMetadata.trim(),
         }
-        const alert = "";
         if(!material.type||!material.name||!material.subType||!material.metadata){
             window.alert("Водіть коректно, десь ввели самі пробели!")
             return
@@ -44,7 +47,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
         console.log(data,material);
     }
     return (
-        <form >
+        <form onSubmit={handleSubmit(onSubmit)} >
             <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
                 <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                     <Controller name={"cropsName"} control={control} rules={{ required:"Вкажіть!" }}
@@ -120,14 +123,14 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                             </Select>
                         </FormControl>
                     )} />
-                    <Controller name={"consumptionRate"} control={control} rules={{ required:"Вкажіть!" }}
+                    <Controller name={"packaging"} control={control} rules={{ required:"Вкажіть!" }}
                                 render={({field})=>(
                                     <FormControl>
                                         <TextField
                                             type={"number"}
                                             InputProps={{
                                                 style: {backgroundColor: '#00051e' ,color:"white"},
-                                                endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ГА`} </InputAdornment>
+                                                endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ШТ`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
                                                 style: {
@@ -135,14 +138,77 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                                 }
                                             }}
                                             id="outlined-start-adornment"
-                                            label="Норма висіву"
+                                            label="Штук у посів/один"
                                             variant="outlined"
                                             {...field}
                                         />
                                     </FormControl>
-
+                                )}/>
+                    <Controller name={"consumptionRate"} control={control} rules={{ required:"Вкажіть!" }}
+                                render={({field})=>(
+                                    <FormControl>
+                                        <TextField
+                                            type={"number"}
+                                            InputProps={{
+                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ШТ/ГА`} </InputAdornment>
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color:'#01f6bd'
+                                                }
+                                            }}
+                                            id="outlined-start-adornment"
+                                            label="Рек норма висіву"
+                                            variant="outlined"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                )}/>
+                    <Controller name={"masOfThausen"} control={control} rules={{ required:"Вкажіть!" }}
+                                render={({field})=>(
+                                    <FormControl>
+                                        <TextField
+                                            type={"number"}
+                                            InputProps={{
+                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`КГ`} </InputAdornment>
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color:'#01f6bd'
+                                                }
+                                            }}
+                                            id="outlined-start-adornment"
+                                            label="Маса тисячі"
+                                            variant="outlined"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                )}/>
+                    <Controller name={"basePrice"} control={control} rules={{ required:"Вкажіть!" }}
+                                render={({field})=>(
+                                    <FormControl>
+                                        <TextField
+                                            type={"number"}
+                                            InputProps={{
+                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`$/П.О`} </InputAdornment>
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color:'#01f6bd'
+                                                }
+                                            }}
+                                            id="outlined-start-adornment"
+                                            label="Цна посев одиниці"
+                                            variant="outlined"
+                                            {...field}
+                                        />
+                                    </FormControl>
                                 )}/>
                     <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
+                    <Button type={"submit"} variant={"contained"}>Зберегти</Button>
                 </div>
 
             </div>

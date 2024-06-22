@@ -30,7 +30,6 @@ const getCurrent_C_Value = (materialTasks:MaterialTaskType[] | "") => materialTa
 
 const TaskMaterialSelector:React.FC<TaskMaterialsPropsType> = ({taskType,currentFieldSqere,setTascMaterial}) => {
     const [materialTasks, setMaterialTask] = useState<MaterialTaskType[]>([]);
-
     const updatePlanedMaterialAmount  = (norm:number) => {
         console.log(norm,currentFieldSqere,norm*currentFieldSqere)
         materialTasks && setMaterialTask([{...materialTasks[0],currentAmount:norm * currentFieldSqere}])
@@ -59,14 +58,14 @@ const TaskMaterialSelector:React.FC<TaskMaterialsPropsType> = ({taskType,current
         <div>
             <MaterialSelector materialType={""} task={taskType}  onSelect={updateMaterialTask}/>
             {
-                !! materialTasks.length && <>
+                !! materialTasks.length && <div>
                     {
                          <TextField
                              onChange={(event)=>{updatePlanedMaterialAmount(+event.target.value)}}
                              type={"number"}
                              InputProps={{
                                  style: {backgroundColor: '#00051e' ,color:"white"},
-                                 endAdornment: <InputAdornment position="end"> {`??/га`} </InputAdornment>
+                                 endAdornment: <InputAdornment position="end"> {`л/га`} </InputAdornment>
                              }}
                             id="outlined-start-adornment"
                             label="Плануєма Н/В"
@@ -88,7 +87,7 @@ const TaskMaterialSelector:React.FC<TaskMaterialsPropsType> = ({taskType,current
                             variant="outlined"
                         />
                     }
-                </>
+                </div>
                 }
 
         </div>

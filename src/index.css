@@ -16,6 +16,7 @@ code {
   background: #02125e !important;
 }
 .popup {
+  overflow: scroll;
   color: white;
   position: fixed;
   top: 0;

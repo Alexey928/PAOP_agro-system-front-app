@@ -4,6 +4,7 @@ import {parseTrajektory, trajectoryToDTOstring} from "../Utils/parseTrajectory";
 import {DispatchType} from "./Store";
 import {handleError} from "../Utils/errorHandler";
 import {setLastRemovedField, setSelectedFieldID} from "./map-interfase-reduser";
+import {setMaterialsFromDB} from "./material-reducer";
 
 
 export type FieldStateActionType =
@@ -117,7 +118,10 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
         const field = await mapFieldAPI.create(name,description,color);
         field.data["perimeters"] = [];
         dispatch(createFieldAC(field.data));
-        if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere))
+        if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere));
+
+
+
     }catch (e:unknown){
         handleError(e,dispatch)
         // if error we mast remove ,of field entity!!!
@@ -166,6 +170,7 @@ export const setFieldsDBstateTC = () => async (dispatch:DispatchType) => {
         const fieldsFromDB = await mapFieldAPI.getAll();
         if(fieldsFromDB.data.length) {
             dispatch(setFieldStateFromDB_AC(fieldsFromDB.data));
+            dispatch(setMaterialsFromDB())
             return
         }
         console.error("is error of reading data from response GET '/fields' !!")

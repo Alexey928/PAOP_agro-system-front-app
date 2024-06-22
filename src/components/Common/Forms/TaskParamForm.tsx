@@ -119,7 +119,10 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                             />
                             {
                                 formState.isValid &&
-                                <div>
+                                <div style={{display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    width: "min-content"}}>
                                     <TaskMaterialSelector setTascMaterial={(taskMaterial)=>{}}
                                                                              currentFieldSqere={currentFieldSqere}
                                                                              taskType={TypesOfTask[+getValues().type]}/>
