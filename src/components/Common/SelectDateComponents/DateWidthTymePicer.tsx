@@ -8,13 +8,14 @@ import dayjs from "dayjs";
 type BasicDateTimePickerPropsType = {
     onChange:(...event: any[]) => void
     value:string
+    width:number
 
 }
-export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({onChange,value})=> {
+export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({width,onChange,value})=> {
     return (
         <LocalizationProvider  dateAdapter={AdapterDayjs}>
-            <DemoContainer  components={['DateTimePicker']}>
-                <DateTimePicker  value={value?dayjs(value):null} ampm={false}
+            <DemoContainer sx={{width}} components={['DateTimePicker']}>
+                <DateTimePicker   value={value?dayjs(value):null} ampm={false}
                     onClose={()=>{
                     console.log("close")}
                 }
@@ -22,7 +23,7 @@ export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({onC
                     console.log(value?value.toDate():null)
                        if(value) onChange(value.toDate())
                     }}
-                label="Планова дата виконання" />
+                label="Планова дата виконання завдання" />
             </DemoContainer>
         </LocalizationProvider>
     );

@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import { selectTaskParamsPopupIsOpen} from "../../../Utils/selectors";
+import {useAppDispatch} from "../../../BLL/Store";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {setTaskParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {BasicDateTimePicker} from "../SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
-import TaskMaterialSelector, {MaterialTaskType} from "../TaskMaterialSelector";
+
+import TaskMaterialSelector from "../TaskMaterialSelector";
+import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
+
 
 
 export enum TypesOfTask  {
@@ -35,8 +37,8 @@ type TaskParamPopupPropsType = {
 
 
 const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) => {
-    const [materialTasksEntity, setMaterialTaskEntity] = useState<MaterialTaskType[]>([]);
-    const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
+    const [materialTasksEntity, setMaterialTaskEntity] = useState<MaterialTaskDTOType[]>([]);
+
     const dispatch = useAppDispatch();
     const { control, handleSubmit, formState, getValues} = useForm({
         defaultValues: {
@@ -63,15 +65,16 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                         SelectDisplayProps={
                                             {style: {
                                                     color:'#01f6bd',
-                                                    width:150,
+                                                    width:252,
                                                 }
                                             }}
+
                                         value={field.value}
                                         color={"primary"}
                                         variant={"outlined"}
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        onChange={(event,)=>{field.onChange(event);setMaterialTaskEntity([])}}
+                                        onChange={(event,)=>{!formState.isValid && field.onChange(event);setMaterialTaskEntity([])}}
                                     >
                                         <MenuItem value={"0"} >Посів культури</MenuItem>
                                         <MenuItem value={"1"}>Посів із добривами</MenuItem>
@@ -93,12 +96,17 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                     <TextField
                                         type={"number"}
                                         InputProps={{
-                                            style: {backgroundColor: '#00051e' ,color:"white"},
+                                            style: {
+                                                backgroundColor: '#00051e',
+                                                color:"white",
+                                                width:300
+                                            },
                                             endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ГА`} </InputAdornment>
                                         }}
                                         InputLabelProps={{
                                             style: {
-                                                color:'#01f6bd'
+                                                color:'#01f6bd',
+
                                             }
                                         }}
                                         id="outlined-start-adornment"
@@ -113,7 +121,7 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                             )}/>
                             <Controller control={control} rules={{ required:"Вкажіть дату!" }} render={({field})=>(
                                 <FormControl>
-                                     <BasicDateTimePicker value={field.value} onChange={field.onChange}/>
+                                     <BasicDateTimePicker width={300} value={field.value} onChange={field.onChange}/>
                                 </FormControl>
                             )} name={"from"}
                             />
@@ -124,12 +132,11 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                     justifyContent: "center",
                                     width: "min-content"}}>
                                     <TaskMaterialSelector setTascMaterial={(taskMaterial)=>{}}
-                                                                             currentFieldSqere={currentFieldSqere}
-                                                                             taskType={TypesOfTask[+getValues().type]}/>
+                                                                             currentFieldSqere={+getValues().taskSquere}
+                                                                             taskType={TypesOfTask[+getValues().type]}
+                                    />
                                 </div>
                             }
-
-
                         </div>
                         <div>
                             <Button variant={"contained"}

@@ -1,12 +1,12 @@
 import {AppRootStateType} from "../BLL/Store";
 import {ROOLS} from "../API/AuthApi";
 import {FieldType, mapFieldStateType} from "../BLL/map-filds-reduser";
-import {MaterialItemType} from "../BLL/material-reducer";
-import {TypesOfTask} from "../components/Common/Forms/TaskParamForm";
+import {MaterialItemType, MaterialType} from "../BLL/material-reducer";
+
 type subTypeOfCemical = "Гербецид"|"Фунгіцид"|"Інсектицид"|"Десикант"|
                         "Протруйник"|"Регулятор росту"|"Вітамини та пожив/речовини"
 
-type subTypeOfFertilzer = ""|"ddd"
+type subTypeOfFertilzer = ""|"мінеральні"|"органичні"|"мінеральні-сухі"
 
 export  type subTypesOfMaterial = subTypeOfCemical | subTypeOfFertilzer
 
@@ -79,21 +79,76 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
     }
 
 
-    export const selectMaterialsByOptionalSubType = (subType: subTypesOfMaterial|undefined , type:MaterialItemType)=> (state:AppRootStateType) => {
-        if(type==="хімія"){
-            return state.materials.chemistry.filter((el)=>el.subType===subType)
-        }
-        if(type==="насіння"){
-            return state.materials.crops.filter((el)=>el.subType===subType)
-        }
-        if(type==="добрива"){
-            return state.materials.fertilizer.filter((el)=>el.subType===subType)
-        }
-        if(type==="супутні"){
-            return state.materials.suply
-        }
-        return []
+//     export const selectMaterialsByOptionalSubType = (subType: subTypesOfMaterial|undefined , type:MaterialItemType)=> (state:AppRootStateType) => {
+//         if(type==="хімія"){
+//             return state.materials.chemistry.filter((el)=>el.subType===subType)
+//         }
+//         if(type==="насіння"){
+//             return state.materials.crops.filter((el)=>el.subType===subType)
+//         }
+//         if(type==="добрива"){
+//             return state.materials.fertilizer.filter((el)=>el.subType===subType)
+//         }
+//         if(type==="супутні"){
+//             return state.materials.suply
+//         }
+//         return []
+// }
+export const selectMaterialsForSybTypeSelector = (tasck:string) => (state:AppRootStateType): MaterialType[][] => {
+    switch (tasck) {
+        case"SHOWING_CROPS":
+            return [[...state.materials.crops],];
+        case "SHOWING_CROPS_WIDTH_FERTILYZE":
+            return [[...state.materials.crops], [...state.materials.fertilizer]];
+        case "SPRAYING":
+            return [[...state.materials.chemistry],[...state.materials.suply]];
+        case "SOIL_WORKS":
+            return [[]] as MaterialType[][]
+        case "FERTILIZATION":
+            return [[...state.materials.fertilizer]]
+        case "HARVEST":
+            return [[]] as MaterialType[][]
+        case "WINDROWING_OF_PERENNIALS":// валкование
+            return [[]] as MaterialType[][]
+        case "MOWING_PERENNIALS"://покос кормовоЇ
+            return [[]] as MaterialType[][]
+        case "BALINING_OF_PERENNIALS":
+            return [[...state.materials.suply]]
+        case "TRANPORTING":
+            return [[]] as MaterialType[][];
+        case "SEED TREATMENT":
+            return [[...state.materials.chemistry]]
+        default:
+            return [[]] as MaterialType[][];
+    }}
+
+export const selectMaterialsTypeForSubmaterialSelector = (tasck:string)=>(state:AppRootStateType):MaterialItemType[]=>{
+    switch (tasck) {
+        case"SHOWING_CROPS":
+            return ["насіння"];
+        case "SHOWING_CROPS_WIDTH_FERTILYZE":
+            return ["насіння","добрива"];
+        case "SPRAYING":
+            return ["хімія","супутні"];
+        case "SOIL_WORKS":
+            return []
+        case "FERTILIZATION":
+            return ["добрива"]
+        case "HARVEST":
+            return []
+        case "WINDROWING_OF_PERENNIALS":// валкование
+            return []
+        case "MOWING_PERENNIALS"://покос кормовоЇ
+            return []
+        case "BALINING_OF_PERENNIALS":
+            return ["супутні"]
+        case "TRANPORTING":
+            return [];
+        case "SEED TREATMENT":
+            return ["хімія"]
+        default:
+            return []
+    }
+    return []
 }
-
-
 

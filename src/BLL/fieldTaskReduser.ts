@@ -1,21 +1,20 @@
-type MaterialType = {
-    id:string
-    name:string
-    type:string
+import {AppRootStateType} from "./Store";
+
+import {MaterialType} from "./material-reducer";
+export type MaterialTaskDTOType = {
+    currentAmount:number | null,
+    material : MaterialType,
+    unnesesuryWater:number
 }
 
-export type FildTaskTtype = {
-[fieldID:string]:[
-        {
-            id:string
-            type:string
-            status:"isDone"|"inProgress"
-            materials:MaterialType[]
-        }
-    ]
+type TascMaterialStateType  = {
+    edetTaskcs:MaterialTaskDTOType[];
+    tascks:{[key:string]:{form:Date,to:Date,}[]}
 }
 
+export const fieldTaskReduser = (state:AppRootStateType,action:any)=>{
+    switch (action) {
 
-export const fieldTaskReduser = ()=>{
+    }
 
 }

@@ -57,6 +57,9 @@ code {
 .css-1pnmrwp-MuiTypography-root{
   color: #01f6bd !important;
 }
+/*.Mui-disabled.MuiInputBase-input{*/
+/*  color: #01f6bd !important;*/
+/*}*/
 /*for leflet */
 .leaflet-popup-close-button {
   color: white!important;

@@ -15,7 +15,6 @@ import {
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
-import TaskParamForm from "../Common/Forms/TaskParamForm";
 import {ROLS} from "../Registration/Registration";
 import MaterialParamsPopupContayner from "../Common/MaterialParamsPopupContayner";
 import TaskParamPopup from "../Common/TaskParamPopup";

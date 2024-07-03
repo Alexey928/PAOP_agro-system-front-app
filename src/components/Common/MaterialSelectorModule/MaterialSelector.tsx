@@ -1,7 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {useAppSelector} from "../../../BLL/Store";
 import {
-    selectMaterialsByOptionalSubType,
     selectMaterialsByOptionalType,
     subTypesOfMaterial
 } from "../../../Utils/selectors";
@@ -15,6 +14,7 @@ interface IFormInputs {
 }
 
 type MaterialSelectorType  = {
+    rootMaterial?:MaterialType[]
     materialType:MaterialItemType
     materialSubType?:subTypesOfMaterial
     krud?:boolean
@@ -37,7 +37,7 @@ const plaseolderMaterial:MaterialType = {
     massOfThousen:0
 }
 
-const MaterialSelector:React.FC<MaterialSelectorType> = ({materialSubType ,materialType,krud,onAddMaterial,task,onSelect}) => {
+const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialSubType ,materialType,krud,onAddMaterial,task,onSelect}) => {
     console.log("ms ", materialType)
     const plaseolderMaterial:MaterialType = {
         id:"",
@@ -52,16 +52,19 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialSubType ,mater
         massOfThousen:0
     }
     const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task));
-    const currentMaterialsBySubtype = useAppSelector(selectMaterialsByOptionalSubType(materialSubType,materialType));
+
 
     const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(plaseolderMaterial);
 
     const hashByIDMaterials = useMemo(():{[key:string]:MaterialType}=>{
         const hash:{[key:string]:MaterialType} = {};
-        !currentMaterialsBySubtype.length?currentMaterials.forEach((it) => hash[`${it.id}`] = it):
-         currentMaterialsBySubtype.forEach((it) => hash[`${it.id}`] = it)
+        if(rootMaterial){
+            rootMaterial.forEach((it) => hash[`${it.id}`] = it);
+            return hash
+        }
+      currentMaterials.forEach((it) => hash[`${it.id}`] = it)
         return hash
-    },[currentMaterials,currentMaterialsBySubtype])
+    },[currentMaterials])
 
     const setMaterialHeandler = (value:string) => {
         setCurrentMaterial(hashByIDMaterials[value]);
@@ -73,14 +76,17 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialSubType ,mater
         }
     }
     return (
-        <div style={{width:400,height:120,flexWrap:"wrap",backgroundColor:"#090d44bd",padding:5,borderRadius:15,boxShadow:" rgb(68 71 108 / 75%) 2px 5px 16px 3px"}}>
-            <FormControl  style={{width:190}} >
+        <div style={krud?{width:350,height:120,
+            flexWrap:"wrap",backgroundColor:"#090d44bd",
+            padding:5,borderRadius:15,
+            boxShadow:"rgb(68 71 108 / 75%) 2px 5px 16px 3px"}:{width:250}}>
+            <FormControl  style={{width:krud? 200 : 228}} >
                     <InputLabel id="demo-simple-select-label">{materialType?materialType:"Оберіть матеріл"}</InputLabel>
                     <Select
                         SelectDisplayProps={
                             {style: {
                                     color:'#01f6bd',
-                                    width:200,
+                                    width: krud? 200 : 228,
 
                                 }
                             }}
@@ -91,16 +97,15 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({materialSubType ,mater
                         value={currentMaterial.id}
                         label={materialType ? materialType : "Оберіть матеріл"}
                         onChange={(e)=>{setMaterialHeandler(e.target.value)}}>
-                        {!currentMaterialsBySubtype.length ? currentMaterials.map((el:MaterialType)=>{
-                                return(
+                        {!rootMaterial ?
+                        currentMaterials.map((el:MaterialType)=> (
                                     <MenuItem value={el.id}>{el.name}</MenuItem>
                                 )
-                            }):
-                            currentMaterialsBySubtype.map((el:MaterialType)=>{
-                                return(
-                                    <MenuItem value={el.id}>{el.name}</MenuItem>
-                                )
-                            })
+                            ):
+                        rootMaterial.map((el)=>(
+                            <MenuItem value={el.id}>{el.name}</MenuItem>
+                        ))
+
                         }
                     </Select>
                 </FormControl>
