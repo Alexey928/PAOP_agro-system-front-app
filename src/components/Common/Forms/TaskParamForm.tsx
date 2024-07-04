@@ -50,6 +50,7 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
     })
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
         console.log(TypesOfTask[+getValues().type])
+
         console.log(data)
     }
     return (

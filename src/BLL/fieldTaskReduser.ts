@@ -1,6 +1,7 @@
 import {AppRootStateType} from "./Store";
-
 import {MaterialType} from "./material-reducer";
+
+
 export type MaterialTaskDTOType = {
     currentAmount:number | null,
     material : MaterialType,
