@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import { useAppSelector } from "../../../BLL/Store";
 import { selectMaterialsForSybTypeSelector, selectMaterialsTypeForSubmaterialSelector } from "../../../Utils/selectors";
@@ -8,16 +8,19 @@ import MaterialSelector from "../MaterialSelectorModule/MaterialSelector";
 import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
 
 type SubMaterialSelectorPropsType = {
+
     squerOftasck:number
     tasck: string;
-    onSelect:(material:MaterialTaskDTOType)=>void;
+    onSelect:(material:MaterialTaskDTOType[])=>void;
+    removeContainedTasckMaterialEntity:(MaterialId:string)=>void;
 };
 const isValidMaterialTascEntity = (material:MaterialType, amount:number, whaterAmount:number):boolean=>{
     if(material.type==="хімія"){
-       if(amount && whaterAmount){
-           return true
+        if(amount && whaterAmount){
+            return true
        }
     }
+
     return !!amount
 }
 const isFieldNedet = (material:MaterialType)=>{
@@ -68,8 +71,21 @@ const plaseolderMaterial:MaterialType = {
     packaging:0,
     massOfThousen:0
 }
+type TransitionStateType = {
+    itemType:MaterialItemType,
+    isDone:boolean,
+    isParent:boolean,
+    isContained:boolean,
+    itemSubType:string,
+    material:MaterialType
+    planedAmount:number,
+    water:number
 
-const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squerOftasck }) => {
+}
+
+
+
+const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squerOftasck ,onSelect,removeContainedTasckMaterialEntity}) => {
     const filteredForSubType = useAppSelector(selectMaterialsForSybTypeSelector(tasck));
     const materialtypes = useSelector(selectMaterialsTypeForSubmaterialSelector(tasck));
 
@@ -78,20 +94,29 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
 
     const [materialTypesLocal,setMaterialTypesLocal] = useState<MaterialItemType[]>(()=>[...materialtypes]);
     const [filteredForSubTypeLocal, setFilteredForSubTypeLocal]= useState<MaterialType[][]>(()=>[...filteredForSubType])
-    const [selectorTransitionState, setSelectorTransitionState] = useState(
+    const [selectorTransitionState, setSelectorTransitionState] = useState<TransitionStateType[]>(
         materialtypes.map((el) => ({
             itemType: el,
             isDone: false,
             isParent:true,
-            isContayned:false,
+            isContained:false,
             itemSubType: "" ,
             material:plaseolderMaterial as MaterialType,
             planedAmount:0 ,
-            water:50*squerOftasck
-
+            water:el==="хімія" ? 50*squerOftasck : 0
         }
         ))
     );
+
+    useEffect(()=>{
+        const filtered = selectorTransitionState.filter((el,i)=>el.isContained);
+        onSelect(filtered.map((el) => (
+            {
+                currentAmount:el.planedAmount,
+                material:el.material,
+                unnesesuryWater:el.water,
+            } as MaterialTaskDTOType)))
+    },[selectorTransitionState])
 
     const addSelectors = (i:number,type:MaterialItemType, materials:MaterialType[])  =>{
         let tempType = [...materialTypesLocal];
@@ -103,7 +128,6 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                 )
             }))
         });
-
         tempType = [...tempType,type]
         tempFilteredForSubType=[...tempFilteredForSubType,materials]
 
@@ -111,8 +135,8 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
             setFilteredForSubTypeLocal(tempFilteredForSubType);
             setMaterialTypesLocal(tempType);
             setSelectorTransitionState((prevState)=>(
-                [...prevState,{itemType: tempType[0], isDone: false,isContayned:false,isParent: false,
-                    itemSubType: "" ,material: plaseolderMaterial,water:0,planedAmount:0}]
+                [...prevState,{itemType: tempType[0], isDone: false,isContained:false,isParent: false,
+                    itemSubType: "" ,material: plaseolderMaterial,water:type==="хімія"?50*squerOftasck:0,planedAmount:0}]
 
         ))
     }
@@ -135,25 +159,41 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
             prevState.map((el, i) => (i === iterator ? { ...el, water:waterNorm * squerOftasck} : el)));
     }
 
-    const setIsContayned = ( iterator:number)=>{
+    const setIsContayned = ( iterator:number,transitionState:TransitionStateType)=>{
         setSelectorTransitionState((prevState) =>
-            prevState.map((el, i) => (i === iterator ? { ...el, isContayned:true } : el)));
+            prevState.map((el, i) => (i === iterator ? { ...el, isContained:true } : el)));
     }
 
-    const onRemoveTasckMaterialEntity = (iterator:number)=>{
-        setFilteredForSubTypeLocal((prevState)=>prevState.filter((it,i)=>i!==iterator));
-        setMaterialTypesLocal((prevState) => prevState.filter((it,i)=>i!==iterator));
-
-    }
+    const onRemoveTasckMaterialEntity = ()=>{
+        if(!selectorTransitionState[filteredForSubTypeLocal.length-1].isParent){
+        setFilteredForSubTypeLocal(filteredForSubTypeLocal.filter((it,i)=> i!==filteredForSubTypeLocal.length-1));
+        setMaterialTypesLocal(materialTypesLocal.filter((it,i)=> i!==filteredForSubTypeLocal.length-1));
+        setSelectorTransitionState(selectorTransitionState.filter( (it,i) => i!==filteredForSubTypeLocal.length-1));
+    }}
     return (
-        <>
+        <div>
+            {<div style={{paddingRight:2,
+                position:"fixed",
+                top:0,left:0,right:0,
+                backgroundColor:"transparent",
+                height:42,
+                zIndex:100,
+                display:"flex",
+                justifyContent:"flex-end"}}>
+                <Button
+                    variant={"contained"}
+                    color={"error"}
+                    onClick={onRemoveTasckMaterialEntity}
+            >x
+            </Button></div>}
             {
                 filteredForSubTypeLocal[0][0] &&
                 filteredForSubTypeLocal.map((el, i) => {
                     return (
                         Array.isArray(el) &&
                         selectorTransitionState[i] && !selectorTransitionState[i].isDone ? (
-                            <div style={{marginTop:20}}>
+                            <div style={{marginTop:20}}
+                            >
                             <FormControl key={i} style={{ width: 300 }}>
                                 <InputLabel id={`demo-simple-select-label-${i}`}>{!selectorTransitionState[i].isParent?
                                     `Оберіть підтип матеріалу "${materialTypesLocal[i]}"`:
@@ -192,7 +232,30 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                     addSelectors(i,materialTypesLocal[i],el)
                                 }}>+</Button>}
                             </div>
-                        ) : (<div style={{backgroundColor:"#080726",padding:25,marginTop:10, boxShadow:selectorTransitionState[i].isContayned ? " #54ff00 1px 1px 16px 10px":"rgb(50 200 225 / 75%) 2px 2px 16px 10px"}}>
+                        ) : (<div style={{
+                                position:"relative",
+                                backgroundColor:"#080726",
+                                padding:25,
+                                paddingTop:45,
+                                marginTop:25,
+                                boxShadow:selectorTransitionState[i].isContained ? " #54ff00 1px 1px 16px 10px":
+                                    "rgb(50 200 225 / 75%) 2px 2px 16px 10px"}}
+                            >
+                                {selectorTransitionState[i].isContained&&<Button
+                                    disabled={!selectorTransitionState[i].isContained}
+                                    variant={"contained"}
+                                    style={
+                                    {
+                                    padding:0,
+                                    backgroundColor:"lime",
+                                    color:"white",
+                                    borderRadius:25,
+                                    position:"absolute",
+                                    right:2,
+                                    top:2
+                                }}
+                                >
+                                V</Button>}
                                 <MaterialSelector
                                 onSelect={(material)=>{onSelectMaterial(material,i)}}
                                 key={i}
@@ -203,11 +266,11 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                     selectorTransitionState[i].material.id && <TextField
                                     style={{marginTop:10}}
                                         inputProps={{
-                                            style:{width:200,backgroundColor:selectorTransitionState[i].isContayned?
+                                            style:{width:200,backgroundColor:selectorTransitionState[i].isContained?
                                                     '#448a91':'#00051e' ,color:"white"},
                                             endAdornment: <InputAdornment position="end"> {`л/га`} </InputAdornment>
                                         }}
-                                        disabled={selectorTransitionState[i].isContayned}
+                                        disabled={selectorTransitionState[i].isContained}
                                         type={"number"}
                                         variant={"outlined"}
                                         label={`Внесення по ...(${selectorTransitionState[i].material.cValue}/Га)`}
@@ -227,7 +290,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                         style={{marginTop:10}}
                                         inputProps={{
                                             style:{width:200,
-                                                backgroundColor:selectorTransitionState[i].isContayned?
+                                                backgroundColor:selectorTransitionState[i].isContained?
                                                     '#448a91':'#00051e' ,color:"white"},
                                         }}
                                         InputLabelProps={{
@@ -235,7 +298,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                                 color:'#01f6bd'
                                             }
                                         }}
-                                        disabled={selectorTransitionState[i].isContayned}
+                                        disabled={selectorTransitionState[i].isContained}
                                         type={"number"}
                                         variant={"outlined"}
                                         label= {`Вилив по... (л)`}
@@ -246,7 +309,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                     />
                                 }
                                 {selectorTransitionState[i].material.id && !(selectorTransitionState[i].material.type!=="хімія") &&
-                                    <Button variant={selectorTransitionState[i].isContayned?"outlined":"contained"}
+                                    <Button variant={selectorTransitionState[i].isContained?"outlined":"contained"}
                                             color={"secondary"}
                                             style={{marginTop:15}}
                                             onClick={()=>{
@@ -254,7 +317,9 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                                     selectorTransitionState[i].material,
                                                     selectorTransitionState[i].planedAmount,
                                                     selectorTransitionState[i].water
-                                                ) && setIsContayned(i)
+                                                ) &&
+                                                !selectorTransitionState[i].isContained &&
+                                                setIsContayned(i,selectorTransitionState[i])
                                             }}
                                     >ok
                                     </Button>}
@@ -264,7 +329,10 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                     );
                 })}
 
-        </>
+        </div>
     );
 };
 export default SubMaterialSelector;
+
+
+

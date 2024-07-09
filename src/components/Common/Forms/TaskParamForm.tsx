@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAppDispatch} from "../../../BLL/Store";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {setTaskParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {BasicDateTimePicker} from "../SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 
-import TaskMaterialSelector from "../TaskMaterialSelector";
+
 import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
+import SubMaterialSelector from "../SubTypeMaterialSelector/SubMaterialSelector";
 
 
 
@@ -37,7 +38,10 @@ type TaskParamPopupPropsType = {
 
 
 const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) => {
-    const [materialTasksEntity, setMaterialTaskEntity] = useState<MaterialTaskDTOType[]>([]);
+    const [materialTasksEntitys, setMaterialTaskEntity] = useState<MaterialTaskDTOType[]>([]);
+    const onRemoveHeandler  = (materialId:string)=>{
+        setMaterialTaskEntity(prevState => prevState.filter(el => el.material.id !== materialId))
+    }
 
     const dispatch = useAppDispatch();
     const { control, handleSubmit, formState, getValues} = useForm({
@@ -50,12 +54,17 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
     })
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
         console.log(TypesOfTask[+getValues().type])
-
+        materialTasksEntitys.length&& alert("Нема матеріалів");
         console.log(data)
     }
     return (
-
-            <form  onSubmit={handleSubmit(onSubmit)}>
+        <form  onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
+                materialTasksEntitys.map((el) =>(
+                <div style={{padding:"8px 5px 5px 5px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
+                    <div style={{position:"absolute",zIndex:1,top:-5,left:2, color:"#a3ff04"}}>{`${el.currentAmount} ${el.material.cValue}`}</div>
+                </div>
+            ))}</div>
                 <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
                         <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                             <Controller control={control} name={"type"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(
@@ -75,7 +84,7 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                         variant={"outlined"}
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        onChange={(event,)=>{!formState.isValid && field.onChange(event);setMaterialTaskEntity([])}}
+                                        onChange={(event,)=>{!formState.isValid && field.onChange(event)}}
                                     >
                                         <MenuItem value={"0"} >Посів культури</MenuItem>
                                         <MenuItem value={"1"}>Посів із добривами</MenuItem>
@@ -91,15 +100,15 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                     </Select>
                                 </FormControl>
                             )} />
-                            <Controller name={"taskSquere"} control={control} rules={{ required:"Вкажіть!" }}
-                                        render={({field})=>(
+                            <Controller name={"taskSquere"} control={control}  rules={{ required:"Вкажіть!" ,max:currentFieldSqere}}
+                                        render={({field,fieldState})=>(
                                 <FormControl>
                                     <TextField
                                         type={"number"}
                                         InputProps={{
                                             style: {
-                                                backgroundColor: '#00051e',
-                                                color:"white",
+                                                backgroundColor:'#00051e',
+                                                color:fieldState.error?"white":"red",
                                                 width:300
                                             },
                                             endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ГА`} </InputAdornment>
@@ -114,8 +123,10 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                         label="Площа завдання"
                                         variant="outlined"
                                         {...field}
-
-
+                                        error={!!fieldState.error}
+                                        onChange={(e)=>{
+                                           !formState.isValid && field.onChange(e);
+                                        }}
                                     />
                                 </FormControl>
 
@@ -132,10 +143,14 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                     alignItems: "center",
                                     justifyContent: "center",
                                     width: "min-content"}}>
-                                    <TaskMaterialSelector setTascMaterial={(taskMaterial)=>{}}
-                                                                             currentFieldSqere={+getValues().taskSquere}
-                                                                             taskType={TypesOfTask[+getValues().type]}
-                                    />
+                                    <SubMaterialSelector
+                                        squerOftasck={+getValues().taskSquere}
+                                        onSelect={(taskMaterials)=>{
+                                            setMaterialTaskEntity([...taskMaterials])
+                                            console.log(materialTasksEntitys)
+                                        }}
+                                        removeContainedTasckMaterialEntity={onRemoveHeandler}
+                                        tasck={TypesOfTask[+getValues().type]} />
                                 </div>
                             }
                         </div>
