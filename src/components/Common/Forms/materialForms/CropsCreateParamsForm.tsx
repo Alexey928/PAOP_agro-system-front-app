@@ -2,6 +2,7 @@ import React from 'react';
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {CValueType, MaterialItemType} from "../../../../BLL/material-reducer";
+import {getSubTypes} from "../../SubTypeMaterialSelector/SubMaterialSelector";
 
 interface IFormInputs{
     cropsName:string,
@@ -25,7 +26,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
             cropsName:"",
             type:"насіння" as MaterialItemType,
             cropsSubType: "",// as culture group in this case
-            cropsMetadata:"перша",// generation  in this case
+            cropsMetadata:"",// generation  in this case
             cValue:"шт" as CValueType,
             consumptionRate:"", //"1-3" as sample
             basePrice:0,
@@ -39,6 +40,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
             type:data.type.trim(),
             subType:data.cropsSubType.trim(),
             metadata:data.cropsMetadata.trim(),
+            
         }
         if(!material.type||!material.name||!material.subType||!material.metadata){
             window.alert("Водіть коректно, десь ввели самі пробели!")
@@ -56,7 +58,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                         <TextField
                                             type={"text"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
 
                                             }}
                                             InputLabelProps={{
@@ -74,25 +76,35 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                     <Controller name={"cropsSubType"} control={control} rules={{ required:"Вкажіть!"}}
                                 render={({field})=>(
                                     <FormControl>
-                                        <TextField
-                                            type={"text"}
-                                            InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                        <InputLabel  id="demo-simple-select-label">Культура</InputLabel>
+                                        <Select
+                                            label={"Культура"}
+                                            SelectDisplayProps={
+                                                {style: {
+                                                        color:'#01f6bd',
+                                                        width:200,
+                                                    }
+                                                }}
+                                            value={getValues("cropsSubType")}
+                                            color={"primary"}
+                                            variant={"outlined"}
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            onChange={(event,)=>{
+                                                field.onChange(event);
+                                            }}
+                                        >
+                                            {getSubTypes("насіння").map((el)=>{
+                                                return(<MenuItem value={el} >{el}</MenuItem>)
+                                            })}
 
-                                            }}
-                                            InputLabelProps={{
-                                                style: {
-                                                    color:'#01f6bd'
-                                                }
-                                            }}
-                                            id="outlined-start-adornment"
-                                            label="Культура"
-                                            variant="outlined"
-                                            {...field}
-                                        />
+
+                                        </Select>
                                     </FormControl>
+                                )}
 
-                                )}/>
+
+                                />
                     <Controller control={control} name={"cropsMetadata"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(
                         <FormControl>
                             <InputLabel  id="demo-simple-select-label">Генерація</InputLabel>
@@ -101,7 +113,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                 SelectDisplayProps={
                                     {style: {
                                             color:'#01f6bd',
-                                            width:150,
+                                            width:200,
                                         }
 
                                     }}
@@ -150,7 +162,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ШТ/ГА`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
@@ -171,7 +183,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`КГ`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
@@ -192,7 +204,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`$/П.О`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
