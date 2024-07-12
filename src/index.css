@@ -15,6 +15,12 @@ code {
 .leaflet-popup-content-wrapper{
   background: #02125e !important;
 }
+
+.widthAutScrollLine::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
 .popup {
   overflow: scroll;
   color: white;

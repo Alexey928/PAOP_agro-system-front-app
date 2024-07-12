@@ -59,13 +59,16 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
     }
     return (
         <form  onSubmit={handleSubmit(onSubmit)}>
-            <div style={{ overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
+            <div className={"widthAutScrollLine"} style={{padding:"0px,15px,0px,15px", overflowX:"scroll",display:"flex",alignItems:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
                 materialTasksEntitys.map((el) =>(
-                <div style={{padding:"8px 5px 5px 5px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
-                    <div style={{position:"absolute",zIndex:1,top:-5,left:2, color:"#a3ff04"}}>{`${el.currentAmount} ${el.material.cValue}`}</div>
+                <div style={{padding:"10px 40px 5px 40px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
+                    <div  style={{width:130,position:"absolute",zIndex:1,top:-5,left:-1, color:"#a3ff04"}}>
+                        {`${el.currentAmount} ${el.material.cValue} (${Math.round(el.currentAmount!/el.material.packaging)} уп.)`}
+                    </div>
                 </div>
             ))}</div>
-                <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
+
+            <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
                         <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                             <Controller control={control} name={"type"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(
                                 <FormControl>

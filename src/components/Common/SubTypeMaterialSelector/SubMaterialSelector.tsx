@@ -8,7 +8,6 @@ import MaterialSelector from "../MaterialSelectorModule/MaterialSelector";
 import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
 
 type SubMaterialSelectorPropsType = {
-
     squerOftasck:number
     tasck: string;
     onSelect:(material:MaterialTaskDTOType[])=>void;
@@ -41,8 +40,8 @@ const subtypes = {
     cemestry: ["Гербецид", "Фунгіцид", "Інсектицид", "Десикант", "Протруйник", "Регулятор росту", "Вітамини та пожив/речовини"],
     fertilizer: ["органичні-сухі","органичні-рідкі", "мінеральні-сухі", "мінеральні-рідкі"],
     crops:["Кукуруза","ячмінь-озимий","ячмінь-яровий","пшениця-озима","пшениця-ярова","Соняшник",
-        "Рапс","Соя","Горох","Гірчиця","Сорго","Люцерна","Віка","Овес","Нут","Буряк-цукровий",
-        "Буряк-продовий","Капуста","Картопля","Помідори","Кавуни","Дині"],
+        "Рапс","Соя","Горох","Гірчиця","Сорго","Технічна-конопля","Люцерна","Віка","Овес","Нут","Буряк-цукровий",
+        "Буряк-продовий","Капуста","Картопля","Помідори","Кавуни","Дині","лук","часник "],
     suply:["присипки","пакування"]
 };
 
@@ -105,7 +104,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
             itemSubType: "" ,
             material:plaseolderMaterial as MaterialType,
             planedAmount:0 ,
-            water:el==="хімія" ? 50*squerOftasck : 0
+            water:el==="хімія" && tasck==="SPRAYING" ? 50*squerOftasck : 0
         }
         ))
     );
@@ -168,6 +167,10 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
 
     const onRemoveTasckMaterialEntity = ()=>{
         if(!selectorTransitionState[filteredForSubTypeLocal.length-1].isParent){
+            if(selectorTransitionState[filteredForSubTypeLocal.length-1].isContained){
+                const confirm = window.confirm("ви бажаєте видалити сфомований матеріал. Ви певні ?")
+                if (!confirm){return}
+            }
         setFilteredForSubTypeLocal(filteredForSubTypeLocal.filter((it,i)=> i!==filteredForSubTypeLocal.length-1));
         setMaterialTypesLocal(materialTypesLocal.filter((it,i)=> i!==filteredForSubTypeLocal.length-1));
         setSelectorTransitionState(selectorTransitionState.filter( (it,i) => i!==filteredForSubTypeLocal.length-1));
@@ -310,7 +313,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                         }}
                                     />
                                 }
-                                {selectorTransitionState[i].material.id && !(selectorTransitionState[i].material.type!=="хімія") &&
+                                {selectorTransitionState[i].material.id &&
                                     <Button variant={selectorTransitionState[i].isContained?"outlined":"contained"}
                                             color={"secondary"}
                                             style={{marginTop:15}}

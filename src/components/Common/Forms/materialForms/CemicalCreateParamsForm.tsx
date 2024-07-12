@@ -60,10 +60,12 @@ const CemicalCreateParamsForm:React.FC<CemicalCreateParamsFormPropsType> = ({onE
         }
         dispatch(createMaterial_TC(material))
         console.log(data,material);
+        onExit()
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
             <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
+                <div style={{marginTop:10}}>Створення матеріалу типу <span style={{color:"#5b9bfa"}}>ХІМІЯ</span></div>
                 <div style={{width:300,display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                     <Controller name={"chemistryName"} control={control} rules={{ required:"Вкажіть!" }}
                                 render={({field,fieldState})=>(
@@ -229,8 +231,10 @@ const CemicalCreateParamsForm:React.FC<CemicalCreateParamsFormPropsType> = ({onE
                                         />
                                     </FormControl>
                                 )}/>
-                    <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
-                    <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                    <div style={{width:250,display:"flex",alignItems:"center",justifyContent:"space-around"}}>
+                        <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
+                        <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                    </div>
                     </div>
 
             </div>

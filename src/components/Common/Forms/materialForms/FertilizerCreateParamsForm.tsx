@@ -11,6 +11,7 @@ interface IFormInputs{
     fertilizeMetadata:string, // діючі речовини
     cValue:CValueType,
     consumptionRate:string,//"1-3" as sample
+    packaging:number|null
     basePrice:number,
 
 }
@@ -28,6 +29,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
             fertilizeMetadata:"",
             cValue:"кг" as CValueType,
             consumptionRate:"",
+            packaging:null,
             basePrice:0,
 
         },
@@ -49,8 +51,8 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
+                <div style={{marginTop:10}}>Створення матеріалу типу <span style={{color:"#fca402"}}>ДОБРИВА</span></div>
                 <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
-
                     <Controller name={"fertilizeName"} control={control} rules={{ required:"Вкажіть!" }}
                                 render={({field})=>(
                                     <FormControl>
@@ -149,6 +151,27 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         />
                                     </FormControl>
                                 )}/>
+                    <Controller name={"packaging"} control={control} rules={{ required:"Вкажіть!" }}
+                                render={({field})=>(
+                                    <FormControl>
+                                        <TextField
+                                            type={"number"}
+                                            InputProps={{
+                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`${getValues("cValue").toUpperCase()}`} </InputAdornment>
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color:'#01f6bd'
+                                                }
+                                            }}
+                                            id="outlined-start-adornment"
+                                            label="Пакування по"
+                                            variant="outlined"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                )}/>
                     <Controller name={"basePrice"} control={control} rules={{ required:"Вкажіть!" }}
                                 render={({field,fieldState})=>(
                                     <FormControl>
@@ -170,9 +193,10 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         />
                                     </FormControl>
                                 )}/>
-
-                    <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
-                    <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                    <div style={{width:250,display:"flex",alignItems:"center",justifyContent:"space-around"}}>
+                        <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
+                        <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                    </div>
                 </div>
             </div>
         </form>

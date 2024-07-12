@@ -1,8 +1,9 @@
 import React from 'react';
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import {CValueType, MaterialItemType} from "../../../../BLL/material-reducer";
+import {createMaterial_TC, CValueType, MaterialItemType} from "../../../../BLL/material-reducer";
 import {getSubTypes} from "../../SubTypeMaterialSelector/SubMaterialSelector";
+import {useAppDispatch} from "../../../../BLL/Store";
 
 interface IFormInputs{
     cropsName:string,
@@ -11,7 +12,7 @@ interface IFormInputs{
     cropsMetadata:string,
     cValue:CValueType,
     consumptionRate:string,
-    basePrice:number,
+    basePrice:number|null,
     masOfThausen: number|null,
     packaging:number|null
 
@@ -21,6 +22,7 @@ type CropsCreateParamsFormPropsType = {
 }
 
 const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}) => {
+    const dispatch = useAppDispatch();
     const { control, handleSubmit,  getValues} = useForm({
         defaultValues: {
             cropsName:"",
@@ -29,31 +31,41 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
             cropsMetadata:"",// generation  in this case
             cValue:"шт" as CValueType,
             consumptionRate:"", //"1-3" as sample
-            basePrice:0,
+            basePrice:null,
             masOfThausen:null,
             packaging:null
         },
     })
+
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
         const material = {
             name:data.cropsName.trim(),
-            type:data.type.trim(),
+            type:data.type,
             subType:data.cropsSubType.trim(),
-            metadata:data.cropsMetadata.trim(),
-            
+            metaData:data.cropsMetadata.trim(),
+            consumptionRate:data.consumptionRate,
+            basePrice:Number(data.basePrice)??0,
+            massOfThousen:data.masOfThausen??0,
+            packaging:data.packaging??0,
+            cValue:data.cValue
+
         }
-        if(!material.type||!material.name||!material.subType||!material.metadata){
-            window.alert("Водіть коректно, десь ввели самі пробели!")
+        if(!material.type||!material.name||!material.subType||!material.metaData||
+            !material.consumptionRate||!material.basePrice||!material.massOfThousen||
+            !material.packaging){
+            window.alert("Водіть коректно, мабуть десь ввели самі пробели!")
             return
         }
+        dispatch(createMaterial_TC(material))
         console.log(data,material);
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
             <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
+                <div style={{marginTop:10}}>Створення матеріалу типу <span style={{color:"#7af803"}}>НАСІННЯ</span></div>
                 <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                     <Controller name={"cropsName"} control={control} rules={{ required:"Вкажіть!" }}
-                                render={({field})=>(
+                                render={({field,fieldState})=>(
                                     <FormControl>
                                         <TextField
                                             type={"text"}
@@ -63,7 +75,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                             }}
                                             InputLabelProps={{
                                                 style: {
-                                                    color:'#01f6bd'
+                                                    color:!fieldState.error?'#01f6bd':"red",
                                                 }
                                             }}
                                             id="outlined-start-adornment"
@@ -74,8 +86,8 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                     </FormControl>
                                 )}/>
                     <Controller name={"cropsSubType"} control={control} rules={{ required:"Вкажіть!"}}
-                                render={({field})=>(
-                                    <FormControl>
+                                render={({field,fieldState})=>(
+                                    <FormControl error={!!fieldState.error}>
                                         <InputLabel  id="demo-simple-select-label">Культура</InputLabel>
                                         <Select
                                             label={"Культура"}
@@ -87,7 +99,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                                 }}
                                             value={getValues("cropsSubType")}
                                             color={"primary"}
-                                            variant={"outlined"}
+                                            variant={!fieldState.error?"outlined":"standard"}
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             onChange={(event,)=>{
@@ -105,8 +117,8 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
 
 
                                 />
-                    <Controller control={control} name={"cropsMetadata"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(
-                        <FormControl>
+                    <Controller control={control} name={"cropsMetadata"} rules={{ required:"Оберіть вашу роль!" }} render={({field,fieldState})=>(
+                        <FormControl error={!!fieldState.error}>
                             <InputLabel  id="demo-simple-select-label">Генерація</InputLabel>
                             <Select
                                 label={"Генерація"}
@@ -119,7 +131,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                     }}
                                 value={getValues("cropsMetadata")}
                                 color={"primary"}
-                                variant={"outlined"}
+                                variant={!fieldState.error?"outlined":"standard"}
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 onChange={(event,)=>{
@@ -136,7 +148,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                         </FormControl>
                     )} />
                     <Controller name={"packaging"} control={control} rules={{ required:"Вкажіть!" }}
-                                render={({field})=>(
+                                render={({field,fieldState})=>(
                                     <FormControl>
                                         <TextField
                                             type={"number"}
@@ -146,7 +158,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                             }}
                                             InputLabelProps={{
                                                 style: {
-                                                    color:'#01f6bd'
+                                                    color:!fieldState.error?'#01f6bd':"red",
                                                 }
                                             }}
                                             id="outlined-start-adornment"
@@ -157,7 +169,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                     </FormControl>
                                 )}/>
                     <Controller name={"consumptionRate"} control={control} rules={{ required:"Вкажіть!" }}
-                                render={({field})=>(
+                                render={({field,fieldState})=>(
                                     <FormControl>
                                         <TextField
                                             type={"number"}
@@ -167,7 +179,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                             }}
                                             InputLabelProps={{
                                                 style: {
-                                                    color:'#01f6bd'
+                                                    color:!fieldState.error?'#01f6bd':"red",
                                                 }
                                             }}
                                             id="outlined-start-adornment"
@@ -178,7 +190,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                     </FormControl>
                                 )}/>
                     <Controller name={"masOfThausen"} control={control} rules={{ required:"Вкажіть!" }}
-                                render={({field})=>(
+                                render={({field,fieldState})=>(
                                     <FormControl>
                                         <TextField
                                             type={"number"}
@@ -188,7 +200,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                             }}
                                             InputLabelProps={{
                                                 style: {
-                                                    color:'#01f6bd'
+                                                    color:!fieldState.error?'#01f6bd':"red",
                                                 }
                                             }}
                                             id="outlined-start-adornment"
@@ -199,7 +211,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                     </FormControl>
                                 )}/>
                     <Controller name={"basePrice"} control={control} rules={{ required:"Вкажіть!" }}
-                                render={({field})=>(
+                                render={({field,fieldState})=>(
                                     <FormControl>
                                         <TextField
                                             type={"number"}
@@ -209,7 +221,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                             }}
                                             InputLabelProps={{
                                                 style: {
-                                                    color:'#01f6bd'
+                                                    color:!fieldState.error?'#01f6bd':"red",
                                                 }
                                             }}
                                             id="outlined-start-adornment"
@@ -219,8 +231,10 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                         />
                                     </FormControl>
                                 )}/>
-                    <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
-                    <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                    <div style={{width:250,display:"flex",alignItems:"center",justifyContent:"space-around"}}>
+                        <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
+                        <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                    </div>
                 </div>
 
             </div>
