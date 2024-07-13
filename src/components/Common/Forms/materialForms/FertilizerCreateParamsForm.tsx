@@ -1,7 +1,8 @@
 import React from 'react';
-import {CValueType, MaterialItemType} from "../../../../BLL/material-reducer";
+import {createMaterial_TC, CValueType, MaterialItemType} from "../../../../BLL/material-reducer";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {useAppDispatch} from "../../../../BLL/Store";
 
 
 interface IFormInputs{
@@ -19,8 +20,8 @@ export type FertilizerCreateParamsFormPropsType = {
     onExit:()=>void
 }
 const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> = ({
-    onExit
-                                                                                  }) => {
+    onExit}) => {
+    const dispatch = useAppDispatch();
     const { control, handleSubmit, formState, getValues,resetField} = useForm({
         defaultValues: {
             fertilizeName:"",
@@ -37,16 +38,25 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
         const material = {
             name:data.fertilizeName.trim(),
-            type:data.fertilizeType.trim(),
+            type:data.fertilizeType,
             subType:data.fertilizeSubType.trim(),
-            metadata:data.fertilizeMetadata.trim(),
+            metaData:data.fertilizeMetadata.trim()===""?"not this case":data.fertilizeMetadata,
+            consumptionRate:data.consumptionRate.trim(),
+            basePrice: data.basePrice ?? 0,
+            massOfThousen:0,
+            packaging:data.packaging??0,
+            cValue:data.cValue
+
         }
         const alert = "";
-        if(!material.type||!material.name||!material.subType||!material.metadata){
+        if(!material.type||!material.name||!material.subType||!material.metaData||
+            !material.cValue||!material.packaging){
+            console.log(material)
             window.alert("Водіть коректно, десь ввели самі пробели!")
             return
         }
         console.log(data,material);
+        dispatch(createMaterial_TC(material))
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,8 +69,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         <TextField
                                             type={"text"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
-
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                             }}
                                             InputLabelProps={{
                                                 style: {
@@ -82,7 +91,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                 SelectDisplayProps={
                                     {style: {
                                             color:'#01f6bd',
-                                            width:150,
+                                            width:200,
                                         }
 
                                     }}
@@ -110,7 +119,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                 SelectDisplayProps={
                                     {style: {
                                             color:'#01f6bd',
-                                            width:150,
+                                            width:200,
                                         }
 
                                     }}
@@ -136,7 +145,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`${getValues("cValue").toUpperCase()}/ГА`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
@@ -157,7 +166,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`${getValues("cValue").toUpperCase()}`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
@@ -178,7 +187,7 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`$/${getValues("cValue").toUpperCase()}`} </InputAdornment>
                                             }}
                                             InputLabelProps={{

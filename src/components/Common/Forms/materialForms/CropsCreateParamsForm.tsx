@@ -106,8 +106,8 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                                 field.onChange(event);
                                             }}
                                         >
-                                            {getSubTypes("насіння").map((el)=>{
-                                                return(<MenuItem value={el} >{el}</MenuItem>)
+                                            {getSubTypes("насіння").map((el ,i)=>{
+                                                return(<MenuItem key={i} value={el} >{el}</MenuItem>)
                                             })}
 
 
@@ -153,7 +153,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                         <TextField
                                             type={"number"}
                                             InputProps={{
-                                                style: {backgroundColor: '#00051e' ,color:"white"},
+                                                style: {backgroundColor: '#00051e' ,color:"white",width:250},
                                                 endAdornment: <InputAdornment color={"#01f6bd"} position="end"> {`ШТ`} </InputAdornment>
                                             }}
                                             InputLabelProps={{
