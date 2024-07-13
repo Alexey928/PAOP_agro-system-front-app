@@ -3,6 +3,7 @@ import {createMaterial_TC, CValueType, MaterialItemType} from "../../../../BLL/m
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {useAppDispatch} from "../../../../BLL/Store";
+import {getSubTypes} from "../../SubTypeMaterialSelector/SubMaterialSelector";
 
 
 interface IFormInputs{
@@ -103,11 +104,10 @@ const FertilizerCreateParamsForm:React.FC<FertilizerCreateParamsFormPropsType> =
                                 onChange={(event,)=>{
                                     field.onChange(event);
                                 }}
-                            >
-                                <MenuItem value={"Органичні(сухі)"} >Органичні(сухі)</MenuItem>
-                                <MenuItem value={"Мінеральні(сухі)"}>Мінеральні(сухі)</MenuItem>
-                                <MenuItem value={"Мінеральні(рідкі)"}>Мінеральні(рідкі)</MenuItem>
-                                <MenuItem value={"Органичні(рідкі)"}>Органичні(рідкі)</MenuItem>
+                            >{getSubTypes("добрива").map((el,i)=>(
+                                <MenuItem key={i} value={el} >{el}</MenuItem>
+                            ))}
+
                             </Select>
                         </FormControl>
                     )} />
