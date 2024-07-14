@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {useAppDispatch} from "../../../BLL/Store";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {setTaskParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
@@ -8,6 +8,7 @@ import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 
 import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
 import SubMaterialSelector from "../SubTypeMaterialSelector/SubMaterialSelector";
+import {CValueType, MaterialItemType, MaterialType} from "../../../BLL/material-reducer";
 
 
 
@@ -34,6 +35,14 @@ interface IFormInputs{
 
 type TaskParamPopupPropsType = {
     currentFieldSqere:number
+}
+const calculatorOfMaterialEntity = (material:MaterialType, currentAmount:number|null,pakaging:number,cValue:CValueType):string => {
+
+    switch (material.type){
+        case "насіння":
+            return `${Math.round(((currentAmount !* material.massOfThousen)/1000)/1000)} т ${Math.round(currentAmount!/pakaging)} уп`
+    }
+    return `${currentAmount} ${cValue} ${Math.round(currentAmount!/pakaging)} уп`
 }
 
 
@@ -63,7 +72,7 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                 materialTasksEntitys.map((el) =>(
                 <div style={{padding:"10px 40px 5px 40px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
                     <div  style={{width:"inherit",position:"absolute",zIndex:1,top:-5,left:5, color:"#a3ff04"}}>
-                        {`${el.currentAmount} ${el.material.cValue} (${Math.round(el.currentAmount!/el.material.packaging)} уп.)`}
+                        {calculatorOfMaterialEntity(el.material,el.currentAmount,el.material.packaging,el.material.cValue)}
                     </div>
                 </div>
             ))}</div>

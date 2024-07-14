@@ -35,7 +35,7 @@ const isFieldNedet = (material:MaterialType)=>{
     return false
 }
 
-
+// need to refaktor later
 const subtypes = {
     cemestry: ["Гербецид", "Фунгіцид", "Інсектицид", "Десикант", "Протруйник", "Регулятор росту", "Вітамини та пожив/речовини"],
     fertilizer: ["органичні(сухі)","органичні(рідкі)", "мінеральні(сухі)", "мінеральні(рідкі)"],
@@ -177,10 +177,9 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
     }}
     return (
         <div>
-            {<div style={{paddingRight:2,
+            {!!filteredForSubType[0].length && <div style={{paddingRight:2,
                 position:"fixed",
                 top:0,left:0,right:0,
-                backgroundColor:"transparent",
                 height:42,
                 zIndex:100,
                 display:"flex",
