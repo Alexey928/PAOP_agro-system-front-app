@@ -5,12 +5,12 @@ import { selectMaterialsForSybTypeSelector, selectMaterialsTypeForSubmaterialSel
 import {MaterialItemType, MaterialType} from "../../../BLL/material-reducer";
 import { useSelector } from "react-redux";
 import MaterialSelector from "../MaterialSelectorModule/MaterialSelector";
-import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
+import {MaterialTaskDTOItemType} from "../../../BLL/fieldTaskReduser";
 
 type SubMaterialSelectorPropsType = {
     squerOftasck:number
     tasck: string;
-    onSelect:(material:MaterialTaskDTOType[])=>void;
+    onSelect:(material:MaterialTaskDTOItemType[])=>void;
     removeContainedTasckMaterialEntity:(MaterialId:string)=>void;
 };
 const isValidMaterialTascEntity = (material:MaterialType, amount:number, whaterAmount:number):boolean=>{
@@ -116,7 +116,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                 currentAmount:el.planedAmount,
                 material:el.material,
                 unnesesuryWater:el.water,
-            } as MaterialTaskDTOType)))
+            } as MaterialTaskDTOItemType)))
     },[selectorTransitionState])
 
     const addSelectors = (i:number,type:MaterialItemType, materials:MaterialType[])  =>{
@@ -276,6 +276,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                         }}
                                         disabled={selectorTransitionState[i].isContained}
                                         type={"number"}
+                                        defaultValue={selectorTransitionState[i].material.consumptionRate}
                                         variant={"outlined"}
                                         label={`Внесення по ...(${selectorTransitionState[i].material.cValue}/Га)`}
                                         onChange={(e)=>{

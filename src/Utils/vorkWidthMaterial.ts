@@ -3,7 +3,6 @@ import {initialMaterialStateCreator, materialsStateType, MaterialType, remoweMat
 export const materialSortByType = (materials:MaterialType[],  state?:materialsStateType):materialsStateType=>{
 
     const sortedMaterials:materialsStateType = state ? state : initialMaterialStateCreator();
-
     materials.forEach((material)=>{
         switch (material.type) {
             case "добрива":
@@ -12,7 +11,6 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
             case "насіння":
                 sortedMaterials.crops.push(material);
                 break;
-
             case "супутні":
                 sortedMaterials.suply.push(material)
                 break
@@ -23,7 +21,7 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
     return {...sortedMaterials}
 }
 
- export const removeByTypeOfTask =  (action:ReturnType<typeof remoweMaterialAC>, state:materialsStateType)=>{
+ export const removeByTypeOfMaterial =  (action:ReturnType<typeof remoweMaterialAC>, state:materialsStateType)=>{
     switch (action.payload.type) {
         case "хімія":
             return {...state,chemistry: state.chemistry.filter(it=>it.id!==action.payload.id)};

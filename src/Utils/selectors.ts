@@ -79,21 +79,7 @@ export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:strin
     }
 
 
-//     export const selectMaterialsByOptionalSubType = (subType: subTypesOfMaterial|undefined , type:MaterialItemType)=> (state:AppRootStateType) => {
-//         if(type==="хімія"){
-//             return state.materials.chemistry.filter((el)=>el.subType===subType)
-//         }
-//         if(type==="насіння"){
-//             return state.materials.crops.filter((el)=>el.subType===subType)
-//         }
-//         if(type==="добрива"){
-//             return state.materials.fertilizer.filter((el)=>el.subType===subType)
-//         }
-//         if(type==="супутні"){
-//             return state.materials.suply
-//         }
-//         return []
-// }
+
 export const selectMaterialsForSybTypeSelector = (tasck:string) => (state:AppRootStateType): MaterialType[][] => {
     switch (tasck) {
         case"SHOWING_CROPS":

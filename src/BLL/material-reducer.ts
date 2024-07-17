@@ -1,4 +1,4 @@
-import {materialSortByType, removeByTypeOfTask, updateMaterialHeandler} from "../Utils/vorkWidthMaterial";
+import {materialSortByType, removeByTypeOfMaterial, updateMaterialHeandler} from "../Utils/vorkWidthMaterial";
 import {DispatchType} from "./Store";
 import {setIsRequestProcessingStatusAC} from "./app-reduser";
 import {materialAPI, MaterialDTOtype} from "../API/materialAPI";
@@ -39,7 +39,7 @@ export const materialReducer = (state = initialMaterialStateCreator(), action:Ma
            case "SET/MEW/MATERIAL/TO/DICTIONARY":
                return materialSortByType([action.material],state)
            case "REMOVE/MATERIAL":
-               return removeByTypeOfTask(action,state);
+               return removeByTypeOfMaterial(action,state);
            case "UPDATE/MATERIAL":
                return updateMaterialHeandler(action.material,state)
            default:

@@ -2,14 +2,18 @@ import {AppRootStateType} from "./Store";
 import {MaterialType} from "./material-reducer";
 
 
-export type MaterialTaskDTOType = {
+export type MaterialTaskDTOItemType = {
     currentAmount:number | null,
     material : MaterialType,
     unnesesuryWater:number
 }
 
+type CreateTasckDTOType ={
+
+}
+
 type TascMaterialStateType  = {
-    edetTaskcs:MaterialTaskDTOType[];
+    edetTaskcs:MaterialTaskDTOItemType[];
     tascks:{[key:string]:{form:Date,to:Date,}[]}
 }
 

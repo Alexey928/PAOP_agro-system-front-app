@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Circle, FeatureGroup, MapContainer, Polygon, TileLayer} from "react-leaflet";
 import {Button, useMediaQuery} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
-import {selectDrowingFlag, selectSelectedFieldTrajectory} from "../../../Utils/selectors";
+import {selectSelectedFieldTrajectory} from "../../../Utils/selectors";
 import {LatLngExpression} from "leaflet";
 import {fillBlueOptions, PointOfPoligons, PositionType} from "../../General_agronomist/General_agronomist";
 import {fromCirclePositionToTrajectory} from "../../../Utils/parseTrajectory";

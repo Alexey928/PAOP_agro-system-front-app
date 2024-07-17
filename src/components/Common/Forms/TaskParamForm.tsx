@@ -6,9 +6,9 @@ import {BasicDateTimePicker} from "../SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 
 
-import {MaterialTaskDTOType} from "../../../BLL/fieldTaskReduser";
+import {MaterialTaskDTOItemType} from "../../../BLL/fieldTaskReduser";
 import SubMaterialSelector from "../SubTypeMaterialSelector/SubMaterialSelector";
-import {CValueType, MaterialItemType, MaterialType} from "../../../BLL/material-reducer";
+import {CValueType,  MaterialType} from "../../../BLL/material-reducer";
 
 
 
@@ -47,7 +47,7 @@ const calculatorOfMaterialEntity = (material:MaterialType, currentAmount:number|
 
 
 const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) => {
-    const [materialTasksEntitys, setMaterialTaskEntity] = useState<MaterialTaskDTOType[]>([]);
+    const [materialTasksEntitys, setMaterialTaskEntity] = useState<MaterialTaskDTOItemType[]>([]);
     const onRemoveHeandler  = (materialId:string)=>{
         setMaterialTaskEntity(prevState => prevState.filter(el => el.material.id !== materialId))
     }
@@ -71,7 +71,7 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
             <div className={"widthAutScrollLine"} style={{padding:"0px,15px,0px,15px", overflowX:"scroll",display:"flex",alignItems:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
                 materialTasksEntitys.map((el) =>(
                 <div style={{padding:"10px 40px 5px 40px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
-                    <div  style={{width:"inherit",position:"absolute",zIndex:1,top:-5,left:5, color:"#a3ff04"}}>
+                    <div  style={{width:"150px",position:"absolute",zIndex:1,top:-5,left:5, color:"#a3ff04"}}>
                         {calculatorOfMaterialEntity(el.material,el.currentAmount,el.material.packaging,el.material.cValue)}
                     </div>
                 </div>
