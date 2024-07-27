@@ -4,8 +4,6 @@ import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextF
 import {setTaskParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {BasicDateTimePicker} from "../SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
-
-
 import {MaterialTaskDTOItemType} from "../../../BLL/fieldTaskReduser";
 import SubMaterialSelector from "../SubTypeMaterialSelector/SubMaterialSelector";
 import {CValueType,  MaterialType} from "../../../BLL/material-reducer";
@@ -35,14 +33,15 @@ interface IFormInputs{
 
 type TaskParamPopupPropsType = {
     currentFieldSqere:number
+    fieldId:string
 }
 const calculatorOfMaterialEntity = (material:MaterialType, currentAmount:number|null,pakaging:number,cValue:CValueType):string => {
-
     switch (material.type){
         case "насіння":
-            return `${Math.round(((currentAmount !* material.massOfThousen)/1000)/1000)} т ${Math.round(currentAmount!/pakaging)} уп`
+            return `${Math.round(((currentAmount!* material.massOfThousen)/1000)/1000)} т ${Math.round(currentAmount!/pakaging)} уп`
+        case "добрива":
     }
-    return `${currentAmount} ${cValue} ${Math.round(currentAmount!/pakaging)} уп`
+    return `${Math.round(currentAmount!)} ${cValue} ${Math.round(currentAmount!/pakaging)} уп`
 }
 
 
@@ -62,16 +61,15 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
         },
     })
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
-        console.log(TypesOfTask[+getValues().type])
-        materialTasksEntitys.length&& alert("Нема матеріалів");
-        console.log(data)
+        materialTasksEntitys.length && alert("Нема матеріалів");
+        console.log(data);
     }
     return (
         <form  onSubmit={handleSubmit(onSubmit)}>
             <div className={"widthAutScrollLine"} style={{padding:"0px,15px,0px,15px", overflowX:"scroll",display:"flex",alignItems:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
                 materialTasksEntitys.map((el) =>(
                 <div style={{padding:"10px 40px 5px 40px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
-                    <div  style={{width:"150px",position:"absolute",zIndex:1,top:-5,left:5, color:"#a3ff04"}}>
+                    <div  style={{width:"inherit",position:"absolute",zIndex:1,top:-5,left:5, color:"#a3ff04"}}>
                         {calculatorOfMaterialEntity(el.material,el.currentAmount,el.material.packaging,el.material.cValue)}
                     </div>
                 </div>
@@ -159,22 +157,20 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
                                         squerOftasck={+getValues().taskSquere}
                                         onSelect={(taskMaterials)=>{
                                             setMaterialTaskEntity([...taskMaterials])
-                                            console.log(materialTasksEntitys)
                                         }}
                                         removeContainedTasckMaterialEntity={onRemoveHeandler}
                                         tasck={TypesOfTask[+getValues().type]} />
                                 </div>
                             }
                         </div>
-                        <div>
+                        <div style={{width:300,display:"flex",alignItems:"center",justifyContent:"space-around",marginBottom:150}}>
                             <Button variant={"contained"}
                                     color={"error"}
                                     onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}> Вихід
                             </Button>
                             <Button type={"submit"}
                                     variant={"contained"}
-                                    color={"primary"}
-                                    onClick={()=>{}}> OK
+                                    color={"primary"}> OK
                             </Button>
                         </div>
                     </div>

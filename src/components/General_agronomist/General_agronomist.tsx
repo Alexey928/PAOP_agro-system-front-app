@@ -73,8 +73,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
         borderRadius: 20 / 2,
     },
 }));
-
- export const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
+export const PointOfPoligons = (props: { calback: (position: PositionType | null) => void }) => {
     const map = useMapEvents({
         click(e) {
             props.calback(e.latlng)

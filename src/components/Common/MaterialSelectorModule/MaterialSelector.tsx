@@ -23,7 +23,6 @@ type MaterialSelectorType  = {
     onSelect?:(material:MaterialType)=>void
 }
 
-
 const plaseolderMaterial:MaterialType = {
     id:"",
     name:"заглушка",
@@ -79,14 +78,15 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialS
         <div style={krud?{width:350,height:120,
             flexWrap:"wrap",backgroundColor:"#090d44bd",
             padding:5,borderRadius:15,
-            boxShadow:"rgb(68 71 108 / 75%) 2px 5px 16px 3px"}:{width:250}}>
-            <FormControl  style={{width:krud? 200 : 228}} >
+            boxShadow:"rgb(68 71 108 / 75%) 2px 5px 16px 3px"}:
+            {width:230,marginLeft:"auto",marginRight:"auto"}}>
+            <FormControl  style={{width:krud? 200 : 230}}>
                     <InputLabel id="demo-simple-select-label">{materialType?materialType:"Оберіть матеріл"}</InputLabel>
                     <Select
                         SelectDisplayProps={
                             {style: {
                                     color:'#01f6bd',
-                                    width: krud? 200 : 228,
+                                    width: krud? 200 : 250,
 
                                 }
                             }}

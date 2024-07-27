@@ -19,7 +19,6 @@ const isValidMaterialTascEntity = (material:MaterialType, amount:number, whaterA
             return true
        }
     }
-
     return !!amount
 }
 const isFieldNedet = (material:MaterialType)=>{
@@ -78,7 +77,8 @@ type TransitionStateType = {
     isParent:boolean,
     isContained:boolean,
     itemSubType:string,
-    material:MaterialType
+    currentCunsuptionRate:string,
+    material:MaterialType,
     planedAmount:number,
     water:number
 
@@ -102,6 +102,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
             isParent:true,
             isContained:false,
             itemSubType: "" ,
+            currentCunsuptionRate:"",
             material:plaseolderMaterial as MaterialType,
             planedAmount:0 ,
             water:el==="хімія" && tasck==="SPRAYING" ? 50*squerOftasck : 0
@@ -116,6 +117,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                 currentAmount:el.planedAmount,
                 material:el.material,
                 unnesesuryWater:el.water,
+                currentCunsuptionRate:+el.currentCunsuptionRate
             } as MaterialTaskDTOItemType)))
     },[selectorTransitionState])
 
@@ -137,7 +139,8 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
             setMaterialTypesLocal(tempType);
             setSelectorTransitionState((prevState)=>(
                 [...prevState,{itemType: tempType[0], isDone: false,isContained:false,isParent: false,
-                    itemSubType: "" ,material: plaseolderMaterial,water:type==="хімія"?50*squerOftasck:0,planedAmount:0}]
+                    itemSubType: "" ,material: plaseolderMaterial,water:type==="хімія"?50*squerOftasck:0,planedAmount:0,
+                    currentCunsuptionRate:""}]
 
         ))
     }
@@ -148,12 +151,15 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
     };
     const onSelectMaterial =(material:MaterialType,iterator:number)=>{
         setSelectorTransitionState((prevState) =>
-            prevState.map((el, i) => (i === iterator ? { ...el, material} : el))
+            prevState.map((el, i) => (i === iterator ? {
+                ...el, material,
+                currentCunsuptionRate:material.consumptionRate,planedAmount:(+material.consumptionRate)*squerOftasck} :
+                el))
         );
     }
     const onChangeAmount = (amount:number,iterator:number)=>{
         setSelectorTransitionState((prevState) =>
-            prevState.map((el, i) => (i === iterator ? { ...el, planedAmount: amount*squerOftasck} : el)));
+            prevState.map((el, i) => (i === iterator ? { ...el, planedAmount: amount*squerOftasck,currentCunsuptionRate:amount.toString()} : el)));
     }
     const onChangeWater = (waterNorm:number, iterator:number)=>{
         setSelectorTransitionState((prevState) =>
@@ -196,7 +202,17 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                     return (
                         Array.isArray(el) &&
                         selectorTransitionState[i] && !selectorTransitionState[i].isDone ? (
-                            <div style={{marginTop:20}}
+                            <div style={selectorTransitionState[i].isParent?
+                                {
+                                    marginTop:20,
+                                    border:"1px solid red",
+                                    padding:5,
+                                    backgroundColor:"#701414a6",
+                                    borderRadius:5,
+                                    boxShadow: "rgb(181 38 12) 1px 0px 12px 10px"
+
+                                }:
+                                {marginTop:20}}
                             >
                             <FormControl key={i} style={{ width: 300 }}>
                                 <InputLabel id={`demo-simple-select-label-${i}`}>{!selectorTransitionState[i].isParent?
@@ -206,13 +222,13 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                 <Select
                                     SelectDisplayProps={{
                                         style: {
-                                            borderColor: '#f601ea',
                                             width: 300,
                                         },
                                     }}
+
                                     disabled={selectorTransitionState[i].isParent}
-                                    color={"secondary"}
-                                    variant={"outlined"}
+                                    color={"error"}
+                                    variant={!selectorTransitionState[i].isParent?"outlined":"standard"}
                                     labelId={`demo-simple-select-label-${i}`}
                                     id={`demo-simple-select-${i}`}
                                     value={''}

@@ -6,6 +6,7 @@ import {AppActionsType, appReducer} from "./app-reduser";
 import {fieldReducer, FieldStateActionType} from "./map-filds-reduser";
 import {fieldIntarfaseReduser, MapInterfaseActionType} from "./map-interfase-reduser";
 import {MaterialActionType, materialReducer, materialsStateType} from "./material-reducer";
+import {fieldTaskReduser, TaskMaterialActionsType} from "./fieldTaskReduser";
 
 
 const rootReducer = combineReducers({
@@ -13,18 +14,21 @@ const rootReducer = combineReducers({
    app:appReducer,
    mapFields:fieldReducer,
    fieldsInterfase:fieldIntarfaseReduser,
-   materials:materialReducer
+   materials:materialReducer,
+   tasksmaterials:fieldTaskReduser
+
 })
 
 export const store = createStore(rootReducer,applyMiddleware(thunkMiddleware));
 
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-type AppRootActionsType = AuthActionsType |
-                          AppActionsType  |
-                          FieldStateActionType|
-                          MapInterfaseActionType|
-                          MaterialActionType;
+type AppRootActionsType = AuthActionsType        |
+                          AppActionsType         |
+                          FieldStateActionType   |
+                          MapInterfaseActionType |
+                          MaterialActionType     |
+                          TaskMaterialActionsType;
 
 export type AppThunkType<ReturnType = void> = ThunkAction<
     ReturnType,
@@ -32,7 +36,6 @@ export type AppThunkType<ReturnType = void> = ThunkAction<
     unknown,
     AppRootActionsType
     >;
-
 export type DispatchType = ThunkDispatch<AppRootStateType, unknown, AppRootActionsType>;
 export const useAppDispatch = () => useDispatch<DispatchType>();
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;

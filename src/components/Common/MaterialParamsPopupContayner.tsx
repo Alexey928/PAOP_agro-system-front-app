@@ -13,8 +13,6 @@ const MaterialParamsPopupContayner = () => {
 const [typeOfMaterial, setTypeOfMaterial] = useState<MaterialItemType>("");
 const popupFlag = useAppSelector(selectMaterialeditorFlag);
 
-//const materialChangeHeandler = (material:MaterialType) =>{}
-
 const dispatch = useDispatch();
     return (
         popupFlag ?

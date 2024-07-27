@@ -138,7 +138,6 @@ export const updateFieldTC = (config: {fieldID:string,name:string,description:st
             const confirm = window.confirm("Ви певні що бажаєте оновити данні цього поля ?")
             if(confirm) {
                 const updatedField = await mapFieldAPI.updateFieldData(fieldID, name, description, color);
-                console.log(updatedField.data)
                 dispatch(resetFieldDataAC(updatedField.data.id, updatedField.data.name, updatedField.data.description));
                 trajectory && sqere && await dispatch(bindPerimeterToFieldTC(fieldID, trajectory, sqere)); // hear we are bind trajectory and square logically , only if both of them is chaining
             }
