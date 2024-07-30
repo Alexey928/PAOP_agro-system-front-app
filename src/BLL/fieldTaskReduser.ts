@@ -37,8 +37,8 @@ type TascMaterialStateType  = {
 
 
     }
-export type TaskMaterialActionsType = ReturnType<typeof setTasksFromDB_AC>|
-                               ReturnType<typeof addTaskAC>|
+export type TaskMaterialActionsType = ReturnType<typeof setTasksFromDB_AC> |
+                               ReturnType<typeof addTaskAC> |
                                ReturnType<typeof removeTask>
 
 const tasckMaterialInitialState:TascMaterialStateType = {
@@ -63,9 +63,9 @@ const forArrToHash = <T extends {fieldId: string | null}>(arr:Array<T>):{[key:st
 export  const DtoConverter = (dto:MaterialTaskDTOItemType[]):materialUsageDataType[] => {
     return dto.map((el)=>({
         materialId:+ el.material.id,
-        planedAmount:+ el.currentAmount!,
+        planedAmount:Math.round(+ el.currentAmount!),
         unnesesuryWater: el.unnesesuryWater,
-        currentConsumptionRate: el.currentCunsuptionRate
+        currentConsumptionRate:Math.round( el.currentCunsuptionRate)
     }))
 }
 
@@ -120,12 +120,12 @@ export const createTaskTC = (task:CreateTasckDTOType,fieldId:string) =>
         dispatch(setIsRequestProcessingStatusAC(true));
     try {
        const {data} = await TascksApi.create(task);
-       addTaskAC(data,fieldId);
+        console.log(data)
+       dispatch(addTaskAC(data,fieldId));
     }catch (e){
         console.log(e);
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
-
-    }
+}
 

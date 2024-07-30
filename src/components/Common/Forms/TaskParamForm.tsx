@@ -4,7 +4,7 @@ import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextF
 import {setTaskParamsPopupIsOpen} from "../../../BLL/map-interfase-reduser";
 import {BasicDateTimePicker} from "../SelectDateComponents/DateWidthTymePicer";
 import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
-import {MaterialTaskDTOItemType} from "../../../BLL/fieldTaskReduser";
+import {createTaskTC, DtoConverter, MaterialTaskDTOItemType} from "../../../BLL/fieldTaskReduser";
 import SubMaterialSelector from "../SubTypeMaterialSelector/SubMaterialSelector";
 import {CValueType,  MaterialType} from "../../../BLL/material-reducer";
 
@@ -45,8 +45,9 @@ const calculatorOfMaterialEntity = (material:MaterialType, currentAmount:number|
 }
 
 
-const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) => {
+const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere,fieldId}) => {
     const [materialTasksEntitys, setMaterialTaskEntity] = useState<MaterialTaskDTOItemType[]>([]);
+
     const onRemoveHeandler  = (materialId:string)=>{
         setMaterialTaskEntity(prevState => prevState.filter(el => el.material.id !== materialId))
     }
@@ -63,6 +64,13 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere}) =>
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
         materialTasksEntitys.length && alert("Нема матеріалів");
         console.log(data);
+        dispatch(createTaskTC({
+            type:data.type,
+            fieldId,
+            from: new Date(data.from),
+            status:"in progress",
+            materialIdes:DtoConverter(materialTasksEntitys)
+        }, fieldId))
     }
     return (
         <form  onSubmit={handleSubmit(onSubmit)}>

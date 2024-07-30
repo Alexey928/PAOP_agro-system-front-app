@@ -4,11 +4,11 @@ import {TasckType} from "../BLL/fieldTaskReduser";
 export type materialUsageDataType = {
     materialId:number
     planedAmount:number
-    // Package:number
     unnesesuryWater:number
     currentConsumptionRate:number
 }
 export type CreateTasckDTOType = {
+    type:string,
     from:Date;
     status:string;
     fieldId:string;
