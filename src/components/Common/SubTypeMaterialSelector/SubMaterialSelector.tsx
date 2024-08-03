@@ -5,12 +5,12 @@ import { selectMaterialsForSybTypeSelector, selectMaterialsTypeForSubmaterialSel
 import {MaterialItemType, MaterialType} from "../../../BLL/material-reducer";
 import { useSelector } from "react-redux";
 import MaterialSelector from "../MaterialSelectorModule/MaterialSelector";
-import {MaterialTaskDTOItemType} from "../../../BLL/fieldTaskReduser";
+import {MaterialTaskCreateItemType} from "../../../BLL/fieldTaskReduser";
 
 type SubMaterialSelectorPropsType = {
     squerOftasck:number
     tasck: string;
-    onSelect:(material:MaterialTaskDTOItemType[])=>void;
+    onSelect:(material:MaterialTaskCreateItemType[])=>void;
     removeContainedTasckMaterialEntity:(MaterialId:string)=>void;
 };
 const isValidMaterialTascEntity = (material:MaterialType, amount:number, whaterAmount:number):boolean=>{
@@ -118,7 +118,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                 material:el.material,
                 unnesesuryWater:el.water,
                 currentCunsuptionRate:+el.currentCunsuptionRate
-            } as MaterialTaskDTOItemType)))
+            } as MaterialTaskCreateItemType)))
     },[selectorTransitionState])
 
     const addSelectors = (i:number,type:MaterialItemType, materials:MaterialType[])  =>{

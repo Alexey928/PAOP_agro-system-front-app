@@ -5,7 +5,7 @@ import {AuthActionsType, authReducer} from "./auth-reduser";
 import {AppActionsType, appReducer} from "./app-reduser";
 import {fieldReducer, FieldStateActionType} from "./map-filds-reduser";
 import {fieldIntarfaseReduser, MapInterfaseActionType} from "./map-interfase-reduser";
-import {MaterialActionType, materialReducer, materialsStateType} from "./material-reducer";
+import {MaterialActionType, materialReducer} from "./material-reducer";
 import {fieldTaskReduser, TaskMaterialActionsType} from "./fieldTaskReduser";
 
 

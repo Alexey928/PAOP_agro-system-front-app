@@ -13,7 +13,8 @@ export type FieldStateActionType =
     ReturnType<typeof createFieldAC>|
     ReturnType<typeof setFieldPerimeterAC>|
     ReturnType<typeof resetFieldDataAC>|
-    ReturnType<typeof removeFieldAC>;
+    ReturnType<typeof removeFieldAC>|
+    ReturnType<typeof setCurrentCulture>;
 
 export type mapFieldStateType = Array<FieldType>
 
@@ -23,6 +24,13 @@ export type PerimetrType = {
     trajectory:string
     validFrom:Date
 }
+type CultureContaynHistoryType = {
+    id:number
+    culture:string
+    sqere:number
+    from:Date
+    cultureYearCount:string
+}
 
 export type FieldType = {
     id:string
@@ -30,7 +38,36 @@ export type FieldType = {
     description:string
     perimeters:PerimetrType[]
     currentPerimeter:number[][]
+    cultureHistury:CultureContaynHistoryType[]
+    currentCultures:{culture:string,squere:number}[]
     fillColor:string
+}
+
+const calculateCurrentCultures = (from:Date,
+                                 to:Date,
+                                 fullFieldSqere:number,
+                                 cultureHistory:CultureContaynHistoryType[]):{culture:string,squere:number}[] => {
+    let s = 0
+    let arr:{culture:string,squere:number}[] = []
+// function getCultureContaynHistiryPeriod(from, to) ???
+    if(!cultureHistory.length){return []}
+    if(cultureHistory[cultureHistory.length-1].sqere===fullFieldSqere){
+        return [
+            {
+                culture:cultureHistory[cultureHistory.length-1].culture,
+                squere:cultureHistory[cultureHistory.length-1].sqere
+            }
+        ]
+    }
+    [...cultureHistory].reverse().forEach((el) => {
+        s = s + el.sqere
+        arr.push({culture:el.culture, squere:el.sqere})
+
+        if (s >= fullFieldSqere) {
+            return  arr
+        }
+    })
+    return []
 }
 
 export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActionType):mapFieldStateType => {
@@ -38,7 +75,7 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
         case "SET/FIELD/DATA/FROM/DB/TO/STATE":
             return action.fields.map((el)=>(
                 {...el, currentPerimeter:el.perimeters.length > 0 ?
-                    parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : []
+                    parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : [], cultureHistury:[],currentCultures:[]
                 }))
         case"SET/FIELDS/PERIMETERS":
             const perimeters = action.payload.perimetrs
@@ -55,9 +92,13 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
                  currentPerimeter:parseTrajektory(action.perimeter.trajectory)}:
                 el
             )
+        case "SET/CURRENT/CULTURE":
+            return state.map((el)=>el.id===action.fieldId?{...el,currentCultures:action.currentCultures}:el)
+
         case"CREATE/FIELD":
             return [...state,{...action.field, currentPerimeter : action.field.perimeters?.length > 0 ?
-                    parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[]}]
+                    parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[],
+                    cultureHistury:[],currentCultures:[]}];
         case"RESET/FIELD/DATA":
             return state.map((el)=> el.id === action.data.id?
                 {...el,name:action.data.name, description:action.data.description}:
@@ -75,6 +116,15 @@ export const createFieldAC = (field:fieldDTOType)=>(
         field
     } as const
 );
+
+export const setCurrentCulture = (currentCultures:{culture:string,squere:number}[],fieldId:string)=>({
+    type:"SET/CURRENT/CULTURE",
+    currentCultures,
+    fieldId
+} as const
+);
+
+
 export const setFieldsPerimetersAC = (fildID:string, perimetrs:PerimetrType[])=>(// set all perimeters
     {
         type:"SET/FIELDS/PERIMETERS",
@@ -119,9 +169,6 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
         field.data["perimeters"] = [];
         dispatch(createFieldAC(field.data));
         if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere));
-
-
-
     }catch (e:unknown){
         handleError(e,dispatch)
         // if error we mast remove ,of field entity!!!

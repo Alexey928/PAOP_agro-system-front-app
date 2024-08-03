@@ -11,6 +11,7 @@ export type CreateTasckDTOType = {
     type:string,
     from:Date;
     status:string;
+    square:number
     fieldId:string;
     materialIdes:materialUsageDataType[]
 }

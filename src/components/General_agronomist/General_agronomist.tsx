@@ -211,7 +211,6 @@ const General_agronomist = () => {
                                     >ВИДАЛИТИ</Button>
                                 </div>
                             </Popup>
-                            {/* React.memo  contayner */}
                             <Polygon  positions={el.currentPerimeter as LatLngExpression[]}/>
                         </FeatureGroup>
                     )
