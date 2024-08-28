@@ -128,3 +128,6 @@ export const createTaskTC = (task:CreateTasckDTOType,fieldId:string) =>
     }
 }
 
+export const setTaskFromDB = () =>{
+
+}

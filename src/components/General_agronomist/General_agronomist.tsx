@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, useMapEvents} from "react-leaflet";
+import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, Tooltip, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FieldParamFormPopup from "../Common/FieldParamPopup";
@@ -211,7 +211,19 @@ const General_agronomist = () => {
                                     >ВИДАЛИТИ</Button>
                                 </div>
                             </Popup>
-                            <Polygon  positions={el.currentPerimeter as LatLngExpression[]}/>
+                            <Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
+                                <Tooltip permanent direction="center">
+                                    <div>
+                                        <ul style={{listStyle:"none",margin:0,padding:0}}>
+                                            {el.currentCultures.map((el)=>
+                                            <li>
+                                                    {`${el.culture} ${el.squere}Га`}
+                                            </li>)}
+                                        </ul>
+
+                                    </div>
+                                </Tooltip>
+                            </Polygon>
                         </FeatureGroup>
                     )
                 })}

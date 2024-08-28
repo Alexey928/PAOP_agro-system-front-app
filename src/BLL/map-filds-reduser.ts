@@ -24,7 +24,7 @@ export type PerimetrType = {
     trajectory:string
     validFrom:Date
 }
-type CultureContaynHistoryType = {
+export type CultureContaynHistoryType = {
     id:number
     culture:string
     sqere:number
@@ -38,36 +38,26 @@ export type FieldType = {
     description:string
     perimeters:PerimetrType[]
     currentPerimeter:number[][]
-    cultureHistury:CultureContaynHistoryType[]
+    cultureContainHistory:CultureContaynHistoryType[]
     currentCultures:{culture:string,squere:number}[]
     fillColor:string
 }
 
-const calculateCurrentCultures = (from:Date,
-                                 to:Date,
-                                 fullFieldSqere:number,
-                                 cultureHistory:CultureContaynHistoryType[]):{culture:string,squere:number}[] => {
-    let s = 0
-    let arr:{culture:string,squere:number}[] = []
-// function getCultureContaynHistiryPeriod(from, to) ???
-    if(!cultureHistory.length){return []}
-    if(cultureHistory[cultureHistory.length-1].sqere===fullFieldSqere){
-        return [
-            {
-                culture:cultureHistory[cultureHistory.length-1].culture,
-                squere:cultureHistory[cultureHistory.length-1].sqere
-            }
-        ]
-    }
-    [...cultureHistory].reverse().forEach((el) => {
-        s = s + el.sqere
-        arr.push({culture:el.culture, squere:el.sqere})
+const calculateCurrentCultures = (
+                                 curentFreeSqere:number,
+                                 cultureHistory:CultureContaynHistoryType[]):
+                                {culture:string,squere:number}[] => {
 
-        if (s >= fullFieldSqere) {
-            return  arr
+    let tempCultures:{culture:string,squere:number}[] = [];
+    cultureHistory.reverse().forEach((el)=>{
+
+        if(curentFreeSqere-el.sqere>=0){
+            curentFreeSqere=curentFreeSqere-el.sqere
+            tempCultures.push({culture:el.culture,squere:el.sqere});
         }
+
     })
-    return []
+    return tempCultures
 }
 
 export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActionType):mapFieldStateType => {
@@ -75,7 +65,9 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
         case "SET/FIELD/DATA/FROM/DB/TO/STATE":
             return action.fields.map((el)=>(
                 {...el, currentPerimeter:el.perimeters.length > 0 ?
-                    parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : [], cultureHistury:[],currentCultures:[]
+                    parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : [],
+                    currentCultures:calculateCurrentCultures(el.startFreeSqere,el.cultureContainHistory),
+
                 }))
         case"SET/FIELDS/PERIMETERS":
             const perimeters = action.payload.perimetrs
@@ -98,7 +90,7 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
         case"CREATE/FIELD":
             return [...state,{...action.field, currentPerimeter : action.field.perimeters?.length > 0 ?
                     parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[],
-                    cultureHistury:[],currentCultures:[]}];
+                    cultureContainHistory:[],currentCultures:[]}];
         case"RESET/FIELD/DATA":
             return state.map((el)=> el.id === action.data.id?
                 {...el,name:action.data.name, description:action.data.description}:
@@ -165,11 +157,12 @@ export const createFieldTC = (name:string,description:string,trajectory:number[]
     async (dispatch:DispatchType)=> {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
-        const field = await mapFieldAPI.create(name,description,color);
+        const field = await mapFieldAPI.create(name,description,color,+sqere);
         field.data["perimeters"] = [];
         dispatch(createFieldAC(field.data));
         if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere));
     }catch (e:unknown){
+        console.log(e)
         handleError(e,dispatch)
         // if error we mast remove ,of field entity!!!
     }finally {

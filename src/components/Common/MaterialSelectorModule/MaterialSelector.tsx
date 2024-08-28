@@ -51,10 +51,7 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialS
         massOfThousen:0
     }
     const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task));
-
-
     const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(plaseolderMaterial);
-
     const hashByIDMaterials = useMemo(():{[key:string]:MaterialType}=>{
         const hash:{[key:string]:MaterialType} = {};
         if(rootMaterial){

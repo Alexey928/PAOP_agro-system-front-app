@@ -20,6 +20,8 @@ export type CreateTasckDTOType = {
 export const TascksApi = {
     create(dto:CreateTasckDTOType){
         return instance.post<TasckType>("tasks",dto);
-
+    },
+    getAllTasksInPeriod(from:Date,to:Date){
+        return instance.get(``)
     }
 }
