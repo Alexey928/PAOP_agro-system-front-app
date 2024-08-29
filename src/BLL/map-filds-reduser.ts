@@ -88,9 +88,11 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
             return state.map((el)=>el.id===action.fieldId?{...el,currentCultures:action.currentCultures}:el)
 
         case"CREATE/FIELD":
+           // debugger
             return [...state,{...action.field, currentPerimeter : action.field.perimeters?.length > 0 ?
                     parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[],
-                    cultureContainHistory:[],currentCultures:[]}];
+                    currentCultures:[{squere:action.field.cultureContainHistory[0].sqere??0, culture:action.field.cultureContainHistory[0].culture??"none"}]}
+            ];
         case"RESET/FIELD/DATA":
             return state.map((el)=> el.id === action.data.id?
                 {...el,name:action.data.name, description:action.data.description}:
@@ -103,6 +105,7 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
 }
 //________________________AC___________________________________________________________________________________
 export const createFieldAC = (field:fieldDTOType)=>(
+
     {
         type:"CREATE/FIELD",
         field
@@ -155,11 +158,13 @@ const removeFieldAC = (fieldId:string) =>(
 //______________________________TC_____________________________________________________________________________
 export const createFieldTC = (name:string,description:string,trajectory:number[][],sqere:string,color:string) =>
     async (dispatch:DispatchType)=> {
+
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const field = await mapFieldAPI.create(name,description,color,+sqere);
-        field.data["perimeters"] = [];
+        debugger
         dispatch(createFieldAC(field.data));
+
         if(field.data.id) await dispatch(bindPerimeterToFieldTC(field.data.id,trajectory,sqere));
     }catch (e:unknown){
         console.log(e)

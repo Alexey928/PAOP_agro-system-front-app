@@ -211,22 +211,19 @@ const General_agronomist = () => {
                                     >ВИДАЛИТИ</Button>
                                 </div>
                             </Popup>
-                            <Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
-                                <Tooltip permanent direction="center">
-                                    <div>
-                                        <ul style={{listStyle:"none",margin:0,padding:0}}>
-                                            {el.currentCultures.map((el)=>
-                                            <li>
-                                                    {`${el.culture} ${el.squere}Га`}
-                                            </li>)}
-                                        </ul>
-
+                            {el.currentPerimeter.length&&<Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
+                                <Tooltip   permanent direction="center" className={style.polygonTooltip}>
+                                    <div style={{width:"100%", height:"100%", backgroundColor:"bisque",color:"black"}}>
+                                       <div>{el.name ? `${el.name} S = ${el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere : "Не определено!"} Га` : "Нет данных"}</div>
+                                        <span>{el.currentCultures[0].culture}</span>
                                     </div>
                                 </Tooltip>
-                            </Polygon>
+                            </Polygon>}
                         </FeatureGroup>
                     )
                 })}
+
+
                 {painedPosition.map((el, i) => {
                     return (
                         <Circle key={el.lat * el.lng + i*el.lng} center={[el.lat, el.lng]} pathOptions={fillBlueOptions}

@@ -23,3 +23,11 @@
     padding:0;
     font-weight:bold;
 }
+.polygonTooltip {
+    background-color: rgba(245, 182, 25, 0.84);
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(96, 81, 2, 0.5);
+}

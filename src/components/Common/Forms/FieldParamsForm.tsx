@@ -45,6 +45,7 @@ const FieldParamsForm:React.FC<fieldParamsFormPropsType> = ({setFieldParams,name
     console.log(currentTrajectoru,selectedTraiectory,isEquleTrajectory(currentTrajectoru,selectedTraiectory))
     const onSubmit: SubmitHandler<FieldParamsFormType> = (data) => {
     console.log(data, sqere);
+
     if(selectedID){
         if (name===data.name && sqere==data.sqere && isEquleTrajectory(currentTrajectoru,selectedTraiectory)){
             window.alert("У ваших діях нема сенсу, ви не змінили жодного параметру !")
