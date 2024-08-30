@@ -2,6 +2,7 @@ import {AppRootStateType} from "../BLL/Store";
 import {ROOLS} from "../API/AuthApi";
 import {FieldType, mapFieldStateType} from "../BLL/map-filds-reduser";
 import {MaterialItemType, MaterialType} from "../BLL/material-reducer";
+import {TasckType} from "../BLL/fieldTaskReduser";
 
 type subTypeOfCemical = "Гербецид"|"Фунгіцид"|"Інсектицид"|"Десикант"|
                         "Протруйник"|"Регулятор росту"|"Вітамини та пожив/речовини"
@@ -23,6 +24,10 @@ export const selectUserRole = (state:AppRootStateType):ROOLS|null => state.auth.
 
 //General Agronomist state selectors
 export const selectFields = (state:AppRootStateType):mapFieldStateType => state.mapFields;
+
+//task material selectors
+export const selectTaskMaterials = (state:AppRootStateType):{[fieldID:string]:TasckType[]}=>(
+    state.tasksmaterials.tasksMapedFromFields)
 
 // fields interfase state selectors
 export const selectSelectedFieldID = (state:AppRootStateType):string|null => state.fieldsInterfase.selectedFieldID;

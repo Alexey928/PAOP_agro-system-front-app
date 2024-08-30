@@ -5,7 +5,12 @@ import {LatLngExpression} from "leaflet"
 import FieldParamFormPopup from "../Common/FieldParamPopup";
 import {Button, FormControl, InputLabel, MenuItem, Select, styled, Switch} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
-import {selectDrowingFlag, selectFields, selectRequestProcesingStatus} from "../../Utils/selectors";
+import {
+    selectDrowingFlag,
+    selectFields,
+    selectRequestProcesingStatus,
+    selectTaskMaterials
+} from "../../Utils/selectors";
 import {FieldType, PerimetrType, removeFieldTC, setFieldsDBstateTC} from "../../BLL/map-filds-reduser";
 import {
     setCanIDrow,
@@ -94,7 +99,8 @@ export const PointOfPoligons = (props: { calback: (position: PositionType | null
 const General_agronomist = () => {
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const dispatch = useAppDispatch();
-    const isRequestProcesing = useAppSelector(selectRequestProcesingStatus)
+    const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
+    const tasks = useAppSelector(selectTaskMaterials)
     const fields  = useAppSelector(selectFields);
     const drwoingFlag = useAppSelector(selectDrowingFlag);
 
@@ -156,9 +162,7 @@ const General_agronomist = () => {
                                                 id="demo-simple-select"
                                             >
                                                 <MenuItem value={""}></MenuItem>
-                                                <MenuItem value={"1"}>ЗАВДАННЯ 1</MenuItem>
-                                                <MenuItem value={"2"}>ЗАВДАННЯ 2</MenuItem>
-                                                <MenuItem value={"3"}>ЗАВДАННЯ 3</MenuItem>
+
                                             </Select>
                                         </FormControl>
                                         <FormControl  style={{width:190, marginTop:30}} >
@@ -176,10 +180,10 @@ const General_agronomist = () => {
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                             >
-                                                <MenuItem value={""}></MenuItem>
-                                                <MenuItem value={"1"}>ЗАВДАННЯ 1</MenuItem>
-                                                <MenuItem value={"2"}>ЗАВДАННЯ 2</MenuItem>
-                                                <MenuItem value={"3"}>ЗАВДАННЯ 3</MenuItem>
+                                                {tasks[el.id]?
+                                                    tasks[el.id].map((el)=>(<MenuItem value={el.type}></MenuItem>)):
+                                                    <MenuItem value={""}></MenuItem>
+                                                }
                                             </Select>
                                         </FormControl>
                                 </div>
@@ -211,14 +215,17 @@ const General_agronomist = () => {
                                     >ВИДАЛИТИ</Button>
                                 </div>
                             </Popup>
-                            {el.currentPerimeter.length&&<Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
-                                <Tooltip   permanent direction="center" className={style.polygonTooltip}>
-                                    <div style={{width:"100%", height:"100%", backgroundColor:"bisque",color:"black"}}>
-                                       <div>{el.name ? `${el.name} S = ${el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere : "Не определено!"} Га` : "Нет данных"}</div>
-                                        <span>{el.currentCultures[0].culture}</span>
-                                    </div>
-                                </Tooltip>
-                            </Polygon>}
+                            {el.currentPerimeter.length&&
+                                <Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
+                                    {drwoingFlag && <Tooltip   permanent direction="center" className={style.polygonTooltip}>
+                                        <div style={{width:"100%", height:"100%",color:"black"}}>
+                                           <div>{el.name ? `${el.name}` : "Нет данных"}</div>
+                                            <div>{`S = ${el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere : "Не определено!"} Га`}</div>
+                                            <span>{`Культура: ${el.currentCultures[0].culture}`}</span>
+                                        </div>
+                                    </Tooltip>}
+                                </Polygon>
+                            }
                         </FeatureGroup>
                     )
                 })}

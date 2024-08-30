@@ -128,6 +128,8 @@ export const createTaskTC = (task:CreateTasckDTOType,fieldId:string) =>
     }
 }
 
-export const setTaskFromDB = () =>{
-
+export const setTaskFromDB = () =>
+    async (dispatch:DispatchType)=>{
+        dispatch(setIsRequestProcessingStatusAC(true));
 }
+

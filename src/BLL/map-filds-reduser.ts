@@ -88,7 +88,7 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
             return state.map((el)=>el.id===action.fieldId?{...el,currentCultures:action.currentCultures}:el)
 
         case"CREATE/FIELD":
-           // debugger
+           //debugger
             return [...state,{...action.field, currentPerimeter : action.field.perimeters?.length > 0 ?
                     parseTrajektory(action.field.perimeters[action.field.perimeters.length - 1].trajectory):[],
                     currentCultures:[{squere:action.field.cultureContainHistory[0].sqere??0, culture:action.field.cultureContainHistory[0].culture??"none"}]}
