@@ -79,7 +79,7 @@ export const setMaterialsFromDB = () => async (dispatch:DispatchType)=>{
         console.log(materialData, "< - materials");
         materialData.length && dispatch(setMaterialsFromDB_AC(materialData));
     }catch (e){
-        console.log(e)
+        console.log(e);
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }

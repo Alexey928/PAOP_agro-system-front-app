@@ -5,6 +5,7 @@ import {DispatchType} from "./Store";
 import {handleError} from "../Utils/errorHandler";
 import {setLastRemovedField, setSelectedFieldID} from "./map-interfase-reduser";
 import {setMaterialsFromDB} from "./material-reducer";
+import {setTaskFromDB} from "./fieldTaskReduser";
 
 
 export type FieldStateActionType =
@@ -215,6 +216,8 @@ export const setFieldsDBstateTC = () => async (dispatch:DispatchType) => {
         if(fieldsFromDB.data.length) {
             dispatch(setFieldStateFromDB_AC(fieldsFromDB.data));
             dispatch(setMaterialsFromDB())
+            dispatch(setTaskFromDB(new Date("2024-02-10T21:30:17.303Z"),
+                new Date("2025-02-10T21:30:17.303Z")))
             return
         }
         console.error("is error of reading data from response GET '/fields' !!")

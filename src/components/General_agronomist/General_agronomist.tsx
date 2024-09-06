@@ -5,6 +5,7 @@ import {LatLngExpression} from "leaflet"
 import FieldParamFormPopup from "../Common/FieldParamPopup";
 import {Button, FormControl, InputLabel, MenuItem, Select, styled, Switch} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
+
 import {
     selectDrowingFlag,
     selectFields,
@@ -23,12 +24,13 @@ import style from "./general-agronomist.module.css"
 import {ROLS} from "../Registration/Registration";
 import MaterialParamsPopupContayner from "../Common/MaterialParamsPopupContayner";
 import TaskParamPopup from "../Common/TaskParamPopup";
+import {TypesOfTask} from "../Common/Forms/TaskParamForm";
 
  export type PositionType = {
     lat: number,
     lng: number
 }
- export const fillBlueOptions = {fillColor: 'blue'}
+export const fillBlueOptions = {fillColor: 'blue'}
 const defaultFieldColor = "#7bf606"
 const tempBasePosition = {lat: 49.13658523465133, lng:35.60931303636023};
 const resSelectedFieldEntity = {id:"1",name:"",perimeters:[{sqere:""} as PerimetrType]} as FieldType
@@ -96,6 +98,20 @@ export const PointOfPoligons = (props: { calback: (position: PositionType | null
     })
     return null
 }
+// const useStyles = makeStyles({
+//     select: {
+//         backgroundColor: '#880505',
+//         borderRadius: 4,
+//         padding: '10px',
+//         '&:focus': {
+//             backgroundColor: '#07e8d6',
+//         },
+//     },
+//     menuItems:{backgroundColor:"#07e8d6"},
+//     icon: {
+//         color: '#000',
+//     },
+// });
 const General_agronomist = () => {
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const dispatch = useAppDispatch();
@@ -103,7 +119,6 @@ const General_agronomist = () => {
     const tasks = useAppSelector(selectTaskMaterials)
     const fields  = useAppSelector(selectFields);
     const drwoingFlag = useAppSelector(selectDrowingFlag);
-
     useEffect(()=>{
        setTimeout(()=>dispatch(setFieldsDBstateTC()))
         },[]
@@ -173,6 +188,7 @@ const General_agronomist = () => {
                                                            color:'#01f6bd',
                                                        }
                                                }}
+
                                                 label={"До виконання"}
                                                 value={""}
                                                 color={"primary"}
@@ -181,7 +197,23 @@ const General_agronomist = () => {
                                                 id="demo-simple-select"
                                             >
                                                 {tasks[el.id]?
-                                                    tasks[el.id].map((el)=>(<MenuItem value={el.type}></MenuItem>)):
+                                                    tasks[el.id].map((el)=>(
+                                                    <MenuItem style={
+                                                        {
+                                                        display:"flex",
+                                                        justifyContent:"space-between",
+                                                        backgroundColor:"#bda7e7"
+                                                        }
+                                                    }
+                                                    value={el.type}>
+                                                        {TypesOfTask[+el.type]}
+                                                        <Button onClick={(e)=>{e.stopPropagation()}}
+                                                                variant={"contained"}
+                                                                color={"error"}
+                                                                size={"small"}>
+                                                            x
+                                                        </Button>
+                                                    </MenuItem>)):
                                                     <MenuItem value={""}></MenuItem>
                                                 }
                                             </Select>
@@ -229,8 +261,6 @@ const General_agronomist = () => {
                         </FeatureGroup>
                     )
                 })}
-
-
                 {painedPosition.map((el, i) => {
                     return (
                         <Circle key={el.lat * el.lng + i*el.lng} center={[el.lat, el.lng]} pathOptions={fillBlueOptions}

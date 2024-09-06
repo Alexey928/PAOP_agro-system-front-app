@@ -128,8 +128,22 @@ export const createTaskTC = (task:CreateTasckDTOType,fieldId:string) =>
     }
 }
 
-export const setTaskFromDB = () =>
+export const setTaskFromDB = (from:Date, to:Date) =>
     async (dispatch:DispatchType)=>{
         dispatch(setIsRequestProcessingStatusAC(true));
+        try {
+            const tasks = await TascksApi.getAllTasksInPeriod
+            (new Date("2024-02-10T21:30:17.303Z"),
+            new Date("2025-02-10T21:30:17.303Z"));
+            console.log(tasks.data);
+            dispatch (setTasksFromDB_AC(tasks.data));
+
+
+        }catch (e){
+
+        }finally {
+
+        }
+
 }
 

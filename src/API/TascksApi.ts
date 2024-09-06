@@ -22,6 +22,6 @@ export const TascksApi = {
         return instance.post<TasckType>("tasks",dto);
     },
     getAllTasksInPeriod(from:Date,to:Date){
-        return instance.get(``)
+        return instance.get<TasckType[]>(`tasks?from=${from.toDateString()}&to=${to.toDateString()}`)
     }
 }

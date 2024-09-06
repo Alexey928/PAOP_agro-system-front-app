@@ -47,7 +47,6 @@ const calculatorOfMaterialEntity = (material:MaterialType, currentAmount:number|
 
 const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere,fieldId}) => {
     const [materialTasksEntitys, setMaterialTaskEntity] = useState<MaterialTaskCreateItemType[]>([]);
-
     const onRemoveHeandler  = (materialId:string)=>{
         setMaterialTaskEntity(prevState => prevState.filter(el => el.material.id !== materialId))
     }
@@ -62,16 +61,16 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere,fiel
         },
     })
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
-        materialTasksEntitys.length && alert("Нема матеріалів");
-        console.log(data);
-        dispatch(createTaskTC({
+         alert(materialTasksEntitys.length);
+         dispatch(createTaskTC({
             type:data.type,
             square:data.taskSquere,
             fieldId,
             from: new Date(data.from),
             status:"in progress",
             materialIdes:DtoConverter(materialTasksEntitys)
-        }, fieldId))
+        }, fieldId));
+        dispatch(setTaskParamsPopupIsOpen());
     }
     return (
         <form  onSubmit={handleSubmit(onSubmit)}>
