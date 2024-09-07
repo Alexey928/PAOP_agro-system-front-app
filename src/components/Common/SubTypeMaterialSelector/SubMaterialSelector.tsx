@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Alert, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import { useAppSelector } from "../../../BLL/Store";
 import { selectMaterialsForSybTypeSelector, selectMaterialsTypeForSubmaterialSelector } from "../../../Utils/selectors";
 import {MaterialItemType, MaterialType} from "../../../BLL/material-reducer";
@@ -58,6 +58,12 @@ export const getSubTypes = (type: MaterialItemType): string[] => {
             return [];
     }
 };
+const isTaskNeedMaterial = (task:string) => {
+   return  task==="SHOWING_CROPS"||
+           task==="SHOWING_CROPS_WIDTH_FERTILYZE"||
+           task==="SPRAYING"||
+           task==="FERTILIZATION"
+}
 
 const plaseolderMaterial:MaterialType = {
     id:"",
@@ -83,10 +89,8 @@ type TransitionStateType = {
     water:number
 
 }
-
-
-
-const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squerOftasck ,onSelect,removeContainedTasckMaterialEntity}) => {
+const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squerOftasck ,onSelect,
+                                                                         removeContainedTasckMaterialEntity}) => {
     const filteredForSubType = useAppSelector(selectMaterialsForSybTypeSelector(tasck));
     const materialtypes = useSelector(selectMaterialsTypeForSubmaterialSelector(tasck));
 
@@ -159,14 +163,15 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
     }
     const onChangeAmount = (amount:number,iterator:number)=>{
         setSelectorTransitionState((prevState) =>
-            prevState.map((el, i) => (i === iterator ? { ...el, planedAmount: amount*squerOftasck,currentCunsuptionRate:amount.toString()} : el)));
+            prevState.map((el, i) => (i === iterator ? { ...el, planedAmount: amount*squerOftasck,
+                currentCunsuptionRate:amount.toString()} : el)));
     }
     const onChangeWater = (waterNorm:number, iterator:number)=>{
         setSelectorTransitionState((prevState) =>
             prevState.map((el, i) => (i === iterator ? { ...el, water:waterNorm * squerOftasck} : el)));
     }
 
-    const setIsContayned = ( iterator:number,transitionState:TransitionStateType)=>{
+    const setIsContained = ( iterator:number,transitionState:TransitionStateType)=>{
         setSelectorTransitionState((prevState) =>
             prevState.map((el, i) => (i === iterator ? { ...el, isContained:true } : el)));
     }
@@ -195,7 +200,14 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                     color={"error"}
                     onClick={onRemoveTasckMaterialEntity}
             >x
-            </Button></div>}
+            </Button></div>
+            }
+            {
+
+                !filteredForSubType[0].length && isTaskNeedMaterial(tasck) &&
+                <Alert style={{width:200}} variant="filled" severity="warning">Нема потрібних матеріалов</Alert>
+
+            }
             {
                 filteredForSubTypeLocal[0][0] &&
                 filteredForSubTypeLocal.map((el, i) => {
@@ -340,7 +352,7 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
                                                     selectorTransitionState[i].water
                                                 ) &&
                                                 !selectorTransitionState[i].isContained &&
-                                                setIsContayned(i,selectorTransitionState[i])
+                                                setIsContained(i,selectorTransitionState[i])
                                             }}
                                     >ok
                                     </Button>}

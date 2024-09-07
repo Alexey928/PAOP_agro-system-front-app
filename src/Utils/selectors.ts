@@ -135,7 +135,7 @@ export const selectMaterialsTypeForSubmaterialSelector = (tasck:string)=>(state:
             return ["супутні"]
         case "TRANPORTING":
             return [];
-        case "SEED TREATMENT":
+        case "SEED_TREATMENT":
             return ["хімія"]
         default:
             return []

@@ -7,6 +7,8 @@ import { useForm,  SubmitHandler ,Controller} from "react-hook-form"
 import style from "./LoginStyle.module.css"
 import CommonNav from "../Common/CommonNav";
 import {useNavigate} from "react-router-dom";
+import {registrationTC} from "../../BLL/auth-reduser";
+import {useAppDispatch} from "../../BLL/Store";
 
 export enum ROLS{
     "ADMIN",
@@ -22,6 +24,7 @@ export enum ROLS{
  Rolls:number|string
 }
 const Registration = () => {
+    const dispatch = useAppDispatch()
     const { control, handleSubmit, formState} = useForm({
         defaultValues: {
             Name: "",
@@ -32,7 +35,8 @@ const Registration = () => {
     })
     const navigate = useNavigate()
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        console.log(data)
+        console.log(data,ROLS[+data.Rolls])
+        dispatch( registrationTC(data.Name,data.Email,data.Password,ROLS[+data.Rolls]))
         navigate("/login")
     }
     let massege:string|undefined = "";

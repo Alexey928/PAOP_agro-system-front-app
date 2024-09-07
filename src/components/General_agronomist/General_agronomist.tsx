@@ -98,20 +98,7 @@ export const PointOfPoligons = (props: { calback: (position: PositionType | null
     })
     return null
 }
-// const useStyles = makeStyles({
-//     select: {
-//         backgroundColor: '#880505',
-//         borderRadius: 4,
-//         padding: '10px',
-//         '&:focus': {
-//             backgroundColor: '#07e8d6',
-//         },
-//     },
-//     menuItems:{backgroundColor:"#07e8d6"},
-//     icon: {
-//         color: '#000',
-//     },
-// });
+
 const General_agronomist = () => {
     const [painedPosition, setPainedPosition] = useState<Array<PositionType>>([]);
     const dispatch = useAppDispatch();

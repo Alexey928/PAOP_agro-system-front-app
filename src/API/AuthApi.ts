@@ -25,6 +25,7 @@ export const authAPI = {
         });
     },
     registration(email: string, password: string,name:string, role:string){
+
         return instance.post<{user:User,token:string}>("user",{
             email,
             password,

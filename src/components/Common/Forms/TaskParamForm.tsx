@@ -60,6 +60,7 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere,fiel
 
         },
     })
+    console.log(formState.isValid);
     const onSubmit:SubmitHandler<IFormInputs> = (data) => {
          alert(materialTasksEntitys.length);
          dispatch(createTaskTC({

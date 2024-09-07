@@ -97,7 +97,7 @@ export const registrationTC =(name:string,email:string,password:string,role:stri
                 dispatch(setAuthUserDataAC(id, role, email, name,true));
             }
         }catch (e){
-
+            console.log(e);
         }finally {
 
         }

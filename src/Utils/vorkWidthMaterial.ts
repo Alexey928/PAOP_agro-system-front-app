@@ -1,7 +1,6 @@
 import {initialMaterialStateCreator, materialsStateType, MaterialType, remoweMaterialAC} from "../BLL/material-reducer";
 
 export const materialSortByType = (materials:MaterialType[],  state?:materialsStateType):materialsStateType=>{
-
     const sortedMaterials:materialsStateType = state ? state : initialMaterialStateCreator();
     materials.forEach((material)=>{
         switch (material.type) {
@@ -40,16 +39,13 @@ export const materialSortByType = (materials:MaterialType[],  state?:materialsSt
 }
 
 export const updateMaterialHeandler = (material:MaterialType,state:materialsStateType):materialsStateType=>{
-    //const mapShalowCopy = (arr: MaterialType[]) => arr.map(it => it.id!==material.id ? it : material)?????
     switch (material.type) {
         case "хімія":
             return {...state,chemistry:state.chemistry.map(it => it.id!==material.id ? it : material)};
         case "супутні":
             return {...state,suply: state.suply.map(it => it.id!==material.id ? it : material)};
-
         case "насіння":
             return {...state,crops: state.crops.map(it => it.id!==material.id ? it : material)};
-
         case "добрива":
             return {...state,fertilizer: state.fertilizer.map(it => it.id!==material.id ? it : material)};
         default:
