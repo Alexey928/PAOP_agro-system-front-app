@@ -8,6 +8,8 @@ import style from "../General_agronomist/general-agronomist.module.css";
 import {SwitchTextTrackk} from "../Common/MaterialUISwithes/switches"
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {TypesOfTask} from "../Common/Forms/TaskParamForm";
+import {authMeTC} from "../../BLL/auth-reduser";
+import {setTokenInInstanse} from "../../API/commonApiInstanse";
 
 const defaultFieldColor = "#7bf606"
 
@@ -21,11 +23,9 @@ const SimpleAgronomist = () => {
         jason: false,
         antoine: true,
     });
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked,
-        });
+    const handleChange = () => {
+        setTokenInInstanse();
+        dispatch(authMeTC())
     };
 
     useEffect(()=>{
@@ -42,9 +42,8 @@ const SimpleAgronomist = () => {
                 }
             }>
             <div>
-                <SwitchTextTrackk/>
-                <Button variant={"contained"}>{"-->"}</Button>
-
+                <SwitchTextTrackk />
+                <Button onClick={handleChange} variant={"contained"}>{"-->"}</Button>
             </div>
 
 
@@ -113,12 +112,6 @@ const SimpleAgronomist = () => {
                                                             }
                                                                       value={el.type}>
                                                                 {TypesOfTask[+el.type]}
-                                                                <Button onClick={(e)=>{e.stopPropagation()}}
-                                                                        variant={"contained"}
-                                                                        color={"error"}
-                                                                        size={"small"}>
-                                                                    x
-                                                                </Button>
                                                             </MenuItem>)):
                                                         <MenuItem value={""}></MenuItem>
                                                     }
@@ -128,7 +121,6 @@ const SimpleAgronomist = () => {
 
                                     </Popup>
                                 </FeatureGroup>
-
                             }
                         </div>
                     )})}
