@@ -11,7 +11,6 @@ interface TabPanelProps {
 
 function CustomTabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
-
     return (
         <div
             role="tabpanel"
@@ -32,41 +31,42 @@ function a11yProps(index: number) {
     };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs(props:any) {
     const [value, setValue] = React.useState(0);
+
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs sx={{
                     '& .MuiTab-root': {
-                        color: 'white', // Non-active tab color
+                        color: '#08f1f1', // Non-active tab color
                     },
                     '& .Mui-selected': {
-                        color: '#9af105', // Active tab color
+                        color: '#b4f802', // Active tab color
                     },
                     '& .MuiTabs-indicator': {
                         backgroundColor: '#f1cb05', // Underline color for active tab
                     },
                 }}
                     value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
+                    <Tab label="Сводні по полях" {...a11yProps(0)} />
+                    <Tab label="Сводні по матеріалам" {...a11yProps(1)} />
+                    <Tab label="Вибірково по полю" {...a11yProps(2)} />
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                Item One
+                {props.children[0]}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                Item Two
+                {props.children[1]}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-                Item Three
+                {props.children[2]}
             </CustomTabPanel>
         </Box>
     );
