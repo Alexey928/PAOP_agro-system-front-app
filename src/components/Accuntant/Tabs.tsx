@@ -31,17 +31,24 @@ function a11yProps(index: number) {
     };
 }
 
-export default function BasicTabs(props:any) {
+
+const tempData = [
+    "поле1  посев  с 12.09.24 по " ,
+    "поле1  посев  с 12.09.24 по ",
+    "поле1  посев  с 12.09.24 по "
+]
+
+export default function BasicTabs(props:{children: React.ReactNode[]}) {
     const [value, setValue] = React.useState(0);
-
-
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+    console.log(value);
     return (
-        <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <div >
+        <Box>
+            <Box sx={{ borderBottom: 1, borderColor: '#08f1f1' }}>
                 <Tabs sx={{
                     '& .MuiTab-root': {
                         color: '#08f1f1', // Non-active tab color
@@ -69,5 +76,6 @@ export default function BasicTabs(props:any) {
                 {props.children[2]}
             </CustomTabPanel>
         </Box>
+        </div>
     );
 }

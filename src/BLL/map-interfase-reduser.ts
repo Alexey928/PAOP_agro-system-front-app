@@ -15,6 +15,7 @@ export const  MapInterfaceInitial={
     taskParamsPopup:false as boolean,
     materialEditorIsOpen: false as boolean,
     lastRemovedField:{} as LastRemoved,
+    showFieldDescription : false as boolean
 
 };
 
@@ -62,6 +63,11 @@ export const setSelectedFieldID  = (fieldID:string)=>(
         fieldID
     } as const
 )
+export const setShowFieldDescription = ()=>(
+    {type:"SET/FIELD_DESCRIPTION/VISIBLE"} as const
+)
+
+
 
 export const setSelectedFieldTrajectory = (trajectory:number[][]) =>(
     {

@@ -121,7 +121,6 @@ const General_agronomist = () => {
                                                 id="demo-simple-select"
                                             >
                                                 <MenuItem value={""}></MenuItem>
-
                                             </Select>
                                         </FormControl>
                                         <FormControl  style={{width:190, marginTop:30}} >
@@ -224,7 +223,9 @@ const General_agronomist = () => {
               <div style={{width:"100%"}}>
                   <MaterialUISwitchh sx={{ m: 1 }}
                                     onChange={()=>{
-                                        dispatch(setCanIDrow());setPainedPosition([])}
+                                        dispatch(setCanIDrow());
+                                        setPainedPosition([])
+                                    }
                                     }
                                     checked={drwoingFlag} />
                   <Button size={"small"} style={{display:"inline-block",width:50,color:painedPosition.length?"#7bf606":"white",fontWeight:painedPosition.length?"bold":"normal"}}
