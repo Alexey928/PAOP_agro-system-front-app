@@ -38,6 +38,7 @@ export const selectDrowingFlag = (state:AppRootStateType):boolean => state.field
 export const selectSelectdFieldColor = (state:AppRootStateType):string => state.fieldsInterfase.selectedFieldColor;
 export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory;
 export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.materialEditorIsOpen
+export const selectFlagForDescription = (state:AppRootStateType):boolean => state.fieldsInterfase.showFieldDescription
 //materials selectors
 
 export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:string) => (state:AppRootStateType)  => {

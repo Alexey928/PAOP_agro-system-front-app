@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
-import {selectFields, selectTaskMaterials} from "../../Utils/selectors";
-import {removeFieldTC, setFieldsDBstateTC} from "../../BLL/map-filds-reduser";
+import {selectFields, selectFlagForDescription, selectTaskMaterials} from "../../Utils/selectors";
+import {setFieldsDBstateTC} from "../../BLL/map-filds-reduser";
 import {FeatureGroup, MapContainer, Polygon, Popup, TileLayer, Tooltip} from "react-leaflet";
 import {LatLngExpression} from "leaflet";
 import style from "../General_agronomist/general-agronomist.module.css";
@@ -10,12 +10,14 @@ import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {TypesOfTask} from "../Common/Forms/TaskParamForm";
 import {authMeTC} from "../../BLL/auth-reduser";
 import {setTokenInInstanse} from "../../API/commonApiInstanse";
+import {setShowFieldDescription} from "../../BLL/map-interfase-reduser";
 
 const defaultFieldColor = "#7bf606"
 
 const SimpleAgronomist = () => {
     const tasks = useAppSelector(selectTaskMaterials)
     const fields  = useAppSelector(selectFields);
+    const descriptionFlag =useAppSelector(selectFlagForDescription)
     const dispatch = useAppDispatch();
     console.log(tasks,fields)
     const [state, setState] = useState({
@@ -42,7 +44,7 @@ const SimpleAgronomist = () => {
                 }
             }>
             <div>
-                <SwitchTextTrackk />
+                <SwitchTextTrackk onChange={()=>{dispatch(setShowFieldDescription())}}/>
                 <Button onClick={handleChange} variant={"contained"}>{"-->"}</Button>
             </div>
 
@@ -54,24 +56,32 @@ const SimpleAgronomist = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {fields.map((el, i) => {
+                {fields.map((el) => {
                     return (
                         <div>
-                            {el.currentPerimeter.length&&
+                            {el.currentPerimeter.length &&
                                 <FeatureGroup key={el.id}  pathOptions={{
                                     color:el.fillColor ?? defaultFieldColor,
                                     fillColor: el.fillColor ?? defaultFieldColor,
                                 }} >
-
-
                                     <Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
-                                        { <Tooltip   permanent direction="center" className={style.polygonTooltip}>
-                                            <div style={{width:"100%", height:"100%",color:"black"}}>
+                                        {descriptionFlag && <Tooltip  permanent direction="center" className={style.polygonTooltip}>
+                                            <div style={{width:"100%", height:"100%",color:"black",position:"relative"}}>
                                                 <div>{el.name ? `${el.name}` : "Нет данных"}</div>
                                                 <div>{`S = ${el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere : 
                                                         "Не определено!"} Га`}
                                                 </div>
                                                 <span>{`Культура: ${el.currentCultures[0].culture}`}</span>
+                                                {tasks[el.id]&&<span style={{
+                                                    top:-17,
+                                                    right:-16,
+                                                    width:20,
+                                                    backgroundColor:"red",
+                                                    color:"white",
+                                                    position:"absolute",
+                                                    border:"1px solid blue",
+                                                    borderRadius:30,
+                                                }}>!</span>}
                                             </div>
                                         </Tooltip>}
                                     </Polygon>
@@ -84,7 +94,7 @@ const SimpleAgronomist = () => {
                                             </div>
                                         </header>
                                         <hr/>
-                                        <div className={style.popup_body}>
+                                        <div className={style.popup_body} style={{height:120}}>
                                             <FormControl  style={{width:190, marginTop:30}} >
                                                 <InputLabel id="demo-simple-select-label">До виконання</InputLabel>
                                                 <Select
@@ -101,9 +111,13 @@ const SimpleAgronomist = () => {
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                 >
-                                                    {tasks[el.id]?
+                                                    {tasks[el.id] ?
                                                         tasks[el.id].map((el)=>(
-                                                            <MenuItem style={
+                                                            <MenuItem onClick={(event)=>{
+                                                                console.log(event.target,el);
+
+
+                                                            }} style={
                                                                 {
                                                                     display:"flex",
                                                                     justifyContent:"space-between",
@@ -112,7 +126,7 @@ const SimpleAgronomist = () => {
                                                             }
                                                                       value={el.type}>
                                                                 {TypesOfTask[+el.type]}
-                                                            </MenuItem>)):
+                                                            </MenuItem>))  :
                                                         <MenuItem value={""}></MenuItem>
                                                     }
                                                 </Select>
@@ -124,7 +138,6 @@ const SimpleAgronomist = () => {
                             }
                         </div>
                     )})}
-
             </MapContainer>
         </div>)
 };

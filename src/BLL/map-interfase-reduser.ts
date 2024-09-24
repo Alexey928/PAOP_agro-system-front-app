@@ -28,7 +28,8 @@ export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
                           ReturnType<typeof setSelectedFieldTrajectory>|
                           ReturnType<typeof setLastRemovedField>|
                           ReturnType<typeof setSelectedField>|
-                          ReturnType<typeof setMaterialEditorFlag>;
+                          ReturnType<typeof setMaterialEditorFlag>|
+                          ReturnType<typeof setShowFieldDescription> ;
 
 export const fieldIntarfaseReduser = (
                                          state:MapInterfaseType = MapInterfaceInitial,
@@ -52,6 +53,8 @@ export const fieldIntarfaseReduser = (
             return {...state,lastRemovedField: action.field}
         case "SET/SELECTED/FIELD":
             return {...state,selectedField:action.field}
+        case "SET/FIELD_DESCRIPTION/VISIBLE":
+            return {...state , showFieldDescription: !state.showFieldDescription}
 
         default: return state
     }
