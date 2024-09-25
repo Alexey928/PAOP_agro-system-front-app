@@ -5,7 +5,13 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui
 const TaskConfigPopup = () => {
     return (
         <div  className={"popup"} style={{zIndex:2,}}>
-            <h2 style={{position:"sticky",backgroundColor:"#001a83",lineHeight:2,border:"1px solid #fff"}}> ДОКЛАДНО ПРО ЗАВДВННЯ </h2>
+            <div>
+                <h2 style={{position:"sticky",backgroundColor:"#001a83",lineHeight:2,border:"1px solid #fff"}}>
+                    ДОКЛАДНО ПРО ЗАВДВННЯ
+                </h2>
+                <span style={{float:"right",position:"relative",top:-63, right:10}}><Button variant={"contained"} color={"error"}>x</Button></span>
+            </div>
+
             <div style={{display:"flex"}}>
                 <div style={{width:"47vw",backgroundColor:"#772800", borderRadius:6}}>
                     <ul style = {{textAlign:"start"}}>
