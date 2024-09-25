@@ -11,6 +11,7 @@ import {TypesOfTask} from "../Common/Forms/TaskParamForm";
 import {authMeTC} from "../../BLL/auth-reduser";
 import {setTokenInInstanse} from "../../API/commonApiInstanse";
 import {setShowFieldDescription} from "../../BLL/map-interfase-reduser";
+import TaskConfigPopup from "./TaskConfigPopup";
 
 const defaultFieldColor = "#7bf606"
 
@@ -35,6 +36,9 @@ const SimpleAgronomist = () => {
         },[]
     )
     return (
+        <div>
+
+
         <div style={{color:"white",width: "100vw", height: "100vh", position: "relative"}}>
             <div style={
                 {   position:"absolute",right:8,top:4,
@@ -139,6 +143,9 @@ const SimpleAgronomist = () => {
                         </div>
                     )})}
             </MapContainer>
+        </div>
+            <TaskConfigPopup/>
+
         </div>)
 };
 

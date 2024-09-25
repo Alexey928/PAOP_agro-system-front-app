@@ -29,7 +29,7 @@ export const selectFields = (state:AppRootStateType):mapFieldStateType => state.
 export const selectTaskMaterials = (state:AppRootStateType):{[fieldID:string]:TasckType[]}=>(
     state.tasksmaterials.tasksMapedFromFields)
 
-// fields interfase state selectors
+// fields interface state selectors
 export const selectSelectedFieldID = (state:AppRootStateType):string|null => state.fieldsInterfase.selectedFieldID;
 export const selectSelectedField  = (state:AppRootStateType):FieldType => state.fieldsInterfase.selectedField
 export const selectFieldParamsPopupIsOpen = (state:AppRootStateType):boolean => state.fieldsInterfase.fieldParamsPopup;
