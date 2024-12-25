@@ -10,7 +10,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {TypesOfTask} from "../Common/Forms/TaskParamForm";
 import {authMeTC} from "../../BLL/auth-reduser";
 import {setTokenInInstanse} from "../../API/commonApiInstanse";
-import {setShowFieldDescription} from "../../BLL/map-interfase-reduser";
+import {setShowFieldDescription, setTaskParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
 import TaskConfigPopup from "./TaskConfigPopup";
 
 const defaultFieldColor = "#7bf606"
@@ -119,8 +119,7 @@ const SimpleAgronomist = () => {
                                                         tasks[el.id].map((el)=>(
                                                             <MenuItem onClick={(event)=>{
                                                                 console.log(event.target,el);
-
-
+                                                                dispatch(setTaskParamsPopupIsOpen())
                                                             }} style={
                                                                 {
                                                                     display:"flex",
@@ -128,8 +127,8 @@ const SimpleAgronomist = () => {
                                                                     backgroundColor:"#bda7e7"
                                                                 }
                                                             }
-                                                                      value={el.type}>
-                                                                {TypesOfTask[+el.type]}
+                                                            value={el.type}>
+                                                            {TypesOfTask[+el.type]}
                                                             </MenuItem>))  :
                                                         <MenuItem value={""}></MenuItem>
                                                     }
@@ -145,7 +144,6 @@ const SimpleAgronomist = () => {
             </MapContainer>
         </div>
             <TaskConfigPopup/>
-
         </div>)
 };
 

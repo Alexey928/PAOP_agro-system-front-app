@@ -29,8 +29,6 @@ const AccordionRows:React.FC<AccordionRows> = (props)=> {
                             alignItems:"center",
                             justifyContent:"space-around",
                             gap:3,
-
-
                         }}>
                         {props.children}
                     </AccordionDetails>

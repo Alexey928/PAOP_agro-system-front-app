@@ -13,6 +13,7 @@ export const  MapInterfaceInitial={
     selectedFieldTrajectory:[] as number[][],
     fieldParamsPopup: false as boolean,
     taskParamsPopup:false as boolean,
+    showTaskViue:{flag:false,taskFieldId:"",taskId:""},
     materialEditorIsOpen: false as boolean,
     lastRemovedField:{} as LastRemoved,
     showFieldDescription : false as boolean
@@ -29,7 +30,8 @@ export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
                           ReturnType<typeof setLastRemovedField>|
                           ReturnType<typeof setSelectedField>|
                           ReturnType<typeof setMaterialEditorFlag>|
-                          ReturnType<typeof setShowFieldDescription> ;
+                          ReturnType<typeof setShowFieldDescription>|
+                          ReturnType<typeof setTaskViueIndeficatorData>;
 
 export const fieldIntarfaseReduser = (
                                          state:MapInterfaseType = MapInterfaceInitial,
@@ -40,10 +42,11 @@ export const fieldIntarfaseReduser = (
             return {...state,selectedFieldID: action.fieldID}
         case "SET/TASK/PARAMS_POPUP":
             return {...state,taskParamsPopup:!state.taskParamsPopup}
+        case "SET/DATA/FOR/TASK/VIUE":
+            return {...state,showTaskViue:action.payload}
         case "SET/FIELD/PARAMS_POPUP":
             return {...state,fieldParamsPopup:!state.fieldParamsPopup}
         case "SET/MATERIAL/EDITOR/FLAG":
-            console.log("mat")
             return {...state,materialEditorIsOpen:!state.materialEditorIsOpen}
         case "SET/CAN/I/DRO/FLAG":
             return action.flag?{...state, canIDraw: !action.flag}:{...state,canIDraw:!state.canIDraw};
@@ -70,7 +73,11 @@ export const setShowFieldDescription = ()=>(
     {type:"SET/FIELD_DESCRIPTION/VISIBLE"} as const
 )
 
-
+export const setTaskViueIndeficatorData = (data:{flag:boolean,taskFieldId:string,taskId:string}) => {
+    return(
+        {type:"SET/DATA/FOR/TASK/VIUE",payload:{...data}}
+    )  as const
+}
 
 export const setSelectedFieldTrajectory = (trajectory:number[][]) =>(
     {

@@ -17,12 +17,14 @@ export type TasckType = {
     type:string,
     status:string,
     comment:string,
-    field:{id:number},
+    field:{id:number,name:string},
     taskMaterials:taskMaterialType[]
+    materials:MaterialType[],
     machines:{id:string}[],
     taskMachines:{}[],
 }
-export type TaskMaterialActionsType = ReturnType<typeof setTasksFromDB_AC> |
+export type TaskMaterialActionsType =
+    ReturnType<typeof setTasksFromDB_AC> |
     ReturnType<typeof addTaskAC> |
     ReturnType<typeof removeTask>
 
@@ -39,7 +41,8 @@ type TascMaterialStateType  = {
     globalTo:Date,
     tasksArray:TasckType[],
     tasksMapedFromFields:{[fieldID:string]:TasckType[]},
-    inProgressTasks:{[fieldID:string]:TasckType[]},
+    isDoneTasks:{[fieldID:string]:TasckType[]},
+
 }
 
 
@@ -48,20 +51,44 @@ const tasckMaterialInitialState:TascMaterialStateType = {
     globalTo: new Date(),
     tasksArray:[],
     tasksMapedFromFields:{},
-    inProgressTasks:{},
+    isDoneTasks:{},
 
 }
-const forArrToHash = <T extends {field: {id:number} | null}>(arr:Array<T>):{[key:string]:T[]}=>{
+
+const forArrToHash = <T extends {field: {id:number} | null, status:string}>(arr:Array<T>):{[key:string]:T[]}=>{
     const temp:{[key:string]:T[]} = {};
     arr.forEach((e)=>{
-    if(!temp[`${e.field?.id}`]) {
-         temp[`${e.field?.id}`]=[e]
-     }else {
-        temp[`${e.field?.id}`].push(e)
+    if(e.status==="in progress"){
+        if(!temp[`${e.field?.id}`]) {
+            temp[`${e.field?.id}`]=[e]
+        }else {
+            temp[`${e.field?.id}`].push(e)
+        }
     }
+
     })
     return temp
 }
+
+
+const forArrToIsDoneHsh = <T extends {field: {id:number} | null,status:string}>(arr:Array<T>):{[key:string]:T[]}=>{
+    const temp:{[key:string]:T[]} = {};
+    arr.forEach((it,i)=>{
+        if(it.status==="isDone"){
+            if(!temp[`${it.field?.id}`]) {
+                temp[`${it.field?.id}`]=[it]
+            }else {
+                temp[`${it.field?.id}`].push(it);
+            }
+        }
+
+    })
+    return temp;
+
+}
+
+
+
 export  const DtoConverter = (dto:MaterialTaskCreateItemType[]):materialUsageDataType[] => {
     return dto.map((el)=>({
         materialId:+ el.material.id,
@@ -73,13 +100,15 @@ export  const DtoConverter = (dto:MaterialTaskCreateItemType[]):materialUsageDat
 
 export const fieldTaskReduser = (state:TascMaterialStateType = tasckMaterialInitialState,
                                  action:TaskMaterialActionsType): TascMaterialStateType =>
+
+
 {
     switch (action.type) {
         case "SET/TASKS/FROM/DB":
-            return {...state,tasksArray:action.tasks,tasksMapedFromFields:action.hash}
+            return {...state,tasksArray:action.tasks,tasksMapedFromFields:action.hash,isDoneTasks:action.isDoneHash}
         case "ADD/TASK":
             const temp = [...state.tasksArray,action.task]
-            return {...state,tasksArray:temp, tasksMapedFromFields:forArrToHash(temp)}
+            return {...state,tasksArray:temp, tasksMapedFromFields:forArrToHash(temp),isDoneTasks:forArrToIsDoneHsh<TasckType>(temp)}
         case "REMOVE/TASK":
             const filtered = state.tasksArray.filter((el)=>el.id!==action.taskId);
             return {...state,tasksArray:filtered,tasksMapedFromFields:forArrToHash(filtered)}
@@ -93,7 +122,9 @@ const setTasksFromDB_AC = (tasks:TasckType[]) => (
     {
         type:"SET/TASKS/FROM/DB",
         tasks,
-        hash:forArrToHash<TasckType>(tasks)
+        hash:forArrToHash<TasckType>(tasks),
+        isDoneHash:forArrToIsDoneHsh<TasckType>(tasks)
+
     } as const
 );
 
@@ -119,7 +150,7 @@ export const createTaskTC = (task:CreateTasckDTOType,fieldId:string) =>
         dispatch(setIsRequestProcessingStatusAC(true));
     try {
        const {data} = await TascksApi.create(task);
-        console.log(data)
+      // debugger
        dispatch(addTaskAC(data,fieldId));
     }catch (e){
         console.log(e);
@@ -135,10 +166,7 @@ export const setTaskFromDB = (from:Date, to:Date) =>
             const tasks = await TascksApi.getAllTasksInPeriod
             (new Date("2024-02-10T21:30:17.303Z"),
             new Date("2025-02-10T21:30:17.303Z"));
-            console.log(tasks.data);
             dispatch (setTasksFromDB_AC(tasks.data));
-
-
         }catch (e){
 
         }finally {

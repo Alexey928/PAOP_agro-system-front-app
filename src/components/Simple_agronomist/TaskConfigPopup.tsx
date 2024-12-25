@@ -1,17 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {useAppDispatch, useAppSelector} from "../../BLL/Store";
+import {selectTaskParamsPopupIsOpen} from "../../Utils/selectors";
+import {setTaskParamsPopupIsOpen} from "../../BLL/map-interfase-reduser";
+import {Worker} from "../../BLL/worcerReduser";
 
+type VorkTicetsType = {
+    worker:Worker,
+    timeAmount:number,
+    squre:number
+
+}
 
 const TaskConfigPopup = () => {
-    return (
+    const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
+    const [worckTikets, setVorkTicets] = useState<VorkTicetsType[]>(
+        []
+    )
+
+
+    const dispatch = useAppDispatch();
+
+    return (!fieldPopupFlag?
         <div  className={"popup"} style={{zIndex:2,}}>
             <div>
                 <h2 style={{position:"sticky",backgroundColor:"#001a83",lineHeight:2,border:"1px solid #fff"}}>
                     ДОКЛАДНО ПРО ЗАВДВННЯ
                 </h2>
-                <span style={{float:"right",position:"relative",top:-63, right:10}}><Button variant={"contained"} color={"error"}>x</Button></span>
+                <span style={{float:"right",position:"relative",top:-63, right:10}}>
+                    <Button variant={"contained"} color={"error"}
+                    onClick={()=>{dispatch(setTaskParamsPopupIsOpen())}}>
+                        x
+                    </Button>
+                </span>
             </div>
-
             <div style={{display:"flex"}}>
                 <div style={{width:"47vw",backgroundColor:"#772800", borderRadius:6}}>
                     <ul style = {{textAlign:"start"}}>
@@ -34,7 +56,63 @@ const TaskConfigPopup = () => {
                     <h2>Змінна Карта</h2>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
                         <FormControl  style={{width:190}} >
+                            <InputLabel id="demo-simple-select-label">Трактористи</InputLabel>
+                            <Select
+                                SelectDisplayProps={
+                                    {style: {
+                                            color:'#01f6bd',
+                                        }
+                                    }}
+                                label={"Виконані"}
+                                value={""}
+                                color={"primary"}
+                                variant={"outlined"}
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                            >
+                                <MenuItem value={"курята"}>Курята</MenuItem>
+                                <MenuItem value={"Сміренов"}>Сміренов</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField style={{width:80}} InputProps={{
+                            style: {color:"white"},
+                        }} label="Години" variant="outlined" type={"number"}/>
+                        <TextField style ={{width:80,color:"#fff"}} type={"number"} InputProps={{
+                            style: {color:"white"},
+                        }} label="Га" variant="outlined"/>
+                        <Button style={{marginLeft:20}} variant={"contained"} color={"success"}>+</Button>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        <FormControl  style={{width:190}} >
                             <InputLabel id="demo-simple-select-label">Водії</InputLabel>
+                            <Select
+                                SelectDisplayProps={
+                                    {style: {
+                                            color:'#01f6bd',
+                                        }
+                                    }}
+                                label={"Виконані"}
+                                value={""}
+                                color={"primary"}
+                                variant={"outlined"}
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                            >
+                                <MenuItem value={"курята"}>Курята</MenuItem>
+                                <MenuItem value={"Сміренов"}>Сміренов</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField style={{width:80}} InputProps={{
+                            style: {color:"white"},
+                        }} label="Години" variant="outlined" type={"number"}/>
+                        <TextField style ={{width:80,color:"#fff"}} type={"number"} InputProps={{
+                            style: {color:"white"},
+                        }} label="Га" variant="outlined"/>
+                        <Button style={{marginLeft:20}} variant={"contained"} color={"success"}>+</Button>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        <FormControl  style={{width:190}} >
+                            <InputLabel id="demo-simple-select-label">Різноробочі</InputLabel>
                             <Select
                                 SelectDisplayProps={
                                     {style: {
@@ -67,9 +145,10 @@ const TaskConfigPopup = () => {
                 <h2>
                     Закриті наряди цього завдання
                 </h2>
-            </div>
 
-        </div>
+
+            </div>
+        </div>:<></>
     );
 };
 

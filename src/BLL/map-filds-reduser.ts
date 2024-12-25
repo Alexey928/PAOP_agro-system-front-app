@@ -7,7 +7,6 @@ import {setLastRemovedField, setSelectedFieldID} from "./map-interfase-reduser";
 import {setMaterialsFromDB} from "./material-reducer";
 import {setTaskFromDB} from "./fieldTaskReduser";
 
-
 export type FieldStateActionType =
     ReturnType<typeof setFieldStateFromDB_AC>|
     ReturnType<typeof setFieldsPerimetersAC>|
@@ -68,8 +67,8 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
                 {...el, currentPerimeter:el.perimeters.length > 0 ?
                     parseTrajektory(el.perimeters[el.perimeters.length - 1].trajectory) : [],
                     currentCultures:calculateCurrentCultures(el.startFreeSqere,el.cultureContainHistory),
-
                 }))
+
         case"SET/FIELDS/PERIMETERS":
             const perimeters = action.payload.perimetrs
             return state.map((el) => (
@@ -79,6 +78,7 @@ export const fieldReducer = (state:mapFieldStateType = [], action:FieldStateActi
                         currentPerimeter:parseTrajektory(perimeters[perimeters.length-1].trajectory)}:
                     el)
             );
+
             case "SET/FIELD/PERIMETER":
                 return state.map((el) => action.fieldID === el.id?
                 {...el, perimeters:[...el.perimeters, action.perimeter],
@@ -213,11 +213,12 @@ export const setFieldsDBstateTC = () => async (dispatch:DispatchType) => {
     dispatch(setIsRequestProcessingStatusAC(true));
     try {
         const fieldsFromDB = await mapFieldAPI.getAll();
+        console.log("it is DTO object of field entity", fieldsFromDB);
         if(fieldsFromDB.data.length) {
             dispatch(setFieldStateFromDB_AC(fieldsFromDB.data));
-            dispatch(setMaterialsFromDB())
+            dispatch(setMaterialsFromDB());
             dispatch(setTaskFromDB(new Date("2024-02-10T21:30:17.303Z"),
-                new Date("2025-02-10T21:30:17.303Z")))
+                new Date("2025-02-10T21:30:17.303Z")));
             return
         }
         console.error("is error of reading data from response GET '/fields' !!")

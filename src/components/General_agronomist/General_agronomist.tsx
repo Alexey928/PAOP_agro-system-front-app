@@ -17,15 +17,16 @@ import {
     setCanIDrow,
     setFieldParamsPopupIsOpen, setMaterialEditorFlag, setSelectedField,
     setSelectedFieldID,
-    setSelectedFieldTrajectory, setTaskParamsPopupIsOpen
+    setSelectedFieldTrajectory, setTaskParamsPopupIsOpen, setTaskViueIndeficatorData
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
 import {ROLS} from "../Registration/Registration";
 import MaterialParamsPopupContayner from "../Common/MaterialParamsPopupContayner";
 import TaskParamPopup from "../Common/TaskParamPopup";
-import {TypesOfTask} from "../Common/Forms/TaskParamForm";
+import {taskTypeConvertEmun} from "../Common/Forms/TaskParamForm";
 import {MaterialUISwitchh} from "../Common/MaterialUISwithes/switches"
+import TaskVuiePoupup from "../Common/tascViue/TaskViueu";
 
  export type PositionType = {
     lat: number,
@@ -83,6 +84,7 @@ const General_agronomist = () => {
                 />
                 <PointOfPoligons calback={drwoingFlag ? calback : () => {}}/>
                 {fields.map((el, i) => {
+                    const fildID = el.id;
                     return (
                         <FeatureGroup key={el.id} eventHandlers={{
                                 click: () => {
@@ -120,12 +122,17 @@ const General_agronomist = () => {
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                             >
+
                                                 <MenuItem value={""}></MenuItem>
                                             </Select>
                                         </FormControl>
                                         <FormControl  style={{width:190, marginTop:30}} >
                                             <InputLabel id="demo-simple-select-label">До виконання</InputLabel>
                                             <Select
+                                                onChange={(event)=>{
+
+                                                   dispatch(setTaskViueIndeficatorData({flag:true,taskFieldId:fildID,taskId:event.target.value}))// target value, as selected task id
+                                                }}
                                                 SelectDisplayProps={
                                                    {style: {
                                                            color:'#01f6bd',
@@ -148,9 +155,15 @@ const General_agronomist = () => {
                                                         backgroundColor:"#bda7e7"
                                                         }
                                                     }
-                                                    value={el.type}>
-                                                        {TypesOfTask[+el.type]}
-                                                        <Button onClick={(e)=>{e.stopPropagation()}}
+                                                    value={el.id}>
+                                                        {taskTypeConvertEmun[+el.type].toUpperCase()}
+                                                        <Button onClick={(e)=>{
+                                                            e.stopPropagation();
+                                                            const confirm =  window.confirm("ви певні що бажаєте видалити ?");
+                                                            if(!confirm) return;
+
+
+                                                        }}
                                                                 variant={"contained"}
                                                                 color={"error"}
                                                                 size={"small"}>
@@ -198,6 +211,16 @@ const General_agronomist = () => {
                                             <div>{`S = ${el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere : "Не определено!"} Га`}
                                         </div>
                                             <span>{`Культура: ${el.currentCultures[0].culture}`}</span>
+                                            {tasks[el.id]&&<span style={{
+                                                top:-17,
+                                                right:-16,
+                                                width:20,
+                                                backgroundColor:"red",
+                                                color:"white",
+                                                position:"absolute",
+                                                border:"1px solid blue",
+                                                borderRadius:30,
+                                            }}>!</span>}
                                         </div>
                                     </Tooltip>}
                                 </Polygon>
@@ -258,11 +281,11 @@ const General_agronomist = () => {
                         }}> + Поле
                     </Button>
                 </div>}
-
             </div>
             <FieldParamFormPopup/>
             <TaskParamPopup/>
-            <MaterialParamsPopupContayner />
+            <MaterialParamsPopupContayner/>
+            <TaskVuiePoupup/>
         </div>
     );
 };

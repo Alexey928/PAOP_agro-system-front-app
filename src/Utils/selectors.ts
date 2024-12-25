@@ -39,6 +39,10 @@ export const selectSelectdFieldColor = (state:AppRootStateType):string => state.
 export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory;
 export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.materialEditorIsOpen
 export const selectFlagForDescription = (state:AppRootStateType):boolean => state.fieldsInterfase.showFieldDescription
+export const selectFlagForTaskViue = (state:AppRootStateType):{flag:boolean,taskFieldId:string,taskId:string} =>
+    state.fieldsInterfase.showTaskViue;
+
+
 //materials selectors
 
 export const selectMaterialsByOptionalType = (type:MaterialItemType, task?:string) => (state:AppRootStateType)  => {
@@ -114,7 +118,7 @@ export const selectMaterialsForSybTypeSelector = (tasck:string) => (state:AppRoo
             return [[]] as MaterialType[][];
     }}
 
-export const selectMaterialsTypeForSubmaterialSelector = (tasck:string)=>(state:AppRootStateType):MaterialItemType[]=>{
+export const selectMaterialsTypeForSubmaterialSelector = (tasck:string)=>():MaterialItemType[]=>{
     switch (tasck) {
         case"SHOWING_CROPS":
             return ["насіння"];

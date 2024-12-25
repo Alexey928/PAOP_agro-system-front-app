@@ -5,14 +5,16 @@ import TaskParamForm from "./Forms/TaskParamForm";
 
 const TaskParamPopup = () => {
     const fieldPopupFlag = useAppSelector(selectTaskParamsPopupIsOpen);
-    const selectedField = useAppSelector(selectSelectedField)
+    const selectedField = useAppSelector(selectSelectedField);
+
     return (
         fieldPopupFlag ? <div className="popup">
             <div>Створення Завдання для:{<div style={{color:"#54ff00"}}>{selectedField.name.toUpperCase()}</div>}</div>
             <TaskParamForm fieldId={selectedField.id}
                            currentFieldSqere={+selectedField.perimeters[selectedField.perimeters.length-1].sqere}
             />
-        </div>:<></>
+        </div>:
+        <></>
     );
 };
 

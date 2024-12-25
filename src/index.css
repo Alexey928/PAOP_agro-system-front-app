@@ -6,6 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+*{
+  box-sizing: border-box;
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -45,14 +49,17 @@ code {
 .MuiOutlinedInput-notchedOutline{
   border-color: #01f6bd !important;
 }
-/*.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{*/
-/*  color: #01f6bd !important;*/
-/*}*/
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+  color: #01f6bd !important;
+}
 #demo-simple-select-label{
   color: #01f6bd ;
 }
+
+
+/*leable color in active state */
 .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
-  color: #01fa94 !important;
+  color: #8289be !important;
 }
 .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon{
   color: #d1f6ee !important;
@@ -63,9 +70,9 @@ code {
 .css-1pnmrwp-MuiTypography-root{
   color: #01f6bd !important;
 }
-/*.Mui-disabled.MuiInputBase-input{*/
-/*  color: #01f6bd !important;*/
-/*}*/
+.Mui-disabled.MuiInputBase-input{
+  color: #01f6bd !important;
+}
 /*for leflet */
 .leaflet-popup-close-button {
   color: white!important;
@@ -75,8 +82,9 @@ code {
 }
 
 /*data piker*/
+/*start label collor*/
 .MuiFormLabel-root.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
-  color: #01f6bd  ;
+  color: #070d8c;
 }
 .MuiInputBase-input.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
   color: #01f6bd ;

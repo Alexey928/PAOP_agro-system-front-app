@@ -23,7 +23,18 @@ export enum TypesOfTask  {
     "TRANPORTING",
     "SEED TREATMENT",
 }
-
+export enum taskTypeConvertEmun {
+    "посів",
+    "посів із добривами",
+   "опискування",
+   "грунтовы роботи",
+    "внесення добрив",
+    "збір вражаю",
+    "????",
+    "?????",
+    "??????",
+    "???????",
+}
 
 interface IFormInputs{
     type:string,
@@ -69,13 +80,13 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere,fiel
             fieldId,
             from: new Date(data.from),
             status:"in progress",
-            materialIdes:DtoConverter(materialTasksEntitys)
+            materialIdes: DtoConverter(materialTasksEntitys)
         }, fieldId));
         dispatch(setTaskParamsPopupIsOpen());
     }
     return (
         <form  onSubmit={handleSubmit(onSubmit)}>
-            <div className={"widthAutScrollLine"} style={{padding:"0px,15px,0px,15px", overflowX:"scroll",display:"flex",alignItems:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
+            <div className={"widthAutScrollLine" } style={{padding:"0px,15px,0px,15px", overflowX:"scroll",display:"flex",alignItems:"center",position:"absolute",left:0,right:0,height:40,backgroundColor:"#f8e302"}}>{
                 materialTasksEntitys.map((el) =>(
                 <div style={{padding:"10px 40px 5px 40px",marginLeft:10,backgroundColor:"#42a401",borderRadius:5, position:"relative"}}>{el.material.name}
                     <div  style={{width:"inherit",position:"absolute",zIndex:1,top:-5,left:5, color:"#a3ff04"}}>

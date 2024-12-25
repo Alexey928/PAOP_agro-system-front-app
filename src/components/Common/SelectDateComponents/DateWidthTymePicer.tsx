@@ -23,7 +23,7 @@ export  const BasicDateTimePicker:React.FC<BasicDateTimePickerPropsType> = ({wid
                     console.log(value?value.toDate():null)
                        if(value) onChange(value.toDate())
                     }}
-                label="Планова дата виконання завдання" />
+                label="Дата виконання завдання" />
             </DemoContainer>
         </LocalizationProvider>
     );

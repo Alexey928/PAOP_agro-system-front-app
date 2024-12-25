@@ -94,9 +94,6 @@ const SubMaterialSelector: React.FC<SubMaterialSelectorPropsType> = ({ tasck,squ
     const filteredForSubType = useAppSelector(selectMaterialsForSybTypeSelector(tasck));
     const materialtypes = useSelector(selectMaterialsTypeForSubmaterialSelector(tasck));
 
-    console.log(filteredForSubType,materialtypes)
-
-
     const [materialTypesLocal,setMaterialTypesLocal] = useState<MaterialItemType[]>(()=>[...materialtypes]);
     const [filteredForSubTypeLocal, setFilteredForSubTypeLocal]= useState<MaterialType[][]>(()=>[...filteredForSubType])
     const [selectorTransitionState, setSelectorTransitionState] = useState<TransitionStateType[]>(

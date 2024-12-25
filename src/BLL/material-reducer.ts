@@ -18,7 +18,7 @@ export type MaterialType={
     metaData:string// ДВ у удобрений и химии или Геннерация у семян или
     massOfThousen:number// только для семян у остальных 0
 }
-export const initialMaterialStateCreator = () => ( {
+export const initialMaterialStateCreator = () => ({
     fertilizer:[] as MaterialType[],
     crops:[] as MaterialType[],
     suply:[] as MaterialType[],

@@ -23,7 +23,7 @@ function App() {
 
     useEffect(() => {
         dispatch(initializeAppTC());
-        dispatch(setMaterialsFromDB())
+        //dispatch(setMaterialsFromDB());
     }, [dispatch]);
 
     const redirect = useMemo(()=>{

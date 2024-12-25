@@ -36,8 +36,9 @@ const Registration = () => {
     const navigate = useNavigate()
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         console.log(data,ROLS[+data.Rolls])
-        dispatch( registrationTC(data.Name,data.Email,data.Password,ROLS[+data.Rolls]))
-        navigate("/login")
+        dispatch( registrationTC(data.Name,data.Email,data.Password,ROLS[+data.Rolls]));
+        navigate("/login");
+
     }
     let massege:string|undefined = "";
     if(formState.errors["Rolls"]) massege = formState.errors["Rolls"]?.message;
@@ -58,12 +59,12 @@ const Registration = () => {
             <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
                 <Paper   variant={"outlined"} className={style.paper}>
                     <ul className={style.formlist}>
-                        <Controller rules={{required: "уведіть імья"}} name={"Name"} control={control} render={(field)=>{
-                            console.log(formState)
+                        <Controller rules={{required: "уведіть ім'я"}} name={"Name"} control={control} render={(field)=>{
+                            console.log(formState);
                             return(
                             <li>
                                 <label style={{color:field.fieldState.error?"red":"black"}}>Name *</label>
-                                <Input {...field.field}  type={"text"} placeholder={"уведіть імья"} />
+                                <Input {...field.field}  type={"text"} placeholder={"уведіть ім'я"} />
                             </li>)}}
                         />
                         <Controller
@@ -73,7 +74,7 @@ const Registration = () => {
                                 return(
                                 <li>
                                     <label style={{color:field.fieldState.error?"red":"black"}}>Password *</label>
-                                    <Input  {...field.field} placeholder={"уведіть пороль"} type={"password"} />
+                                    <Input  {...field.field} placeholder={"уведіть пароль"} type={"password"} />
                                 </li>)
                             }}
                         />
@@ -89,10 +90,10 @@ const Registration = () => {
                                 render={(field)=>{
                                     console.log(field.fieldState.error)
                                     return(
-                        <FormControl  style={{width:190}} error={!!field.fieldState.error}>
+                        <FormControl  style={{width:190,color:"red"}} error={!!field.fieldState.error}>
                             <InputLabel id="demo-simple-select-label">Роль</InputLabel>
                             <Select
-                                color={"secondary"}
+                                color={"primary"}
                                 variant={"standard"}
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
