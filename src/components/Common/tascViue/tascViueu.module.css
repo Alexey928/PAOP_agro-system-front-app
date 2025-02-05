@@ -4,13 +4,16 @@
     justify-content: center;
     width: 100%;
     min-height: 100px;
+    flex-wrap: wrap;
+    border: 4px solid #b707fc;
 }
 .information_container{
-    width: 100%;
+    width: 90%;
     border: 1px solid #3bfc07;
+    margin: 0 auto;
 }
 .task_material_information{
-    width:100%;
+    width:250px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,6 +22,14 @@
 }
 
 .task_material_information_item{
+    margin:1px;
+    border:1px solid #3bfc07;
+    width:250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #559bc5;
 
 }
 

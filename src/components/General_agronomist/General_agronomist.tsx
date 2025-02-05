@@ -4,6 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import {LatLngExpression} from "leaflet"
 import FieldParamFormPopup from "../Common/FieldParamPopup";
 import {Button, FormControl, InputLabel, MenuItem, Select, styled, Switch} from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 
 import {
@@ -252,20 +255,25 @@ const General_agronomist = () => {
                                     }
                                     checked={drwoingFlag} />
                   <Button size={"small"} style={{display:"inline-block",width:50,color:painedPosition.length?"#7bf606":"white",fontWeight:painedPosition.length?"bold":"normal"}}
-
                           variant={"contained"}
-                          color={painedPosition.length?"secondary":"primary"}
+                          color={painedPosition.length?"success":"primary"}
                           onClick={() => {
-                      setPainedPosition([]);
+                      setPainedPosition((prevState)=>{
+                          const temp = [...prevState];
+                          temp.pop();
+                          return temp;
+                      });
                   }}>
-                      {"Скид"}
+                      <ArrowBackIcon />
+                  </Button>
+                  <Button>
+                      <DeleteIcon/>
                   </Button>
               </div>
                 <hr style={{width:"100%"}}/>
                 {drwoingFlag && <div>
                     <Button  variant={"contained"} onClick={()=>{dispatch(setMaterialEditorFlag())}}>матеріали</Button>
                     <hr style={{width:"100%"}}/>
-
                     <Button
                         color={(painedPosition.length > 2)?"success":"error"}
                         variant={"contained"}

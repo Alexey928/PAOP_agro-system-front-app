@@ -30,7 +30,7 @@ export type TaskMaterialActionsType =
 
 //______________________________________
 
-type taskMaterialType = {
+ export type taskMaterialType = {
     Package:number|null,
     actualMaterialAmount:number|null,
     currentConsumptionRate:number,
@@ -44,8 +44,6 @@ type TascMaterialStateType  = {
     isDoneTasks:{[fieldID:string]:TasckType[]},
 
 }
-
-
 const tasckMaterialInitialState:TascMaterialStateType = {
     globalFrom: new Date(),
     globalTo: new Date(),
@@ -55,7 +53,8 @@ const tasckMaterialInitialState:TascMaterialStateType = {
 
 }
 
-const forArrToHash = <T extends {field: {id:number} | null, status:string}>(arr:Array<T>):{[key:string]:T[]}=>{
+const fromArrToHash = <T extends {field: {id:number} | null, status:string,}>
+                     (arr:Array<T>,status:"in progress"|"isDone"):{[key:string]:T[]}=>{
     const temp:{[key:string]:T[]} = {};
     arr.forEach((e)=>{
     if(e.status==="in progress"){
@@ -71,24 +70,21 @@ const forArrToHash = <T extends {field: {id:number} | null, status:string}>(arr:
 }
 
 
-const forArrToIsDoneHsh = <T extends {field: {id:number} | null,status:string}>(arr:Array<T>):{[key:string]:T[]}=>{
-    const temp:{[key:string]:T[]} = {};
-    arr.forEach((it,i)=>{
-        if(it.status==="isDone"){
-            if(!temp[`${it.field?.id}`]) {
-                temp[`${it.field?.id}`]=[it]
-            }else {
-                temp[`${it.field?.id}`].push(it);
-            }
-        }
-
-    })
-    return temp;
-
-}
-
-
-
+// const forArrToIsDoneHsh = <T extends {field: {id:number} | null,status:string}>(arr:Array<T>):{[key:string]:T[]}=>{
+//     const temp:{[key:string]:T[]} = {};
+//     arr.forEach((it,i)=>{
+//         if(it.status==="isDone"){
+//             if(!temp[`${it.field?.id}`]) {
+//                 temp[`${it.field?.id}`]=[it]
+//             }else {
+//                 temp[`${it.field?.id}`].push(it);
+//             }
+//         }
+//
+//     })
+//     return temp;
+//
+// }
 export  const DtoConverter = (dto:MaterialTaskCreateItemType[]):materialUsageDataType[] => {
     return dto.map((el)=>({
         materialId:+ el.material.id,
@@ -100,18 +96,16 @@ export  const DtoConverter = (dto:MaterialTaskCreateItemType[]):materialUsageDat
 
 export const fieldTaskReduser = (state:TascMaterialStateType = tasckMaterialInitialState,
                                  action:TaskMaterialActionsType): TascMaterialStateType =>
-
-
 {
     switch (action.type) {
         case "SET/TASKS/FROM/DB":
             return {...state,tasksArray:action.tasks,tasksMapedFromFields:action.hash,isDoneTasks:action.isDoneHash}
         case "ADD/TASK":
             const temp = [...state.tasksArray,action.task]
-            return {...state,tasksArray:temp, tasksMapedFromFields:forArrToHash(temp),isDoneTasks:forArrToIsDoneHsh<TasckType>(temp)}
+            return {...state,tasksArray:temp, tasksMapedFromFields:fromArrToHash(temp,"in progress"),isDoneTasks:fromArrToHash<TasckType>(temp,"isDone")}
         case "REMOVE/TASK":
             const filtered = state.tasksArray.filter((el)=>el.id!==action.taskId);
-            return {...state,tasksArray:filtered,tasksMapedFromFields:forArrToHash(filtered)}
+            return {...state,tasksArray:filtered,tasksMapedFromFields:fromArrToHash(filtered,"in progress")}
         default :
             return state
     }
@@ -122,8 +116,8 @@ const setTasksFromDB_AC = (tasks:TasckType[]) => (
     {
         type:"SET/TASKS/FROM/DB",
         tasks,
-        hash:forArrToHash<TasckType>(tasks),
-        isDoneHash:forArrToIsDoneHsh<TasckType>(tasks)
+        hash:fromArrToHash<TasckType>(tasks,"in progress"),
+        isDoneHash:fromArrToHash<TasckType>(tasks,"isDone")
 
     } as const
 );
@@ -169,9 +163,20 @@ export const setTaskFromDB = (from:Date, to:Date) =>
             dispatch (setTasksFromDB_AC(tasks.data));
         }catch (e){
 
-        }finally {
+        }finally{
 
         }
 
 }
 
+export const removeTaskFromDB = (taskId:string)  => async (dispatch:DispatchType) => {
+    dispatch(setIsRequestProcessingStatusAC(true));
+    try {
+        const lastRemTask = await TascksApi.remove(taskId);
+    }catch (e){
+
+    }finally {
+        dispatch(setIsRequestProcessingStatusAC(false));
+    }
+
+}

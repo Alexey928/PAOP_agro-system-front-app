@@ -1,5 +1,5 @@
 import {instance} from "./commonApiInstanse";
-import {TasckType} from "../BLL/fieldTaskReduser";
+import {TasckType, taskMaterialType} from "../BLL/fieldTaskReduser";
 
 export type materialUsageDataType = {
     materialId:number
@@ -23,5 +23,8 @@ export const TascksApi = {
     },
     getAllTasksInPeriod(from:Date,to:Date){
         return instance.get<TasckType[]>(`tasks?from=${from.toDateString()}&to=${to.toDateString()}`)
+    },
+    remove(taskId:string){
+        return instance.delete<{task:TasckType, materialAmount:taskMaterialType[]}>(taskId);
     }
 }

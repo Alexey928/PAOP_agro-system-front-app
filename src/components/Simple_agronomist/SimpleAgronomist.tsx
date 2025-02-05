@@ -28,7 +28,7 @@ const SimpleAgronomist = () => {
     });
     const handleChange = () => {
         setTokenInInstanse();
-        dispatch(authMeTC())
+        dispatch(authMeTC());
     };
 
     useEffect(()=>{
