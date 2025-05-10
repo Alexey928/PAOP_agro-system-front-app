@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import MaterialSelector from "./MaterialSelectorModule/MaterialSelector";
 import {useAppSelector} from "../../BLL/Store";
-import {selectMaterialeditorFlag} from "../../Utils/selectors";
+import {selectMaterialEditorFlag} from "../../Utils/selectors";
 import {Button} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {setMaterialEditorFlag} from "../../BLL/map-interfase-reduser";
@@ -11,7 +11,7 @@ import MaterialParamsFormSellector from "./Forms/MaterialParamsFormSellector";
 
 const MaterialParamsPopupContayner = () => {
 const [typeOfMaterial, setTypeOfMaterial] = useState<MaterialItemType>("");
-const popupFlag = useAppSelector(selectMaterialeditorFlag);
+const popupFlag = useAppSelector(selectMaterialEditorFlag);
 
 const dispatch = useDispatch();
     return (

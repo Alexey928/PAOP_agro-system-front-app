@@ -1,35 +1,41 @@
 import React, {useEffect, useState} from 'react';
 import {Circle, FeatureGroup, MapContainer, Polygon, Popup, TileLayer, Tooltip, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
-import {LatLngExpression} from "leaflet"
+import {DomEvent, LatLngExpression} from "leaflet"
 import FieldParamFormPopup from "../Common/FieldParamPopup";
 import {Button, FormControl, InputLabel, MenuItem, Select, styled, Switch} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
+
 
 import {useAppDispatch, useAppSelector} from "../../BLL/Store";
 
 import {
     selectDrowingFlag,
-    selectFields,
+    selectFields, selectFlagForMapInfo,
     selectRequestProcesingStatus,
     selectTaskMaterials
 } from "../../Utils/selectors";
 import {FieldType, PerimetrType, removeFieldTC, setFieldsDBstateTC} from "../../BLL/map-filds-reduser";
 import {
-    setCanIDrow,
-    setFieldParamsPopupIsOpen, setMaterialEditorFlag, setSelectedField,
+    setCanIDrow, setFieldInfoFlag,
+    setFieldParamsPopupIsOpen, setFullReportPopupFlag, setMaterialEditorFlag, setSelectedField,
     setSelectedFieldID,
-    setSelectedFieldTrajectory, setTaskParamsPopupIsOpen, setTaskViueIndeficatorData
+    setSelectedFieldTrajectory, setShowCartInfo, setTaskParamsPopupIsOpen, setTaskViueIndeficatorData
 } from "../../BLL/map-interfase-reduser";
 import {fromCirclePositionToTrajectory} from "../../Utils/parseTrajectory";
 import style from "./general-agronomist.module.css"
-import {ROLS} from "../Registration/Registration";
 import MaterialParamsPopupContayner from "../Common/MaterialParamsPopupContayner";
 import TaskParamPopup from "../Common/TaskParamPopup";
 import {taskTypeConvertEmun} from "../Common/Forms/TaskParamForm";
-import {MaterialUISwitchh} from "../Common/MaterialUISwithes/switches"
-import TaskVuiePoupup from "../Common/tascViue/TaskViueu";
+import {SwitchDrovingFlag, SwitchMapInfoFlag} from "../Common/MaterialUISwithes/switches"
+import TaskVuiePopup from "../Common/tascViue/TaskViueuPopup";
+import {removeTaskFromDB} from "../../BLL/fieldTaskReduser";
+import zIndex from "@mui/material/styles/zIndex";
+import stopPropagation = DomEvent.stopPropagation;
+import FieldInformationPopup from "../Common/FieldInformationPopup/FieldInformationPopup";
+import FullReportContainer from "../Common/FullreportPopup/FullReportContainer";
 
  export type PositionType = {
     lat: number,
@@ -66,12 +72,13 @@ const General_agronomist = () => {
     const isRequestProcesing = useAppSelector(selectRequestProcesingStatus);
     const tasks = useAppSelector(selectTaskMaterials)
     const fields  = useAppSelector(selectFields);
-    const drwoingFlag = useAppSelector(selectDrowingFlag);
+    const drowingFlag = useAppSelector(selectDrowingFlag);
+    const fieldInfoFlag = useAppSelector(selectFlagForMapInfo)
     useEffect(()=>{
        setTimeout(()=>dispatch(setFieldsDBstateTC()))
         },[]
     )
-    console.log("general",ROLS[1]);
+    console.log(tasks);
     const calback = (position: PositionType | null) => {
         if (!position) return
         setPainedPosition([...painedPosition, position]);
@@ -85,7 +92,7 @@ const General_agronomist = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <PointOfPoligons calback={drwoingFlag ? calback : () => {}}/>
+                <PointOfPoligons calback={drowingFlag ? calback : () => {}}/>
                 {fields.map((el, i) => {
                     const fildID = el.id;
                     return (
@@ -101,7 +108,7 @@ const General_agronomist = () => {
                                 color:el.fillColor ?? defaultFieldColor,
                                 fillColor: el.fillColor ?? defaultFieldColor,
                             }}>
-                            <Popup
+                            { <Popup
                                closeButton={false}  className={"leaflet-popup-content-wrapper"}>
                                 <header className={style.popup_header}>
                                     <div style={{color: "white", textAlign: "center",fontSize:18}}>
@@ -110,31 +117,31 @@ const General_agronomist = () => {
                                 </header>
                                 <hr/>
                                 <div className={style.popup_body}>
-                                    <FormControl  style={{width:190, marginTop:30}} >
-                                            <InputLabel id="demo-simple-select-label">Виконані</InputLabel>
-                                            <Select
-                                                SelectDisplayProps={
-                                                    {style: {
-                                                            color:'#01f6bd',
-                                                        }
-                                                    }}
-                                                label={"Виконані"}
-                                                value={""}
-                                                color={"primary"}
-                                                variant={"outlined"}
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                            >
+                                    {/*<FormControl  style={{width:190, marginTop:30}} >*/}
+                                    {/*        <InputLabel id="demo-simple-select-label">Виконані</InputLabel>*/}
+                                    {/*        <Select*/}
+                                    {/*            SelectDisplayProps={*/}
+                                    {/*                {style: {*/}
+                                    {/*                        color:'#01f6bd',*/}
+                                    {/*                    }*/}
+                                    {/*                }}*/}
+                                    {/*            label={"Виконані"}*/}
+                                    {/*            value={""}*/}
+                                    {/*            color={"primary"}*/}
+                                    {/*            variant={"outlined"}*/}
+                                    {/*            labelId="demo-simple-select-label"*/}
+                                    {/*            id="demo-simple-select"*/}
+                                    {/*        >*/}
 
-                                                <MenuItem value={""}></MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                    {/*            <MenuItem value={""}></MenuItem>*/}
+                                    {/*        </Select>*/}
+                                    {/*    </FormControl>*/}
                                         <FormControl  style={{width:190, marginTop:30}} >
                                             <InputLabel id="demo-simple-select-label">До виконання</InputLabel>
                                             <Select
                                                 onChange={(event)=>{
-
-                                                   dispatch(setTaskViueIndeficatorData({flag:true,taskFieldId:fildID,taskId:event.target.value}))// target value, as selected task id
+                                                    console.log(event.target.value)
+                                                    dispatch(setTaskViueIndeficatorData({flag:true,taskFieldId:fildID,taskId:event.target.value}))// target value, as selected task id
                                                 }}
                                                 SelectDisplayProps={
                                                    {style: {
@@ -162,10 +169,8 @@ const General_agronomist = () => {
                                                         {taskTypeConvertEmun[+el.type].toUpperCase()}
                                                         <Button onClick={(e)=>{
                                                             e.stopPropagation();
-                                                            const confirm =  window.confirm("ви певні що бажаєте видалити ?");
-                                                            if(!confirm) return;
-
-
+                                                            debugger
+                                                            dispatch(removeTaskFromDB(el.id));
                                                         }}
                                                                 variant={"contained"}
                                                                 color={"error"}
@@ -205,27 +210,48 @@ const General_agronomist = () => {
                                         color={"error"}
                                     >ВИДАЛИТИ</Button>
                                 </div>
-                            </Popup>
-                            {el.currentPerimeter.length&&
-                                <Polygon  positions={el.currentPerimeter as LatLngExpression[]}>
-                                    {drwoingFlag && <Tooltip   permanent direction="center" className={style.polygonTooltip}>
-                                        <div style={{width:"100%", height:"100%",color:"black"}}>
-                                            <div>{el.name ? `${el.name}` : "Нет данных"}</div>
-                                            <div>{`S = ${el.perimeters.length ? el.perimeters[el.perimeters.length-1].sqere : "Не определено!"} Га`}
-                                        </div>
-                                            <span>{`Культура: ${el.currentCultures[0].culture}`}</span>
-                                            {tasks[el.id]&&<span style={{
-                                                top:-17,
-                                                right:-16,
-                                                width:20,
-                                                backgroundColor:"red",
-                                                color:"white",
-                                                position:"absolute",
-                                                border:"1px solid blue",
-                                                borderRadius:30,
-                                            }}>!</span>}
-                                        </div>
-                                    </Tooltip>}
+                            </Popup>}
+                            {el.currentPerimeter.length &&
+                                <Polygon   positions={el.currentPerimeter as LatLngExpression[]}>
+                                    {fieldInfoFlag &&
+                                        <Tooltip interactive={true}   permanent direction="center" className={style.polygonTooltip}>
+                                            <div style={{width:"100%", height:"100%",color:"black"}}>
+                                                <div>{el.name ? `${el.name}` : "Нет данных"}</div>
+                                                <div>
+                                                {
+                                                    `S = ${el.perimeters.length ? 
+                                                        el.perimeters[el.perimeters.length-1].sqere :
+                                                    "Не определено!"} Га`
+                                                }
+                                            </div>
+                                                <span>{`Культура: ${el.currentCultures[0].culture}`}</span>
+                                                {tasks[el.id] && <span style={{
+                                                    top:-17,
+                                                    right:-16,
+                                                    width:20,
+                                                    backgroundColor:"red",
+                                                    color:"white",
+                                                    position:"absolute",
+                                                    border:"1px solid blue",
+                                                    borderRadius:30,
+                                                }}>!</span>}
+                                            </div>
+                                            <hr color={"black"}/>
+                                            <div style={{zIndex:20}}>
+                                                <Button size={"small"} variant={"contained"} color={"primary"}
+                                                        onClick={(event)=>{
+                                                            event.stopPropagation();
+                                                            alert(el.name);
+                                                            dispatch(setFieldInfoFlag({flag:true,fieldId:el.id}))
+                                                        }
+
+                                                }>
+
+                                                                <QueryStatsOutlinedIcon/>
+                                                </Button>
+                                            </div>
+                                        </Tooltip>
+                                    }
                                 </Polygon>
                             }
                         </FeatureGroup>
@@ -242,18 +268,26 @@ const General_agronomist = () => {
                 {
                     boxShadow:"rgb(41 34 94 / 84%) -1px 0px 7px 1px",
                     color:"white",position:"absolute",
-                    right:8,top:8,display:"flex",flexDirection:"column",width:145,
+                    right:8,top:8,display:"flex",flexDirection:"column",width:185,
                     backgroundColor:"rgba(2,9,47,0.78)", padding:5,borderRadius:5
                 }
             }>
               <div style={{width:"100%"}}>
-                  <MaterialUISwitchh sx={{ m: 1 }}
-                                    onChange={()=>{
-                                        dispatch(setCanIDrow());
-                                        setPainedPosition([])
-                                    }
-                                    }
-                                    checked={drwoingFlag} />
+
+                  <SwitchMapInfoFlag sx={{ m: 1 }}
+                                     onChange={()=>{
+                                         dispatch(setShowCartInfo());
+                                         setPainedPosition([])
+                                     }
+                                     }
+                                     checked={fieldInfoFlag} />
+                  <SwitchDrovingFlag sx={{ m: 1 }}
+                                     onChange={()=>{
+                                         dispatch(setCanIDrow());
+                                         setPainedPosition([])
+                                     }
+                                     }
+                                     checked={drowingFlag} />
                   <Button size={"small"} style={{display:"inline-block",width:50,color:painedPosition.length?"#7bf606":"white",fontWeight:painedPosition.length?"bold":"normal"}}
                           variant={"contained"}
                           color={painedPosition.length?"success":"primary"}
@@ -264,14 +298,15 @@ const General_agronomist = () => {
                           return temp;
                       });
                   }}>
-                      <ArrowBackIcon />
+                      <ArrowBackIcon  color={drowingFlag?"error":"disabled"}/>
+
                   </Button>
-                  <Button>
+                  <Button color={drowingFlag?"error":"primary"} onClick={()=>{setPainedPosition([])}}>
                       <DeleteIcon/>
                   </Button>
               </div>
                 <hr style={{width:"100%"}}/>
-                {drwoingFlag && <div>
+                { drowingFlag ? <div>
                     <Button  variant={"contained"} onClick={()=>{dispatch(setMaterialEditorFlag())}}>матеріали</Button>
                     <hr style={{width:"100%"}}/>
                     <Button
@@ -286,14 +321,22 @@ const General_agronomist = () => {
                             dispatch(setSelectedField(resSelectedFieldEntity));
                             dispatch(setCanIDrow(true))
                             dispatch(setFieldParamsPopupIsOpen());
+
                         }}> + Поле
                     </Button>
-                </div>}
+                </div>:
+                    <div>
+                        <Button size={"small"} variant={"contained"} onClick={()=>{dispatch(setFullReportPopupFlag())}}>
+                            повний звіт
+                        </Button>
+                    </div>}
             </div>
             <FieldParamFormPopup/>
             <TaskParamPopup/>
             <MaterialParamsPopupContayner/>
-            <TaskVuiePoupup/>
+            <TaskVuiePopup/>
+            <FieldInformationPopup fields={fields}/>
+            <FullReportContainer />
         </div>
     );
 };

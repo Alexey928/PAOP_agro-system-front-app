@@ -37,6 +37,7 @@ export type TaskMaterialActionsType =
     plannedMaterialAmount:number
 }
 type TascMaterialStateType  = {
+    lastRemovedTask:TasckType,
     globalFrom:Date,
     globalTo:Date,
     tasksArray:TasckType[],
@@ -45,6 +46,7 @@ type TascMaterialStateType  = {
 
 }
 const tasckMaterialInitialState:TascMaterialStateType = {
+    lastRemovedTask: {} as TasckType,
     globalFrom: new Date(),
     globalTo: new Date(),
     tasksArray:[],
@@ -105,7 +107,8 @@ export const fieldTaskReduser = (state:TascMaterialStateType = tasckMaterialInit
             return {...state,tasksArray:temp, tasksMapedFromFields:fromArrToHash(temp,"in progress"),isDoneTasks:fromArrToHash<TasckType>(temp,"isDone")}
         case "REMOVE/TASK":
             const filtered = state.tasksArray.filter((el)=>el.id!==action.taskId);
-            return {...state,tasksArray:filtered,tasksMapedFromFields:fromArrToHash(filtered,"in progress")}
+            debugger
+            return {...state,tasksArray:filtered,tasksMapedFromFields:fromArrToHash(filtered,"in progress"),}
         default :
             return state
     }
@@ -159,8 +162,9 @@ export const setTaskFromDB = (from:Date, to:Date) =>
         try {
             const tasks = await TascksApi.getAllTasksInPeriod
             (new Date("2024-02-10T21:30:17.303Z"),
-            new Date("2025-02-10T21:30:17.303Z"));
+            new Date("2025-09-10T21:30:17.303Z"));
             dispatch (setTasksFromDB_AC(tasks.data));
+
         }catch (e){
 
         }finally{
@@ -168,15 +172,20 @@ export const setTaskFromDB = (from:Date, to:Date) =>
         }
 
 }
+export const removeTaskFromDB = (taskId:string)  =>
+    async (dispatch:DispatchType) => {
+    debugger
+        dispatch(setIsRequestProcessingStatusAC(true));
 
-export const removeTaskFromDB = (taskId:string)  => async (dispatch:DispatchType) => {
-    dispatch(setIsRequestProcessingStatusAC(true));
-    try {
-        const lastRemTask = await TascksApi.remove(taskId);
-    }catch (e){
+        try {
+            const lastRemTask = await TascksApi.remove(taskId);
+            console.log(lastRemTask);
+            //if(taskId!==lastRemTask.data.task.id) return
+            dispatch(removeTask(taskId));
+        }catch (e) {
+            console.error(e);
+        }finally {
+            dispatch(setIsRequestProcessingStatusAC(false));
+        }
 
-    }finally {
-        dispatch(setIsRequestProcessingStatusAC(false));
     }
-
-}

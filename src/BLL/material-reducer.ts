@@ -17,6 +17,7 @@ export type MaterialType={
     packaging:number,// cValue "200кг,шт,л..."
     metaData:string// ДВ у удобрений и химии или Геннерация у семян или
     massOfThousen:number// только для семян у остальных 0
+    //isVisiable:string
 }
 export const initialMaterialStateCreator = () => ({
     fertilizer:[] as MaterialType[],
@@ -98,17 +99,18 @@ export const createMaterial_TC = (material:MaterialDTOtype)=> async (dispatch:Di
         dispatch(setIsRequestProcessingStatusAC(false));
     }
 }
-export const removeMaterialFromDB = ()=> async () =>(dispatch:DispatchType) =>{
+export const removeMaterialFromDB = (id:string,materialName:string) => async (dispatch:DispatchType) =>{
+    if(!window.confirm(`Ви певні що бажаєте видалити  матеріал "${materialName.toUpperCase()}" ?`)) return
     dispatch(setIsRequestProcessingStatusAC(true));
-
     try {
-
+        const {data:materialData} = await materialAPI.removeMaterial(id);
+        debugger;
+        dispatch(remoweMaterialAC(id, materialData.type));
     }catch (e) {
-
+      console.log(e)
     }finally {
         dispatch(setIsRequestProcessingStatusAC(false));
     }
-
 }
 export const updateMaterialFromDB = ()=> async () =>(dispatch:DispatchType) =>{
     dispatch(setIsRequestProcessingStatusAC(true));
@@ -122,5 +124,3 @@ export const updateMaterialFromDB = ()=> async () =>(dispatch:DispatchType) =>{
     }
 
 }
-
-

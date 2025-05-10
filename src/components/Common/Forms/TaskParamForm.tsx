@@ -94,7 +94,6 @@ const TaskParamForm:React.FC<TaskParamPopupPropsType> = ({currentFieldSqere,fiel
                     </div>
                 </div>
             ))}</div>
-
             <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-around"}}>
                         <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:15,marginTop:60,marginBottom:120}}>
                             <Controller control={control} name={"type"} rules={{ required:"Оберіть вашу роль!" }} render={({field})=>(

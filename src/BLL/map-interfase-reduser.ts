@@ -14,10 +14,12 @@ export const  MapInterfaceInitial={
     fieldParamsPopup: false as boolean,
     taskParamsPopup:false as boolean,
     showTaskViue:{flag:false,taskFieldId:"",taskId:""},
+    showFieldInfo:{flag:false,fieldId:""},
     materialEditorIsOpen: false as boolean,
     lastRemovedField:{} as LastRemoved,
-    showFieldDescription : false as boolean
-
+    showFieldDescription : false as boolean,
+    showCartInfo:false as boolean,
+    showFullReportPopup:false as boolean,
 };
 
 export type MapInterfaseType = typeof MapInterfaceInitial;
@@ -31,7 +33,11 @@ export type MapInterfaseActionType =  ReturnType<typeof setSelectedFieldID>|
                           ReturnType<typeof setSelectedField>|
                           ReturnType<typeof setMaterialEditorFlag>|
                           ReturnType<typeof setShowFieldDescription>|
-                          ReturnType<typeof setTaskViueIndeficatorData>;
+                          ReturnType<typeof setTaskViueIndeficatorData>|
+                          ReturnType<typeof setShowCartInfo>|
+                          ReturnType<typeof setFieldInfoFlag>|
+                          ReturnType<typeof setFullReportPopupFlag>;
+
 
 export const fieldIntarfaseReduser = (
                                          state:MapInterfaseType = MapInterfaceInitial,
@@ -58,7 +64,12 @@ export const fieldIntarfaseReduser = (
             return {...state,selectedField:action.field}
         case "SET/FIELD_DESCRIPTION/VISIBLE":
             return {...state , showFieldDescription: !state.showFieldDescription}
-
+        case "SET/SHOW/MATERIAL/INTERFACE":
+            return action.flag?{...state,showCartInfo:action.flag}:{...state , showCartInfo:!state.showCartInfo}
+        case "SET/FIELD/INFORMATION/FLAG/AND/DATA":
+            return {...state,showFieldInfo:{...action.payload}}
+        case "SET/FULL/REPORT/POPUP/FLAG":
+            return {...state,showFullReportPopup:action.flag?action.flag:!state.showFullReportPopup}
         default: return state
     }
 }
@@ -78,7 +89,12 @@ export const setTaskViueIndeficatorData = (data:{flag:boolean,taskFieldId:string
         {type:"SET/DATA/FOR/TASK/VIUE",payload:{...data}}
     )  as const
 }
-
+export const setFieldInfoFlag = (data:{flag:boolean,fieldId:string})=>(
+    {
+        type:"SET/FIELD/INFORMATION/FLAG/AND/DATA",
+        payload:{...data}
+    } as const
+)
 export const setSelectedFieldTrajectory = (trajectory:number[][]) =>(
     {
         type:"SET/SELECTED/FIELD/TRAJECTORY",
@@ -118,3 +134,19 @@ export const setSelectedField = (field:FieldType)=>(
         field
     } as const
 )
+export const setShowCartInfo = (flag?:boolean) => (
+    {
+        type:"SET/SHOW/MATERIAL/INTERFACE",
+        flag
+    } as const
+)
+export const setFullReportPopupFlag = (flag?:boolean) =>(
+    {
+        type:"SET/FULL/REPORT/POPUP/FLAG",
+        flag
+
+    } as const
+)
+
+
+

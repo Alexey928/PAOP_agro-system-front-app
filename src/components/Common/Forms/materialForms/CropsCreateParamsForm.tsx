@@ -23,7 +23,7 @@ type CropsCreateParamsFormPropsType = {
 
 const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}) => {
     const dispatch = useAppDispatch();
-    const { control, handleSubmit,  getValues} = useForm({
+    const { control, handleSubmit,  getValues, formState} = useForm({
         defaultValues: {
             cropsName:"",
             type:"насіння" as MaterialItemType,
@@ -56,8 +56,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
             window.alert("Водіть коректно, мабуть десь ввели самі пробели!")
             return
         }
-        dispatch(createMaterial_TC(material))
-        console.log(data,material);
+        dispatch(createMaterial_TC(material));
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
@@ -233,7 +232,7 @@ const CropsCreateParamsForm:React.FC<CropsCreateParamsFormPropsType> = ({onExit}
                                 )}/>
                     <div style={{width:250,display:"flex",alignItems:"center",justifyContent:"space-around"}}>
                         <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
-                        <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                        <Button type={"submit"} variant={"contained"} disabled={formState.isSubmitted}>Зберегти</Button>
                     </div>
                 </div>
 

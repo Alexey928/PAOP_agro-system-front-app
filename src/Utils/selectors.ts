@@ -37,11 +37,14 @@ export const selectTaskParamsPopupIsOpen = (state:AppRootStateType):boolean => s
 export const selectDrowingFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.canIDraw;
 export const selectSelectdFieldColor = (state:AppRootStateType):string => state.fieldsInterfase.selectedFieldColor;
 export const selectSelectedFieldTrajectory = (state:AppRootStateType):number[][] => state.fieldsInterfase.selectedFieldTrajectory;
-export const selectMaterialeditorFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.materialEditorIsOpen
+export const selectMaterialEditorFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.materialEditorIsOpen
 export const selectFlagForDescription = (state:AppRootStateType):boolean => state.fieldsInterfase.showFieldDescription
+export const selectFlagForMapInfo = (state:AppRootStateType):boolean => state.fieldsInterfase.showCartInfo
 export const selectFlagForTaskViue = (state:AppRootStateType):{flag:boolean,taskFieldId:string,taskId:string} =>
     state.fieldsInterfase.showTaskViue;
-
+export const selectFieldInfoFlag = (state:AppRootStateType):{flag:boolean,fieldId:string} =>
+    state.fieldsInterfase.showFieldInfo
+export const selectReportPopupFlag = (state:AppRootStateType):boolean => state.fieldsInterfase.showFullReportPopup;
 
 //materials selectors
 

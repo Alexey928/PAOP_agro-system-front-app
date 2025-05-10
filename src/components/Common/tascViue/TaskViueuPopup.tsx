@@ -11,7 +11,7 @@ type  TaskViueuType = {
     taskId:string,
 }
 
-const TaskVuiePoupup = () => {
+const TaskVuiePopup = () => {
  const dispatch = useAppDispatch();
  const viueOptions   = useAppSelector(selectFlagForTaskViue);
  const tasks = useAppSelector(selectTaskMaterials)[viueOptions.taskFieldId]
@@ -66,4 +66,4 @@ console.log("Tasc Viue data ",curentMaterials,curentTascMaterialData,tasks);
     );
 };
 
-export default TaskVuiePoupup;
+export default TaskVuiePopup;

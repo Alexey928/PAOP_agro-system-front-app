@@ -25,6 +25,7 @@ export const TascksApi = {
         return instance.get<TasckType[]>(`tasks?from=${from.toDateString()}&to=${to.toDateString()}`)
     },
     remove(taskId:string){
-        return instance.delete<{task:TasckType, materialAmount:taskMaterialType[]}>(taskId);
+        debugger
+        return instance.delete<{task:TasckType, materialAmount:taskMaterialType[]}>(`tasks/${taskId}`);
     }
 }

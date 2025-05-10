@@ -7,18 +7,18 @@ import SuplyAMterialCreateParamsForm from "./materialForms/suplyAMterialCreatePa
 type MaterialParamsFormSellectorPropsType = {
     typeOfMaterial:MaterialItemType
     onExit:()=>void
+    selectdBylist?:boolean
 }
-
-
-const MaterialParamsFormSellector:React.FC<MaterialParamsFormSellectorPropsType> = ({onExit, typeOfMaterial}) => {
+const MaterialParamsFormSellector:React.FC<MaterialParamsFormSellectorPropsType> = ({onExit, typeOfMaterial,selectdBylist}) => {
     return (
+        !selectdBylist?
         <div>
             {typeOfMaterial==="насіння"&& <CropsCreateParamsForm onExit={onExit}/>}
             {typeOfMaterial==="добрива"&& <FertilizerCreateParamsForm onExit={onExit}/>}
             {typeOfMaterial==="хімія" && <CemicalCreateParamsForm onExit={onExit}/>}
             {typeOfMaterial==="супутні" && <SuplyAMterialCreateParamsForm onExit={onExit}/>}
             {typeOfMaterial===""&& <></>}
-        </div>
+        </div>:<div></div>
     );
 };
 

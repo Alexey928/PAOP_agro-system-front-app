@@ -2,7 +2,8 @@ import React from 'react';
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {createMaterial_TC, CValueType, MaterialItemType} from "../../../../BLL/material-reducer";
-import {useAppDispatch} from "../../../../BLL/Store";
+import {useAppDispatch, useAppSelector} from "../../../../BLL/Store";
+import {selectRequestProcesingStatus} from "../../../../Utils/selectors";
 
 
 interface IFormInputs{
@@ -21,8 +22,9 @@ export type CemicalCreateParamsFormPropsType = {
 
 
 const CemicalCreateParamsForm:React.FC<CemicalCreateParamsFormPropsType> = ({onExit}) => {
+    const isReqestStatus = useAppSelector(selectRequestProcesingStatus)
     const dispatch = useAppDispatch();
-    const { control, handleSubmit, getValues,resetField,} = useForm({
+    const { control, handleSubmit, getValues,resetField,formState} = useForm({
         defaultValues: {
             chemistryName:"",
             type:"хімія" as MaterialItemType,
@@ -59,8 +61,7 @@ const CemicalCreateParamsForm:React.FC<CemicalCreateParamsFormPropsType> = ({onE
             return
         }
         dispatch(createMaterial_TC(material))
-        console.log(data,material);
-        onExit()
+        console.log(formState);
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
@@ -233,7 +234,7 @@ const CemicalCreateParamsForm:React.FC<CemicalCreateParamsFormPropsType> = ({onE
                                 )}/>
                     <div style={{width:250,display:"flex",alignItems:"center",justifyContent:"space-around"}}>
                         <Button onClick={onExit} color={"error"} variant={"contained"}>Вихід</Button>
-                        <Button type={"submit"} variant={"contained"}>Зберегти</Button>
+                        <Button type={"submit"} variant={"contained"} disabled={formState.isSubmitted}>Зберегти</Button>
                     </div>
                     </div>
 

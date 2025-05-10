@@ -12,6 +12,7 @@ export type fieldDTOType = {
     startFreeSqere:number
 }
 
+
 export const mapFieldAPI = {
     create(name:string,description:string,color:string,currentFreeSqeare:number){
         return instance.post<fieldDTOType>("/fields",{name,description,color,currentFreeSqeare});

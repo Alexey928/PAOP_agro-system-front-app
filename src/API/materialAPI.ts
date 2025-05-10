@@ -22,5 +22,9 @@ export const materialAPI = {
     },
     updateMaterial(){
         return instance.patch("materials", {})
+    },
+    removeMaterial(id:string){
+        return instance.delete<MaterialType>(`/materials/${id}`)
+
     }
 }

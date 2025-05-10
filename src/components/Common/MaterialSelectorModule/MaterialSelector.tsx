@@ -1,11 +1,11 @@
 import React, {useMemo, useState} from 'react';
-import {useAppSelector} from "../../../BLL/Store";
+import {useAppDispatch, useAppSelector} from "../../../BLL/Store";
 import {
     selectMaterialsByOptionalType,
     subTypesOfMaterial
 } from "../../../Utils/selectors";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import {MaterialItemType} from "../../../BLL/material-reducer";
+import {MaterialItemType, removeMaterialFromDB} from "../../../BLL/material-reducer";
 import {MaterialType} from "../../../BLL/material-reducer";
 
 
@@ -23,18 +23,18 @@ type MaterialSelectorType  = {
     onSelect?:(material:MaterialType)=>void
 }
 
-const plaseolderMaterial:MaterialType = {
-    id:"",
-    name:"заглушка",
-    subType:"",
-    type:"насіння",
-    cValue:"л",
-    consumptionRate:"",
-    metaData:"",
-    basePrice:0,
-    packaging:0,
-    massOfThousen:0
-}
+// const plaseolderMaterial:MaterialType = {
+//     id:"",
+//     name:"заглушка",
+//     subType:"",
+//     type:"насіння",
+//     cValue:"л",
+//     consumptionRate:"",
+//     metaData:"",
+//     basePrice:0,
+//     packaging:0,
+//     massOfThousen:0
+// }
 
 const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialSubType ,materialType,krud,onAddMaterial,task,onSelect}) => {
     console.log("ms ", materialType)
@@ -50,6 +50,7 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialS
         packaging:0,
         massOfThousen:0
     }
+    const dispatch = useAppDispatch();
     const currentMaterials = useAppSelector(selectMaterialsByOptionalType(materialType,task));
     const [currentMaterial,setCurrentMaterial] = useState<MaterialType>(plaseolderMaterial);
     const hashByIDMaterials = useMemo(():{[key:string]:MaterialType}=>{
@@ -63,9 +64,10 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialS
     },[currentMaterials])
 
     const setMaterialHeandler = (value:string) => {
-        setCurrentMaterial(hashByIDMaterials[value]);
+        const tempCurrentMaterial = hashByIDMaterials[value];
+        setCurrentMaterial(tempCurrentMaterial);
         if(onAddMaterial) {
-            onAddMaterial(hashByIDMaterials[value])
+            //onAddMaterial(hashByIDMaterials[value]);
         }
         if(onSelect){
             onSelect(hashByIDMaterials[value])
@@ -110,7 +112,15 @@ const MaterialSelector:React.FC<MaterialSelectorType> = ({rootMaterial,materialS
                             <Button onClick={()=>{
                                 onAddMaterial(currentMaterial)
                                }} variant={"contained"}>+</Button>
-                            <Button variant={"contained"} color={"error"} style={{margin:2}}>DEl</Button>
+                            <Button onClick={()=>{
+                                debugger
+                                if(currentMaterial.id){
+                                    debugger
+                                }
+                                currentMaterial.id && dispatch(removeMaterialFromDB(currentMaterial.id,currentMaterial.name))}}
+                                    variant={"contained"}
+                                    color={"error"}
+                                    style={{margin:2}}>DEl</Button>
                             <Button variant={"contained"} color={"secondary"}>EDIT</Button>
             </div>:<></>
 
